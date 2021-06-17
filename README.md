@@ -1,3 +1,3 @@
-# Hex
+# DSAlg
 
-Inspired by this article: https://www.redblobgames.com/grids/hexagons/
+A library with popular data structures and algorythms.
