@@ -8,7 +8,7 @@ import 'utils/compare_utils.dart';
 void main() {
   group('BubbleSort', () {
     test('should not fail on empty lists', () {
-      const emptyList = <int>[];
+      final emptyList = <int>[];
       expect(emptyList..bubbleSort(compareNum), emptyList);
     });
 

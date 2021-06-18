@@ -8,7 +8,7 @@ import 'utils/compare_utils.dart';
 void main() {
   group('MergeSort', () {
     test('should not fail on empty lists', () {
-      const emptyList = <int>[];
+      final emptyList = <int>[];
       expect(emptyList..mergeSort(compareNum), emptyList);
     });
 

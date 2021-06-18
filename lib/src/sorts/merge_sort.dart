@@ -27,7 +27,6 @@ extension MergeSort<T> on List<T> {
   }
 
   void mergeSort(Comparator<T> compare) {
-    if (length <= 1) return;
     final result = execute(this, compare);
     clear();
     addAll(result);
