@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'utils/list_utils.dart';
+import '../utils/list_utils.dart';
 
 extension QuickSort<T> on List<T> {
   static final _random = Random();

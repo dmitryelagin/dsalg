@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'utils/int_utils.dart';
+import '../utils/int_utils.dart';
 
 extension RadixSort on List<int> {
   static List<int> execute(List<int> list) {

@@ -1,4 +1,4 @@
-import 'utils/list_utils.dart';
+import '../utils/list_utils.dart';
 
 extension SelectionSort<T> on List<T> {
   void selectionSort(Comparator<T> compare) {

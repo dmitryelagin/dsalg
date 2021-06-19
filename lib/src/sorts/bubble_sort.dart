@@ -1,4 +1,4 @@
-import 'utils/list_utils.dart';
+import '../utils/list_utils.dart';
 
 extension BubbleSort<T> on List<T> {
   void bubbleSort(Comparator<T> compare) {
