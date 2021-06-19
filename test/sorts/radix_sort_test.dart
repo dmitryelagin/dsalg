@@ -15,8 +15,8 @@ void main() {
     test('should sort random lists', () {
       final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000));
-      final listCopy = List.of(items);
-      expect(items..radixSort(), listCopy..sort(compareNum));
+      final itemsCopy = List.of(items);
+      expect(items..radixSort(), itemsCopy..sort(compareNum));
     });
 
     group('RadixSort.execute', () {
