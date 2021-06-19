@@ -2,14 +2,15 @@ import 'dart:math';
 
 import '../utils/int_utils.dart';
 
-extension RadixSort on List<int> {
-  static List<int> execute(List<int> items) {
-    final buckets = List.generate(10, (_) => <int>[]);
+extension RadixSort<T> on List<T> {
+  static List<T> execute<T>(List<T> items, int Function(T) getKey) {
+    final buckets = List.generate(10, (_) => <T>[]);
     var pass = 0, passesAmount = 1, result = items;
     while (pass < passesAmount) {
       for (final item in result) {
-        if (pass == 0) passesAmount = max(passesAmount, item.length);
-        buckets[item.getDigit(pass)].add(item);
+        final key = getKey(item);
+        if (pass == 0) passesAmount = max(passesAmount, key.length);
+        buckets[key.getDigit(pass)].add(item);
       }
       if (result == items) result = [];
       result.clear();
@@ -22,8 +23,8 @@ extension RadixSort on List<int> {
     return result;
   }
 
-  void radixSort() {
-    final result = execute(this);
+  void radixSort(int Function(T) getKey) {
+    final result = execute(this, getKey);
     clear();
     addAll(result);
   }

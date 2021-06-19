@@ -7,23 +7,25 @@ import '../utils/compare_utils.dart';
 
 void main() {
   group('RadixSort', () {
+    int getKey(int item) => item;
+
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..radixSort(), emptyList);
+      expect(emptyList..radixSort(getKey), emptyList);
     });
 
     test('should sort random lists', () {
       final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000));
       final itemsCopy = List.of(items);
-      expect(items..radixSort(), itemsCopy..sort(compareNum));
+      expect(items..radixSort(getKey), itemsCopy..sort(compareNum));
     });
 
     group('RadixSort.execute', () {
       test('should return new list', () {
         final random = Random();
         final items = List.generate(10, (_) => random.nextInt(1000));
-        expect(RadixSort.execute(items), isNot(equals(items)));
+        expect(RadixSort.execute(items, getKey), isNot(equals(items)));
       });
     });
   });
