@@ -1,9 +1,9 @@
 extension MergeSort<T> on List<T> {
-  static List<T> execute<T>(Iterable<T> list, Comparator<T> compare) {
-    if (list.length <= 1) return list.toList();
-    final mid = list.length ~/ 2;
-    final first = execute(list.take(mid), compare);
-    final second = execute(list.skip(mid), compare);
+  static List<T> execute<T>(Iterable<T> items, Comparator<T> compare) {
+    if (items.length <= 1) return items.toList();
+    final mid = items.length ~/ 2;
+    final first = execute(items.take(mid), compare);
+    final second = execute(items.skip(mid), compare);
     final result = <T>[];
     var i = 0, j = 0;
     while (i < first.length && j < second.length) {

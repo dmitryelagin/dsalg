@@ -14,17 +14,17 @@ void main() {
 
     test('should sort random lists', () {
       final random = Random();
-      final list = List.generate(1000, (_) => random.nextInt(1000));
-      final listCopy = List.of(list);
-      expect(list..mergeSort(compareNum), listCopy..sort(compareNum));
+      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final listCopy = List.of(items);
+      expect(items..mergeSort(compareNum), listCopy..sort(compareNum));
     });
   });
 
   group('MergeSort.execute', () {
     test('should return new list', () {
       final random = Random();
-      final list = List.generate(10, (_) => random.nextInt(1000));
-      expect(MergeSort.execute(list, compareNum), isNot(equals(list)));
+      final items = List.generate(10, (_) => random.nextInt(1000));
+      expect(MergeSort.execute(items, compareNum), isNot(equals(items)));
     });
   });
 }

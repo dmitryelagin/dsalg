@@ -14,16 +14,16 @@ void main() {
 
     test('should sort random lists', () {
       final random = Random();
-      final list = List.generate(1000, (_) => random.nextInt(1000));
-      final listCopy = List.of(list);
-      expect(list..radixSort(), listCopy..sort(compareNum));
+      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final listCopy = List.of(items);
+      expect(items..radixSort(), listCopy..sort(compareNum));
     });
 
     group('RadixSort.execute', () {
       test('should return new list', () {
         final random = Random();
-        final list = List.generate(10, (_) => random.nextInt(1000));
-        expect(RadixSort.execute(list), isNot(equals(list)));
+        final items = List.generate(10, (_) => random.nextInt(1000));
+        expect(RadixSort.execute(items), isNot(equals(items)));
       });
     });
   });

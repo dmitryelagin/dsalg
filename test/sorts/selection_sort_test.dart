@@ -14,9 +14,9 @@ void main() {
 
     test('should sort random lists', () {
       final random = Random();
-      final list = List.generate(1000, (_) => random.nextInt(1000));
-      final listCopy = List.of(list);
-      expect(list..selectionSort(compareNum), listCopy..sort(compareNum));
+      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final listCopy = List.of(items);
+      expect(items..selectionSort(compareNum), listCopy..sort(compareNum));
     });
   });
 }
