@@ -1,4 +1,4 @@
-import '../heaps/binary_heap.dart';
+import '../trees/binary_heap.dart';
 import '../utils/list_utils.dart';
 
 extension HeapSort<T> on List<T> {

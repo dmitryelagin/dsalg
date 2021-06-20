@@ -49,6 +49,7 @@ class BinaryHeap<T> {
   }
 
   T extract() {
+    if (_items.isEmpty) throw StateError('Nothing to extract');
     if (_items.length == 1) return _items.removeLast();
     _items.swap(0, _items.length - 1);
     final result = _items.removeLast();
