@@ -1,29 +1,29 @@
 import 'dart:math';
 
-import 'package:dsalg/trees.dart';
+import 'package:dsalg/collections.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
 
 void main() {
-  group('BinaryHeap', () {
+  group('PriorityQueue', () {
     test('should insert and extract items in correct order', () {
       final random = Random();
       final firstItems = List.generate(500, (_) => random.nextInt(1000));
-      final heap = BinaryHeap(compareNum, firstItems);
+      final queue = PriorityQueue(compareNum, firstItems);
       final secondItems = List.generate(500, (_) => random.nextInt(1000))
-        ..forEach(heap.insert);
+        ..forEach(queue.insert);
       final items = [...firstItems, ...secondItems]..sort(compareNum);
       final extractedItems = <int>[];
-      while (heap.isNotEmpty) {
-        extractedItems.add(heap.extract());
+      while (queue.isNotEmpty) {
+        extractedItems.add(queue.extract());
       }
       expect(extractedItems, items.reversed);
     });
 
     test('should throw when nothing to extract', () {
-      final heap = BinaryHeap<int>(compareNum);
-      expect(heap.extract, throwsStateError);
+      final queue = PriorityQueue<int>(compareNum);
+      expect(queue.extract, throwsStateError);
     });
   });
 }
