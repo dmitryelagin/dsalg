@@ -1,4 +1,4 @@
-import 'linked_list_entry.dart';
+import '../commons/linked_list_entry.dart';
 
 class Stack<T> {
   Stack([Iterable<T> items = const []]) {

@@ -1,4 +1,4 @@
-import 'linked_list_entry.dart';
+import '../commons/linked_list_entry.dart';
 
 class Queue<T> {
   Queue([Iterable<T> items = const []]) {
