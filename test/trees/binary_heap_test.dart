@@ -7,17 +7,25 @@ import '../utils/compare_utils.dart';
 
 void main() {
   group('BinaryHeap', () {
-    test('should insert and extract items in correct order', () {
-      final random = Random();
+    final random = Random();
+
+    var items = <int>[];
+    var heap = BinaryHeap<int>(compareNum);
+
+    setUp(() {
       final firstItems = List.generate(500, (_) => random.nextInt(1000));
-      final heap = BinaryHeap(compareNum, firstItems);
+      heap = BinaryHeap(compareNum, firstItems);
       final secondItems = List.generate(500, (_) => random.nextInt(1000))
         ..forEach(heap.insert);
-      final items = [...firstItems, ...secondItems]..sort(compareNum);
+      items = [...firstItems, ...secondItems];
+    });
+
+    test('should insert and extract items in correct order', () {
       final extractedItems = <int>[];
       while (heap.isNotEmpty) {
         extractedItems.add(heap.extract());
       }
+      items.sort(compareNum);
       expect(extractedItems, items.reversed);
     });
 

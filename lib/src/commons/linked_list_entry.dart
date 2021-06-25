@@ -4,8 +4,4 @@ class LinkedListEntry<T> {
   final T value;
 
   LinkedListEntry<T>? next;
-
-  void unlinkNext() {
-    next = null;
-  }
 }
