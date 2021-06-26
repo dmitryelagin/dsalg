@@ -8,15 +8,17 @@ import '../utils/compare_utils.dart';
 
 void main() {
   group('BaseBinaryTree', () {
+    const absentItem = 1000;
     final random = Random();
-
     var items = <int>[];
     var worstItems = <int>[];
     late BaseBinaryTree<int> tree;
     late BaseBinaryTree<int> worstTree;
 
     setUp(() {
-      items = List.generate(1000, (_) => random.nextInt(1000)).toSet().toList();
+      items = List.generate(1000, (_) => random.nextInt(absentItem))
+          .toSet()
+          .toList();
       tree = BinarySearchTree(compareNum, items);
       worstItems = List.of(items)..sort(compareNum);
       worstTree = BinarySearchTree(compareNum, worstItems);

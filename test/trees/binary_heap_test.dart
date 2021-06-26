@@ -7,15 +7,15 @@ import '../utils/compare_utils.dart';
 
 void main() {
   group('BinaryHeap', () {
+    const absentItem = 1000;
     final random = Random();
-
     var items = <int>[];
     var heap = BinaryHeap<int>(compareNum);
 
     setUp(() {
-      final firstItems = List.generate(500, (_) => random.nextInt(1000));
+      final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
       heap = BinaryHeap(compareNum, firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(1000))
+      final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
         ..forEach(heap.insert);
       items = [...firstItems, ...secondItems];
     });

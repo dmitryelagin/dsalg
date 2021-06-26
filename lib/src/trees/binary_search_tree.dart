@@ -9,16 +9,24 @@ class BinarySearchTree<T> extends BaseBinaryTree<T> {
   final Comparator<T> _compare;
 
   T get min {
-    if (isEmpty) throw StateError('Nothing to find');
-    return root!.leftmost.value;
+    if (isNotEmpty) return root!.leftmost.value;
+    throw StateError('Nothing to return');
   }
 
   T get max {
-    if (isEmpty) throw StateError('Nothing to find');
-    return root!.rightmost.value;
+    if (isNotEmpty) return root!.rightmost.value;
+    throw StateError('Nothing to return');
   }
 
-  bool contains(T item) => _findNode(item, root) != null;
+  bool contains(T item) =>
+      isNotEmpty && _areEqual(item, _getItemCloseTo(item, root!));
+
+  T get(T item) {
+    if (isEmpty) throw StateError('Nothing to return');
+    final value = _getItemCloseTo(item, root!);
+    if (_areEqual(item, value)) return value;
+    throw StateError('Item is not found');
+  }
 
   void insert(T item) {
     final node = BinaryNode(item);
@@ -44,11 +52,9 @@ class BinarySearchTree<T> extends BaseBinaryTree<T> {
     }
   }
 
-  BinaryNode<T>? _findNode(T item, BinaryNode<T>? parent) {
-    if (parent == null) return null;
-    final ratio = _compare(item, parent.value);
-    if (ratio == 0) return parent;
-    return _findNode(item, parent.getChildByRatio(ratio));
+  T _getItemCloseTo(T item, BinaryNode<T> parent) {
+    final child = parent.getChildByRatio(_compare(item, parent.value));
+    return child == null ? parent.value : _getItemCloseTo(item, child);
   }
 
   void _insertChild(BinaryNode<T> node, BinaryNode<T> parent) {
@@ -78,6 +84,7 @@ class BinarySearchTree<T> extends BaseBinaryTree<T> {
     }
   }
 
+  bool _areEqual(T a, T b) => _compare(a, b) == 0;
   bool _areNotEqual(T a, T b) => _compare(a, b) != 0;
 }
 

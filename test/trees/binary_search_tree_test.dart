@@ -7,20 +7,21 @@ import '../utils/compare_utils.dart';
 
 void main() {
   group('BinarySearchTree', () {
+    const absentItem = 1000;
     final random = Random();
     final emptyTree = BinarySearchTree<int>(compareNum);
-
     var items = <int>[];
     var otherItems = <int>[];
     var tree = BinarySearchTree<int>(compareNum);
 
     setUp(() {
-      final firstItems = List.generate(500, (_) => random.nextInt(1000));
+      final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
       tree = BinarySearchTree(compareNum, firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(1000))
+      final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
         ..forEach(tree.insert);
       items = {...firstItems, ...secondItems}.toList();
-      otherItems = List.generate(100, (_) => random.nextInt(1000))..add(1000);
+      otherItems = List.generate(100, (_) => random.nextInt(absentItem))
+        ..add(absentItem);
     });
 
     test('should find min value', () {
@@ -43,6 +44,16 @@ void main() {
       for (final item in otherItems) {
         expect(tree.contains(item), items.contains(item));
       }
+    });
+
+    test('should find an item', () {
+      for (final item in otherItems.where(items.contains)) {
+        expect(items.contains(tree.get(item)), isTrue);
+      }
+    });
+
+    test('should throw when item is not found', () {
+      expect(() => tree.get(absentItem), throwsStateError);
     });
 
     test('should remove nodes preserving search structure', () {
