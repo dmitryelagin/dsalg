@@ -1,89 +1,45 @@
-import '../collections/queue.dart';
 import '../commons/binary_node.dart';
+import 'base_binary_tree.dart';
 
-class BinarySearchTree<T> {
+class BinarySearchTree<T> extends BaseBinaryTree<T> {
   BinarySearchTree(this._compare, [Iterable<T> items = const []]) {
     items.forEach(insert);
   }
 
   final Comparator<T> _compare;
 
-  BinaryNode<T>? _root;
-
-  bool get isEmpty => _root == null;
-  bool get isNotEmpty => _root != null;
-
   T get min {
     if (isEmpty) throw StateError('Nothing to find');
-    return _root!.leftmost.value;
+    return root!.leftmost.value;
   }
 
   T get max {
     if (isEmpty) throw StateError('Nothing to find');
-    return _root!.rightmost.value;
+    return root!.rightmost.value;
   }
 
-  Iterable<T> get breadthFirstTraversal =>
-      _breadthFirstTraversal(_root).map((node) => node.value);
-
-  Iterable<T> get depthFirstPreOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.preOrder, _root)
-          .map((node) => node.value);
-
-  Iterable<T> get depthFirstInOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.inOrder, _root)
-          .map((node) => node.value);
-
-  Iterable<T> get depthFirstPostOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.postOrder, _root)
-          .map((node) => node.value);
-
-  static Iterable<BinaryNode<T>> _breadthFirstTraversal<T>(
-    BinaryNode<T>? parent,
-  ) sync* {
-    final nodes = Queue([if (parent != null) parent]);
-    while (nodes.isNotEmpty) {
-      final node = nodes.extract();
-      yield node;
-      if (node.left != null) nodes.insert(node.left!);
-      if (node.right != null) nodes.insert(node.right!);
-    }
-  }
-
-  static Iterable<BinaryNode<T>> _depthFirstTraversal<T>(
-    _DepthFirstTraversalType type,
-    BinaryNode<T>? parent,
-  ) sync* {
-    if (parent == null) return;
-    if (type == _DepthFirstTraversalType.preOrder) yield parent;
-    yield* _depthFirstTraversal(type, parent.left);
-    if (type == _DepthFirstTraversalType.inOrder) yield parent;
-    yield* _depthFirstTraversal(type, parent.right);
-    if (type == _DepthFirstTraversalType.postOrder) yield parent;
-  }
-
-  bool contains(T item) => _findNode(item, _root) != null;
+  bool contains(T item) => _findNode(item, root) != null;
 
   void insert(T item) {
     final node = BinaryNode(item);
-    if (isNotEmpty && _areNotEqual(item, _root!.value)) {
-      _insertChild(node, _root!);
+    if (isNotEmpty && _areNotEqual(item, root!.value)) {
+      _insertChild(node, root!);
     } else {
-      _root = node..setChildrenFrom(_root);
+      root = node..setChildrenFrom(root);
     }
   }
 
   void remove(T item) {
     if (isEmpty) return;
-    if (_areNotEqual(item, _root!.value)) {
-      _removeChild(item, _root!);
+    if (_areNotEqual(item, root!.value)) {
+      _removeChild(item, root!);
     } else {
-      if (_root!.hasNoChildren) _root = null;
-      if (_root!.hasSingleChild) _root = _root!.child;
-      if (_root!.hasBothChildren) {
-        final value = _root!.right!.leftmost.value;
-        _removeChild(value, _root!);
-        _root = BinaryNode.from(value, _root);
+      if (root!.hasNoChildren) root = null;
+      if (root!.hasSingleChild) root = root!.child;
+      if (root!.hasBothChildren) {
+        final value = root!.right!.leftmost.value;
+        _removeChild(value, root!);
+        root = BinaryNode.from(value, root);
       }
     }
   }
@@ -125,7 +81,7 @@ class BinarySearchTree<T> {
   bool _areNotEqual(T a, T b) => _compare(a, b) != 0;
 }
 
-extension _BinarySearchTreeNode<T> on BinaryNode<T> {
+extension _BinarySearchNode<T> on BinaryNode<T> {
   BinaryNode<T>? getChildByRatio(int ratio) {
     if (ratio == 0) return null;
     return ratio < 0 ? left : right;
@@ -143,10 +99,4 @@ extension _BinarySearchTreeNode<T> on BinaryNode<T> {
   void removeChildByRatio(int ratio) {
     setChildByRatio(ratio, null);
   }
-}
-
-enum _DepthFirstTraversalType {
-  preOrder,
-  inOrder,
-  postOrder,
 }
