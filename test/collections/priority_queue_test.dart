@@ -10,10 +10,10 @@ void main() {
     test('should insert and extract items in correct order', () {
       final random = Random();
       final firstItems = List.generate(500, (_) => random.nextInt(1000));
-      final queue = PriorityQueue(compareNum, firstItems);
+      final queue = PriorityQueue(compareInt, firstItems);
       final secondItems = List.generate(500, (_) => random.nextInt(1000))
         ..forEach(queue.insert);
-      final items = [...firstItems, ...secondItems]..sort(compareNum);
+      final items = [...firstItems, ...secondItems]..sort(compareInt);
       final extractedItems = <int>[];
       while (queue.isNotEmpty) {
         extractedItems.add(queue.extract());
@@ -22,7 +22,7 @@ void main() {
     });
 
     test('should throw when nothing to extract', () {
-      final queue = PriorityQueue<int>(compareNum);
+      final queue = PriorityQueue<int>(compareInt);
       expect(queue.extract, throwsStateError);
     });
   });

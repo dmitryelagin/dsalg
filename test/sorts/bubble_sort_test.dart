@@ -9,14 +9,14 @@ void main() {
   group('BubbleSort', () {
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..bubbleSort(compareNum), emptyList);
+      expect(emptyList..bubbleSort(compareInt), emptyList);
     });
 
     test('should sort random lists', () {
       final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000));
       final itemsCopy = List.of(items);
-      expect(items..bubbleSort(compareNum), itemsCopy..sort(compareNum));
+      expect(items..bubbleSort(compareInt), itemsCopy..sort(compareInt));
     });
   });
 }

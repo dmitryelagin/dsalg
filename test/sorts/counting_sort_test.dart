@@ -18,7 +18,7 @@ void main() {
       final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000));
       final itemsCopy = List.of(items);
-      expect(items..countingSort(getKey), itemsCopy..sort(compareNum));
+      expect(items..countingSort(getKey), itemsCopy..sort(compareInt));
     });
 
     group('CountingSort.execute', () {

@@ -19,13 +19,25 @@ class BinarySearchTree<T> extends BaseBinaryTree<T> {
   }
 
   bool contains(T item) =>
-      isNotEmpty && _areEqual(item, _getItemCloseTo(item, root!));
+      isNotEmpty && _areEqual(item, _getSearchPath(item).last);
 
   T get(T item) {
     if (isEmpty) throw StateError('Nothing to return');
-    final value = _getItemCloseTo(item, root!);
+    final value = _getSearchPath(item).last;
     if (_areEqual(item, value)) return value;
     throw StateError('Item is not found');
+  }
+
+  T getClosestTo(T item) {
+    if (isEmpty) throw StateError('Nothing to return');
+    final path = _getSearchPath(item);
+    var target = path.first;
+    for (final other in path.skip(1)) {
+      if (_compare(item, other).abs() <= _compare(item, target).abs()) {
+        target = other;
+      }
+    }
+    return target;
   }
 
   void insert(T item) {
@@ -52,9 +64,12 @@ class BinarySearchTree<T> extends BaseBinaryTree<T> {
     }
   }
 
-  T _getItemCloseTo(T item, BinaryNode<T> parent) {
-    final child = parent.getChildByRatio(_compare(item, parent.value));
-    return child == null ? parent.value : _getItemCloseTo(item, child);
+  Iterable<T> _getSearchPath(T item) sync* {
+    var node = root;
+    while (node != null) {
+      yield node.value;
+      node = node.getChildByRatio(_compare(item, node.value));
+    }
   }
 
   void _insertChild(BinaryNode<T> node, BinaryNode<T> parent) {

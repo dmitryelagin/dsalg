@@ -10,7 +10,7 @@ void main() {
     test('should find index in random list', () {
       final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000))
-        ..sort(compareNum);
+        ..sort(compareInt);
       final target = items[random.nextInt(1000)];
       expect(items[items.binarySearch(target.compareTo)], target);
     });

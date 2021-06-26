@@ -1,1 +1,1 @@
-int compareNum<T extends num>(T a, T b) => a.compareTo(b);
+int compareInt(int a, int b) => a - b;

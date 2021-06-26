@@ -9,14 +9,14 @@ void main() {
   group('BinarySearchTree', () {
     const absentItem = 1000;
     final random = Random();
-    final emptyTree = BinarySearchTree<int>(compareNum);
+    final emptyTree = BinarySearchTree<int>(compareInt);
     var items = <int>[];
     var otherItems = <int>[];
-    var tree = BinarySearchTree<int>(compareNum);
+    var tree = BinarySearchTree<int>(compareInt);
 
     setUp(() {
       final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
-      tree = BinarySearchTree(compareNum, firstItems);
+      tree = BinarySearchTree(compareInt, firstItems);
       final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
         ..forEach(tree.insert);
       items = {...firstItems, ...secondItems}.toList();
@@ -56,12 +56,25 @@ void main() {
       expect(() => tree.get(absentItem), throwsStateError);
     });
 
+    test('should find an item closest to argument', () {
+      int getBig() => 2000;
+      otherItems.forEach(tree.remove);
+      final items = tree.depthFirstInOrderTraversal.toList();
+      for (final other in otherItems) {
+        final small = items.lastWhere((item) => item < other, orElse: getBig);
+        final large = items.firstWhere((item) => item > other, orElse: getBig);
+        final diff = min((other - small).abs(), (other - large).abs());
+        final target = tree.getClosestTo(other);
+        expect((other - target).abs(), diff);
+      }
+    });
+
     test('should remove nodes preserving search structure', () {
       otherItems.forEach(tree.remove);
       expect(
         tree.depthFirstInOrderTraversal,
         items
-          ..sort(compareNum)
+          ..sort(compareInt)
           ..removeWhere(otherItems.contains),
       );
     });
