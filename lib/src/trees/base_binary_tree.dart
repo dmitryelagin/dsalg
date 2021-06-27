@@ -1,30 +1,28 @@
 import '../collections/queue.dart';
 import '../commons/binary_node.dart';
 
-abstract class BaseBinaryTree<T> {
-  BinaryNode<T>? _root;
+abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
+  N? _root;
 
   bool get isEmpty => _root == null;
   bool get isNotEmpty => _root != null;
 
   Iterable<T> get breadthFirstTraversal =>
-      _breadthFirstTraversal(root).map((node) => node.value);
+      _breadthFirstSearch(root).map((node) => node.value);
 
   Iterable<T> get depthFirstPreOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.preOrder, root)
+      _depthFirstSearch(_DepthFirstSearchType.preOrder, root)
           .map((node) => node.value);
 
   Iterable<T> get depthFirstInOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.inOrder, root)
+      _depthFirstSearch(_DepthFirstSearchType.inOrder, root)
           .map((node) => node.value);
 
   Iterable<T> get depthFirstPostOrderTraversal =>
-      _depthFirstTraversal(_DepthFirstTraversalType.postOrder, root)
+      _depthFirstSearch(_DepthFirstSearchType.postOrder, root)
           .map((node) => node.value);
 
-  static Iterable<BinaryNode<T>> _breadthFirstTraversal<T>(
-    BinaryNode<T>? parent,
-  ) sync* {
+  Iterable<N> _breadthFirstSearch(N? parent) sync* {
     final nodes = Queue([if (parent != null) parent]);
     while (nodes.isNotEmpty) {
       final node = nodes.extract();
@@ -34,28 +32,26 @@ abstract class BaseBinaryTree<T> {
     }
   }
 
-  static Iterable<BinaryNode<T>> _depthFirstTraversal<T>(
-    _DepthFirstTraversalType type,
-    BinaryNode<T>? parent,
-  ) sync* {
+  Iterable<N> _depthFirstSearch(_DepthFirstSearchType type, N? parent) sync* {
     if (parent == null) return;
-    if (type == _DepthFirstTraversalType.preOrder) yield parent;
-    yield* _depthFirstTraversal(type, parent.left);
-    if (type == _DepthFirstTraversalType.inOrder) yield parent;
-    yield* _depthFirstTraversal(type, parent.right);
-    if (type == _DepthFirstTraversalType.postOrder) yield parent;
+    if (type == _DepthFirstSearchType.preOrder) yield parent;
+    yield* _depthFirstSearch(type, parent.left);
+    if (type == _DepthFirstSearchType.inOrder) yield parent;
+    yield* _depthFirstSearch(type, parent.right);
+    if (type == _DepthFirstSearchType.postOrder) yield parent;
   }
 }
 
-extension ProtectedBaseBinaryTree<T> on BaseBinaryTree<T> {
-  BinaryNode<T>? get root => _root;
+extension ProtectedBaseBinaryTree<T, N extends BinaryNode<T, N>>
+    on BaseBinaryTree<T, N> {
+  N? get root => _root;
 
-  set root(BinaryNode<T>? value) {
+  set root(N? value) {
     _root = value;
   }
 }
 
-enum _DepthFirstTraversalType {
+enum _DepthFirstSearchType {
   preOrder,
   inOrder,
   postOrder,

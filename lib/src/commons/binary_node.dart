@@ -1,25 +1,21 @@
-class BinaryNode<T> {
+class BinaryNode<T, N extends BinaryNode<T, N>> {
   BinaryNode(this.value, [this.left, this.right]);
-
-  BinaryNode.from(this.value, BinaryNode<T>? other)
-      : left = other?.left,
-        right = other?.right;
 
   final T value;
 
-  BinaryNode<T>? left;
-  BinaryNode<T>? right;
+  N? left;
+  N? right;
 
-  BinaryNode<T> get leftmost => left?.leftmost ?? this;
-  BinaryNode<T> get rightmost => right?.rightmost ?? this;
+  N get leftmost => left?.leftmost ?? (this as N);
+  N get rightmost => right?.rightmost ?? (this as N);
 
-  BinaryNode<T>? get child => left ?? right;
+  N? get child => left ?? right;
 
   bool get hasNoChildren => left == null && right == null;
   bool get hasSingleChild => !hasNoChildren && !hasBothChildren;
   bool get hasBothChildren => left != null && right != null;
 
-  void setChildrenFrom(BinaryNode<T>? other) {
+  void setChildrenFrom(N? other) {
     if (other == null) return;
     left = other.left;
     right = other.right;
