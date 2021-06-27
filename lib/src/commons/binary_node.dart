@@ -10,21 +10,8 @@ class BinaryNode<T> {
   BinaryNode<T>? left;
   BinaryNode<T>? right;
 
-  BinaryNode<T> get leftmost {
-    var node = this;
-    while (node.left != null) {
-      node = node.left!;
-    }
-    return node;
-  }
-
-  BinaryNode<T> get rightmost {
-    var node = this;
-    while (node.right != null) {
-      node = node.right!;
-    }
-    return node;
-  }
+  BinaryNode<T> get leftmost => left?.leftmost ?? this;
+  BinaryNode<T> get rightmost => right?.rightmost ?? this;
 
   BinaryNode<T>? get child => left ?? right;
 
