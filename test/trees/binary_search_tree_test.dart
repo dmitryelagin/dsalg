@@ -11,17 +11,54 @@ void main() {
     final random = Random();
     final emptyTree = BinarySearchTree(compareInt);
     var items = <int>[];
+    var worstItems = <int>[];
     var otherItems = <int>[];
     var tree = BinarySearchTree(compareInt);
+    var worstTree = BinarySearchTree(compareInt);
 
     setUp(() {
       final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
       tree = BinarySearchTree(compareInt, firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
-        ..forEach(tree.insert);
+      final secondItems = List.generate(500, (_) => random.nextInt(absentItem));
+      tree.insertAll(secondItems);
       items = {...firstItems, ...secondItems}.toList();
+      worstItems = List.of(items)..sort(compareInt);
+      worstTree = BinarySearchTree(compareInt, worstItems);
       otherItems = List.generate(200, (_) => random.nextInt(absentItem))
         ..add(absentItem);
+    });
+
+    test('should be able to traverse breadth first', () {
+      items = [10, 6, 15, 3, 8, 20, 9, 17];
+      tree
+        ..clear()
+        ..insertAll(items);
+      expect(tree.breadthFirstTraversal, items);
+      expect(worstTree.breadthFirstTraversal, worstItems);
+    });
+
+    test('should be able to traverse depth first pre order', () {
+      const result = [10, 6, 3, 8, 9, 15, 20, 17];
+      items = [10, 6, 15, 3, 8, 20, 9, 17];
+      tree
+        ..clear()
+        ..insertAll(items);
+      expect(tree.depthFirstPreOrderTraversal, result);
+      expect(worstTree.depthFirstPreOrderTraversal, worstItems);
+    });
+
+    test('should be able to traverse depth first in order', () {
+      expect(tree.depthFirstInOrderTraversal, items..sort(compareInt));
+    });
+
+    test('should be able to traverse depth first post order', () {
+      const result = [3, 9, 8, 6, 17, 20, 15, 10];
+      items = [10, 6, 15, 3, 8, 20, 9, 17];
+      tree
+        ..clear()
+        ..insertAll(items);
+      expect(tree.depthFirstPostOrderTraversal, result);
+      expect(worstTree.depthFirstPostOrderTraversal, worstItems.reversed);
     });
 
     test('should find min value', () {
@@ -58,7 +95,7 @@ void main() {
 
     test('should find an item closest to argument', () {
       int getBig() => 2000;
-      otherItems.forEach(tree.remove);
+      tree.removeAll(otherItems);
       final items = tree.depthFirstInOrderTraversal.toList();
       for (final other in otherItems) {
         final small = items.lastWhere((item) => item < other, orElse: getBig);
@@ -70,7 +107,7 @@ void main() {
     });
 
     test('should remove nodes and preserve search structure', () {
-      otherItems.forEach(tree.remove);
+      tree.removeAll(otherItems);
       expect(
         tree.depthFirstInOrderTraversal,
         items

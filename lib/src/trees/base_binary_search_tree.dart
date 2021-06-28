@@ -45,8 +45,16 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
     insertItem(item);
   }
 
+  void insertAll(Iterable<T> items) {
+    items.forEach(insertItem);
+  }
+
   void remove(T item) {
     removeItem(item);
+  }
+
+  void removeAll(Iterable<T> items) {
+    items.forEach(removeItem);
   }
 }
 

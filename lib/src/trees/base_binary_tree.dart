@@ -21,6 +21,10 @@ abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   Iterable<T> get depthFirstPostOrderTraversal =>
       _depthFirstSearch(_DepthFirstSearchType.postOrder, root)
           .map((node) => node.value);
+
+  void clear() {
+    root = null;
+  }
 }
 
 extension BaseBinaryTreeUtils<T, N extends BinaryNode<T, N>>
