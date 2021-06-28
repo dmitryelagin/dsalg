@@ -15,16 +15,13 @@ void main() {
     setUp(() {
       final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
       heap = BinaryHeap(compareInt, firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
-        ..forEach(heap.insert);
+      final secondItems = List.generate(500, (_) => random.nextInt(absentItem));
+      heap.insertAll(secondItems);
       items = [...firstItems, ...secondItems];
     });
 
     test('should insert and extract items in correct order', () {
-      final extractedItems = <int>[];
-      while (heap.isNotEmpty) {
-        extractedItems.add(heap.extract());
-      }
+      final extractedItems = heap.extractAll();
       items.sort(compareInt);
       expect(extractedItems, items.reversed);
     });

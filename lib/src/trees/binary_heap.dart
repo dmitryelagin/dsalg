@@ -2,7 +2,7 @@ import '../utils/list_utils.dart';
 
 class BinaryHeap<T> {
   BinaryHeap(this._compare, [Iterable<T> items = const []]) {
-    items.forEach(insert);
+    insertAll(items);
   }
 
   final Comparator<T> _compare;
@@ -48,6 +48,10 @@ class BinaryHeap<T> {
     bubble(_items, _compare);
   }
 
+  void insertAll(Iterable<T> items) {
+    items.forEach(insert);
+  }
+
   T extract() {
     if (_items.isEmpty) throw StateError('Nothing to extract');
     if (_items.length == 1) return _items.removeLast();
@@ -55,5 +59,15 @@ class BinaryHeap<T> {
     final result = _items.removeLast();
     sink(_items, _compare, 0, _items.length);
     return result;
+  }
+
+  Iterable<T> extractAll() sync* {
+    while (isNotEmpty) {
+      yield extract();
+    }
+  }
+
+  void clear() {
+    _items.clear();
   }
 }

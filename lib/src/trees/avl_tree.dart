@@ -6,7 +6,7 @@ import 'base_binary_tree.dart';
 class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   AVLTree(this._compare, [Iterable<T> items = const []])
       : super(_getNode, _compare) {
-    items.forEach(insert);
+    insertAll(items);
   }
 
   final Comparator<T> _compare;
