@@ -9,10 +9,10 @@ void main() {
   group('BinarySearchTree', () {
     const absentItem = 1000;
     final random = Random();
-    final emptyTree = BinarySearchTree<int>(compareInt);
+    final emptyTree = BinarySearchTree(compareInt);
     var items = <int>[];
     var otherItems = <int>[];
-    var tree = BinarySearchTree<int>(compareInt);
+    var tree = BinarySearchTree(compareInt);
 
     setUp(() {
       final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
@@ -20,7 +20,7 @@ void main() {
       final secondItems = List.generate(500, (_) => random.nextInt(absentItem))
         ..forEach(tree.insert);
       items = {...firstItems, ...secondItems}.toList();
-      otherItems = List.generate(100, (_) => random.nextInt(absentItem))
+      otherItems = List.generate(200, (_) => random.nextInt(absentItem))
         ..add(absentItem);
     });
 
@@ -69,7 +69,7 @@ void main() {
       }
     });
 
-    test('should remove nodes preserving search structure', () {
+    test('should remove nodes and preserve search structure', () {
       otherItems.forEach(tree.remove);
       expect(
         tree.depthFirstInOrderTraversal,

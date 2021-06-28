@@ -4,8 +4,8 @@ import '../commons/binary_node.dart';
 abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   N? _root;
 
-  bool get isEmpty => _root == null;
-  bool get isNotEmpty => _root != null;
+  bool get isEmpty => root == null;
+  bool get isNotEmpty => root != null;
 
   Iterable<T> get breadthFirstTraversal =>
       _breadthFirstSearch(root).map((node) => node.value);
@@ -21,6 +21,15 @@ abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   Iterable<T> get depthFirstPostOrderTraversal =>
       _depthFirstSearch(_DepthFirstSearchType.postOrder, root)
           .map((node) => node.value);
+}
+
+extension BaseBinaryTreeUtils<T, N extends BinaryNode<T, N>>
+    on BaseBinaryTree<T, N> {
+  N? get root => _root;
+
+  set root(N? value) {
+    _root = value;
+  }
 
   Iterable<N> _breadthFirstSearch(N? parent) sync* {
     final nodes = Queue([if (parent != null) parent]);
@@ -39,15 +48,6 @@ abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
     if (type == _DepthFirstSearchType.inOrder) yield parent;
     yield* _depthFirstSearch(type, parent.right);
     if (type == _DepthFirstSearchType.postOrder) yield parent;
-  }
-}
-
-extension ProtectedBaseBinaryTree<T, N extends BinaryNode<T, N>>
-    on BaseBinaryTree<T, N> {
-  N? get root => _root;
-
-  set root(N? value) {
-    _root = value;
   }
 }
 

@@ -1,4 +1,5 @@
 import '../commons/binary_node.dart';
+import '../commons/binary_search_node.dart';
 import 'base_binary_tree.dart';
 
 abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
@@ -19,12 +20,12 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
   }
 
   bool contains(T item) =>
-      isNotEmpty && _areEqual(item, _getSearchPath(item).last);
+      isNotEmpty && areEqual(item, _getSearchPath(item).last);
 
   T get(T item) {
     if (isEmpty) throw StateError('Nothing to return');
     final value = _getSearchPath(item).last;
-    if (_areEqual(item, value)) return value;
+    if (areEqual(item, value)) return value;
     throw StateError('Item is not found');
   }
 
@@ -32,35 +33,79 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
     if (isEmpty) throw StateError('Nothing to return');
     final path = _getSearchPath(item);
     var target = path.first;
-    for (final other in path.skip(1)) {
-      if (_compare(item, other).abs() <= _compare(item, target).abs()) {
-        target = other;
+    for (final value in path.skip(1)) {
+      if (_compare(item, value).abs() <= _compare(item, target).abs()) {
+        target = value;
       }
     }
     return target;
   }
 
   void insert(T item) {
-    final node = _getNode(item);
-    if (isNotEmpty && _areNotEqual(item, root!.value)) {
-      _insertChild(node, root!);
-    } else {
-      root = node..setChildrenFrom(root);
-    }
+    insertItem(item);
   }
 
   void remove(T item) {
-    if (isEmpty) return;
-    if (_areNotEqual(item, root!.value)) {
-      _removeChild(item, root!);
+    removeItem(item);
+  }
+}
+
+extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
+    on BaseBinarySearchTree<T, N> {
+  bool areEqual(T a, T b) => _compare(a, b) == 0;
+  bool areNotEqual(T a, T b) => _compare(a, b) != 0;
+
+  N insertItem(T item) {
+    final node = _getNode(item);
+    if (isNotEmpty && areNotEqual(item, root!.value)) {
+      return _insertNode(node, root!);
+    } else {
+      return root = node..setChildrenFrom(root);
+    }
+  }
+
+  N? removeItem(T item) {
+    if (isEmpty) return null;
+    if (areNotEqual(item, root!.value)) {
+      return _removeNode(item, root!);
     } else {
       if (root!.hasNoChildren) root = null;
       if (root!.hasSingleChild) root = root!.child;
       if (root!.hasBothChildren) {
         final value = root!.right!.leftmost.value;
-        _removeChild(value, root!);
+        _removeNode(value, root!);
         root = _getNode(value)..setChildrenFrom(root);
       }
+      return root;
+    }
+  }
+
+  N _insertNode(N node, N parent) {
+    final ratio = _compare(node.value, parent.value);
+    final child = parent.getChildByRatio(ratio);
+    if (child != null && areNotEqual(node.value, child.value)) {
+      return _insertNode(node, child);
+    } else {
+      parent.setChildByRatio(ratio, node..setChildrenFrom(child));
+      return node;
+    }
+  }
+
+  N? _removeNode(T item, N parent) {
+    final ratio = _compare(item, parent.value);
+    final child = parent.getChildByRatio(ratio);
+    if (child == null) return null;
+    if (areNotEqual(item, child.value)) {
+      return _removeNode(item, child);
+    } else {
+      if (child.hasNoChildren) parent.removeChildByRatio(ratio);
+      if (child.hasSingleChild) parent.setChildByRatio(ratio, child.child);
+      if (child.hasBothChildren) {
+        final value = child.right!.leftmost.value;
+        _removeNode(value, child);
+        parent.setChildByRatio(ratio, _getNode(value)..setChildrenFrom(child));
+      }
+      return parent.getChildByRatio(ratio) ?? parent;
     }
   }
 
@@ -70,55 +115,5 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
       yield node.value;
       node = node.getChildByRatio(_compare(item, node.value));
     }
-  }
-
-  void _insertChild(N node, N parent) {
-    final ratio = _compare(node.value, parent.value);
-    final child = parent.getChildByRatio(ratio);
-    if (child != null && _areNotEqual(node.value, child.value)) {
-      _insertChild(node, child);
-    } else {
-      parent.setChildByRatio(ratio, node..setChildrenFrom(child));
-    }
-  }
-
-  void _removeChild(T item, N parent) {
-    final ratio = _compare(item, parent.value);
-    final child = parent.getChildByRatio(ratio);
-    if (child == null) return;
-    if (_areNotEqual(item, child.value)) {
-      _removeChild(item, child);
-    } else {
-      if (child.hasNoChildren) parent.removeChildByRatio(ratio);
-      if (child.hasSingleChild) parent.setChildByRatio(ratio, child.child);
-      if (child.hasBothChildren) {
-        final value = child.right!.leftmost.value;
-        _removeChild(value, child);
-        parent.setChildByRatio(ratio, _getNode(value)..setChildrenFrom(child));
-      }
-    }
-  }
-
-  bool _areEqual(T a, T b) => _compare(a, b) == 0;
-  bool _areNotEqual(T a, T b) => _compare(a, b) != 0;
-}
-
-extension _BinarySearchNode<T, N extends BinaryNode<T, N>> on N {
-  N? getChildByRatio(int ratio) {
-    if (ratio == 0) return null;
-    return ratio < 0 ? left : right;
-  }
-
-  void setChildByRatio(int ratio, N? node) {
-    if (ratio == 0) return;
-    if (ratio < 0) {
-      left = node;
-    } else {
-      right = node;
-    }
-  }
-
-  void removeChildByRatio(int ratio) {
-    setChildByRatio(ratio, null);
   }
 }
