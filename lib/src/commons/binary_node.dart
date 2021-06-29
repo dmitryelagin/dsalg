@@ -15,6 +15,9 @@ class BinaryNode<T, N extends BinaryNode<T, N>> {
   bool get hasSingleChild => !hasNoChildren && !hasBothChildren;
   bool get hasBothChildren => left != null && right != null;
 
+  bool isLeftOf(N? node) => this == node?.left;
+  bool isRightOf(N? node) => this == node?.right;
+
   void setChildrenFrom(N? other) {
     if (other == null) return;
     left = other.left;

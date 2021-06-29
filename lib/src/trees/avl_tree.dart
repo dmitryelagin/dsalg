@@ -1,15 +1,12 @@
 import '../commons/balance_binary_node.dart';
-import '../commons/binary_search_node.dart';
 import 'base_binary_search_tree.dart';
-import 'base_binary_tree.dart';
+import 'base_linked_binary_search_tree.dart';
 
 class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
-  AVLTree(this._compare, [Iterable<T> items = const []])
-      : super(_getNode, _compare) {
+  AVLTree(Comparator<T> compare, [Iterable<T> items = const []])
+      : super(_getNode, compare) {
     insertAll(items);
   }
-
-  final Comparator<T> _compare;
 
   static _BinaryNode<T> _getNode<T>(T value) => _BinaryNode(value);
 
@@ -34,52 +31,22 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
 
   void _rebalance(_BinaryNode<T>? z) {
     if (z == null || z.isBalanced) return;
-    final y = z.tallestChild!, x = y.tallestChild!, p = z.parent;
-    final isLeftChildXY = _isLeftChild(x, y);
-    final isLeftChildYZ = _isLeftChild(y, z);
-    final isRightChildXY = _isRightChild(x, y);
-    final isRightChildYZ = _isRightChild(y, z);
-    if (isLeftChildYZ && isLeftChildXY) {
-      _rotateRight(y, z, p);
+    final y = z.tallestChild!, x = y.tallestChild!;
+    if (y.isLeftOf(z) && x.isLeftOf(y)) {
+      rotateRight(y);
     }
-    if (isLeftChildYZ && isRightChildXY) {
-      _rotateLeft(x, y, z);
-      _rotateRight(x, z, p);
+    if (y.isLeftOf(z) && x.isRightOf(y)) {
+      rotateLeft(x);
+      rotateRight(x);
     }
-    if (isRightChildYZ && isRightChildXY) {
-      _rotateLeft(y, z, p);
+    if (y.isRightOf(z) && x.isRightOf(y)) {
+      rotateLeft(y);
     }
-    if (isRightChildYZ && isLeftChildXY) {
-      _rotateRight(x, y, z);
-      _rotateLeft(x, z, p);
+    if (y.isRightOf(z) && x.isLeftOf(y)) {
+      rotateRight(x);
+      rotateLeft(x);
     }
   }
-
-  void _rotateLeft(_BinaryNode<T> x, _BinaryNode<T> y, _BinaryNode<T>? p) {
-    y.right = x.left;
-    x.left = y;
-    _changeChild(x, p);
-  }
-
-  void _rotateRight(_BinaryNode<T> x, _BinaryNode<T> y, _BinaryNode<T>? p) {
-    y.left = x.right;
-    x.right = y;
-    _changeChild(x, p);
-  }
-
-  void _changeChild(_BinaryNode<T> x, _BinaryNode<T>? p) {
-    if (p != null) {
-      p.setChildByRatio(_compare(x.value, p.value), x);
-    } else {
-      root = x;
-    }
-  }
-
-  bool _isLeftChild(_BinaryNode<T> a, _BinaryNode<T> b) =>
-      b.left != null && areEqual(a.value, b.left!.value);
-
-  bool _isRightChild(_BinaryNode<T> a, _BinaryNode<T> b) =>
-      b.right != null && areEqual(a.value, b.right!.value);
 }
 
 class _BinaryNode<T> extends BalanceBinaryNode<T, _BinaryNode<T>> {
