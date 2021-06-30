@@ -1,7 +1,7 @@
 class BinaryNode<T, N extends BinaryNode<T, N>> {
   BinaryNode(this.value, [this.left, this.right]);
 
-  final T value;
+  T value;
 
   N? left;
   N? right;

@@ -1,7 +1,7 @@
 class LinkedListEntry<T> {
   LinkedListEntry(this.value, [this.next]);
 
-  final T value;
+  T value;
 
   LinkedListEntry<T>? next;
 }

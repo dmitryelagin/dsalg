@@ -8,23 +8,22 @@ abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   bool get isNotEmpty => root != null;
 
   Iterable<T> get breadthFirstTraversal =>
-      _breadthFirstSearch(root).map((node) => node.value);
+      _breadthFirstSearch(root).map(_getValue);
 
   Iterable<T> get depthFirstPreOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.preOrder, root)
-          .map((node) => node.value);
+      _depthFirstSearch(_DepthFirstSearchType.preOrder, root).map(_getValue);
 
   Iterable<T> get depthFirstInOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.inOrder, root)
-          .map((node) => node.value);
+      _depthFirstSearch(_DepthFirstSearchType.inOrder, root).map(_getValue);
 
   Iterable<T> get depthFirstPostOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.postOrder, root)
-          .map((node) => node.value);
+      _depthFirstSearch(_DepthFirstSearchType.postOrder, root).map(_getValue);
 
   void clear() {
     root = null;
   }
+
+  T _getValue(N node) => node.value;
 }
 
 extension BaseBinaryTreeUtils<T, N extends BinaryNode<T, N>>
