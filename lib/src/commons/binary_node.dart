@@ -1,6 +1,9 @@
-class BinaryNode<T, N extends BinaryNode<T, N>> {
+import 'node.dart';
+
+class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
   BinaryNode(this.value, [this.left, this.right]);
 
+  @override
   T value;
 
   N? left;

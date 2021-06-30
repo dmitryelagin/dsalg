@@ -1,5 +1,6 @@
 import '../commons/binary_node.dart';
 import '../commons/binary_search_node.dart';
+import '../commons/node_change.dart';
 import 'base_binary_tree.dart';
 
 abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
@@ -62,24 +63,25 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     on BaseBinarySearchTree<T, N> {
   int compare(T a, T b) => _compare(a, b);
 
-  N insertItem(T item) {
+  NodeChange<T, N> insertItem(T item) {
     if (isNotEmpty) {
       final ratio = compare(item, root!.value);
       if (_areNotEqual(ratio)) return _insertNode(item, root!, ratio);
     }
-    return root = (_getNode(item)..setChildrenFrom(root));
+    final node = _getNode(item)..setChildrenFrom(root);
+    return NodeChange(root, root = node);
   }
 
-  N? removeItem(T item) {
-    if (isEmpty) return null;
+  NodeChange<T, N> removeItem(T item) {
+    if (isEmpty) return const NodeChange.unchanged();
     final ratio = compare(item, root!.value);
     if (_areNotEqual(ratio)) return _removeNode(item, root!, ratio);
-    if (root!.hasNoChildren) return root = null;
-    if (root!.hasSingleChild) return root = root!.child;
+    if (root!.hasNoChildren) return NodeChange(root, root = null);
+    if (root!.hasSingleChild) return NodeChange(root, root = root!.child);
     return _removeNode(root!.value = root!.right!.leftmost.value, root!, 0);
   }
 
-  N _insertNode(T item, N parent, [int? ratio]) {
+  NodeChange<T, N> _insertNode(T item, N parent, [int? ratio]) {
     ratio ??= compare(item, parent.value);
     final node = parent.getChildByRatio(ratio);
     if (node != null) {
@@ -89,13 +91,13 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     return parent.setChildByRatio(ratio, _getNode(item)..setChildrenFrom(node));
   }
 
-  N? _removeNode(T item, N parent, [int? ratio]) {
+  NodeChange<T, N> _removeNode(T item, N parent, [int? ratio]) {
     ratio ??= compare(item, parent.value);
     final node = parent.getChildByRatio(ratio);
-    if (node == null) return null;
+    if (node == null) return const NodeChange.unchanged();
     final nodeRatio = compare(item, node.value);
     if (_areNotEqual(nodeRatio)) return _removeNode(item, node, nodeRatio);
-    if (node.hasNoChildren) return parent..removeChildByRatio(ratio);
+    if (node.hasNoChildren) return parent.removeChildByRatio(ratio);
     if (node.hasSingleChild) return parent.setChildByRatio(ratio, node.child);
     return _removeNode(node.value = node.right!.leftmost.value, node, 0);
   }

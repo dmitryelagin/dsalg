@@ -12,7 +12,7 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
 
   @override
   void insert(T item) {
-    var node = insertItem(item);
+    var node = insertItem(item).current!;
     while (node.isBalanced) {
       if (node.parent == null) break;
       node = node.parent!;
@@ -22,7 +22,8 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
 
   @override
   void remove(T item) {
-    var node = removeItem(item);
+    final change = removeItem(item);
+    var node = change.current ?? change.parent;
     while (node != null) {
       _rebalance(node);
       node = node.parent;
