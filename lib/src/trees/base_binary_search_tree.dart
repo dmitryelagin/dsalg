@@ -96,7 +96,7 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     final nodeRatio = compare(item, node.value);
     if (_areNotEqual(nodeRatio)) return _removeNode(item, node, nodeRatio);
     if (node.hasNoChildren) return parent..removeChildByRatio(ratio);
-    if (node.hasSingleChild) return parent..setChildByRatio(ratio, node.child);
+    if (node.hasSingleChild) return parent.setChildByRatio(ratio, node.child);
     return _removeNode(node.value = node.right!.leftmost.value, node, 0);
   }
 
