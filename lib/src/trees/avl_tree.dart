@@ -32,15 +32,11 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   void _rebalance(_BinaryNode<T>? z) {
     if (z == null || z.isBalanced) return;
     final y = z.tallestChild!, x = y.tallestChild!;
-    if (y.isLeftOf(z) && x.isLeftOf(y)) {
-      rotateRight(y);
-    }
+    if (y.isLeftOf(z) && x.isLeftOf(y)) rotateRight(y);
+    if (y.isRightOf(z) && x.isRightOf(y)) rotateLeft(y);
     if (y.isLeftOf(z) && x.isRightOf(y)) {
       rotateLeft(x);
       rotateRight(x);
-    }
-    if (y.isRightOf(z) && x.isRightOf(y)) {
-      rotateLeft(y);
     }
     if (y.isRightOf(z) && x.isLeftOf(y)) {
       rotateRight(x);

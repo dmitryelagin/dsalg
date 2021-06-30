@@ -30,11 +30,13 @@ void main() {
     });
 
     test('should be able to traverse breadth first', () {
-      const result = [10, 6, 17, 2, 8, 15, 22, 1, 3, 9, 20, 23];
       tree
         ..clear()
         ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
-      expect(tree.breadthFirstTraversal, result);
+      expect(
+        tree.breadthFirstTraversal,
+        [10, 6, 17, 2, 8, 15, 22, 1, 3, 9, 20, 23],
+      );
       final traversal = worstTree.breadthFirstTraversal.toList();
       var decreaseCount = 0;
       for (var i = 1; i < traversal.length; i += 1) {
@@ -45,11 +47,13 @@ void main() {
     });
 
     test('should be able to traverse depth first pre order', () {
-      const result = [10, 6, 2, 1, 3, 8, 9, 17, 15, 22, 20, 23];
       tree
         ..clear()
         ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
-      expect(tree.depthFirstPreOrderTraversal, result);
+      expect(
+        tree.depthFirstPreOrderTraversal,
+        [10, 6, 2, 1, 3, 8, 9, 17, 15, 22, 20, 23],
+      );
       _checkDepthFirstTraversalIndirectly(
         worstTree.depthFirstPreOrderTraversal.toList(),
       );
@@ -60,11 +64,13 @@ void main() {
     });
 
     test('should be able to traverse depth first post order', () {
-      const result = [1, 3, 2, 9, 8, 6, 15, 20, 23, 22, 17, 10];
       tree
         ..clear()
         ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
-      expect(tree.depthFirstPostOrderTraversal, result);
+      expect(
+        tree.depthFirstPostOrderTraversal,
+        [1, 3, 2, 9, 8, 6, 15, 20, 23, 22, 17, 10],
+      );
       _checkDepthFirstTraversalIndirectly(
         worstTree.depthFirstPostOrderTraversal.toList(),
       );
@@ -125,7 +131,7 @@ void main() {
       );
     });
 
-    test('should stay balanced after nodes removal', () {
+    test('should stay balanced after nodes insertion and removal', () {
       tree.removeAll(otherItems);
       _checkDepthFirstTraversalIndirectly(
         tree.depthFirstPreOrderTraversal.toList(),
@@ -133,31 +139,70 @@ void main() {
       _checkDepthFirstTraversalIndirectly(
         tree.depthFirstPostOrderTraversal.toList(),
       );
-      const result = [15, 2, 22, 1, 9, 17, 23, 3, 20];
       tree
         ..clear()
         ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22])
         ..removeAll([6, 8, 10]);
-      expect(tree.breadthFirstTraversal, result);
+      expect(tree.breadthFirstTraversal, [15, 2, 22, 1, 9, 17, 23, 3, 20]);
+      tree
+        ..clear()
+        ..insertAll([
+          ...[21, 64, 79, 24, 4, 61, 7, 75, 80, 63, 10, 53, 19, 13, 95],
+          ...[81, 23, 5, 65, 57, 18, 87, 25, 67, 96],
+        ])
+        ..removeAll([
+          ...[3, 99, 21, 1, 10, 14, 16, 77, 25, 78, 33, 90, 74, 44, 56],
+          ...[93, 39, 64, 54, 49, 46, 45],
+        ]);
+      expect(tree.breadthFirstTraversal, [
+        ...[65, 24, 79, 13, 61, 67, 81, 5, 19, 53, 63, 75, 80, 95, 4],
+        ...[7, 18, 23, 57, 87, 96],
+      ]);
+      tree
+        ..clear()
+        ..insertAll([
+          ...[91, 24, 5, 71, 86, 90, 38, 48, 3, 81, 21, 64, 79, 4, 61, 7],
+          ...[75, 80, 63, 10, 53, 19, 13, 95, 23, 65, 57, 18, 87, 25, 67],
+          ...[96, 99, 1],
+        ])
+        ..removeAll([
+          ...[10, 14, 16, 77, 25, 78, 33, 90, 74, 44, 56, 93, 39, 64, 54],
+          ...[49, 46, 45, 48, 82, 95, 3, 24, 58, 86, 76, 72, 32, 51, 75],
+          ...[99, 37, 18, 98],
+        ]);
+      expect(tree.breadthFirstTraversal, [
+        ...[53, 13, 79, 5, 21, 63, 87, 4, 7, 19, 38, 57, 67, 81, 96, 1],
+        ...[23, 61, 65, 71, 80, 91],
+      ]);
+      tree
+        ..clear()
+        ..insertAll([
+          ...[20, 4, 31, 89, 7, 94, 79, 80, 59, 21, 77, 33, 14, 88, 44, 61],
+          ...[3, 26, 82, 49, 11, 37, 53, 10, 55, 1, 93, 68, 8, 99, 46],
+        ])
+        ..removeAll([
+          ...[3, 58, 40, 15, 7, 1, 24, 27, 14, 79, 49, 46, 66, 60, 99, 91],
+          ...[37, 88, 4, 38, 39, 81, 85, 45, 2, 53, 21, 41, 96, 74, 68, 78],
+          ...[56, 16, 76, 32, 62, 17, 95],
+        ]);
+      expect(
+        tree.breadthFirstTraversal,
+        [55, 31, 80, 11, 44, 61, 89, 8, 26, 33, 59, 77, 82, 94, 10, 20, 93],
+      );
     });
   });
 }
 
 void _checkDepthFirstTraversalIndirectly(List<int> traversal) {
-  final treeHeight = (log(traversal.length) / ln2).floor();
+  final height = (log(traversal.length) / ln2).ceil();
+  final heightError = height ~/ 4, minHeight = height ~/ 2;
   var increaseCount = 0, decreaseCount = 0, maxDecreaseCount = 0;
   for (var i = 1; i < traversal.length; i += 1) {
-    if (traversal[i] < traversal[i - 1]) {
-      increaseCount = 0;
-      decreaseCount += 1;
-    }
-    if (traversal[i] > traversal[i - 1]) {
-      increaseCount += 1;
-      decreaseCount = 0;
-    }
+    increaseCount = traversal[i] < traversal[i - 1] ? 0 : increaseCount + 1;
+    decreaseCount = traversal[i] < traversal[i - 1] ? decreaseCount + 1 : 0;
     if (maxDecreaseCount < decreaseCount) maxDecreaseCount = decreaseCount;
-    expect(increaseCount, lessThanOrEqualTo(3));
-    expect(decreaseCount, lessThanOrEqualTo(treeHeight));
+    expect(increaseCount, lessThanOrEqualTo(minHeight + heightError));
+    expect(decreaseCount, lessThanOrEqualTo(height + heightError));
   }
-  expect(maxDecreaseCount, greaterThanOrEqualTo(treeHeight - 1));
+  expect(maxDecreaseCount, greaterThanOrEqualTo(minHeight));
 }

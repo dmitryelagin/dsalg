@@ -38,12 +38,10 @@ void main() {
     });
 
     test('should be able to traverse depth first pre order', () {
-      const result = [10, 6, 3, 8, 9, 15, 20, 17];
-      items = [10, 6, 15, 3, 8, 20, 9, 17];
       tree
         ..clear()
-        ..insertAll(items);
-      expect(tree.depthFirstPreOrderTraversal, result);
+        ..insertAll([10, 6, 15, 3, 8, 20, 9, 17]);
+      expect(tree.depthFirstPreOrderTraversal, [10, 6, 3, 8, 9, 15, 20, 17]);
       expect(worstTree.depthFirstPreOrderTraversal, worstItems);
     });
 
@@ -52,12 +50,10 @@ void main() {
     });
 
     test('should be able to traverse depth first post order', () {
-      const result = [3, 9, 8, 6, 17, 20, 15, 10];
-      items = [10, 6, 15, 3, 8, 20, 9, 17];
       tree
         ..clear()
-        ..insertAll(items);
-      expect(tree.depthFirstPostOrderTraversal, result);
+        ..insertAll([10, 6, 15, 3, 8, 20, 9, 17]);
+      expect(tree.depthFirstPostOrderTraversal, [3, 9, 8, 6, 17, 20, 15, 10]);
       expect(worstTree.depthFirstPostOrderTraversal, worstItems.reversed);
     });
 
