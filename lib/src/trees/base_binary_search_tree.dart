@@ -79,14 +79,15 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     if (areNotEqual(item, root!.value)) {
       return _removeNode(item, root!);
     } else {
-      if (root!.hasNoChildren) root = null;
-      if (root!.hasSingleChild) root = root!.child;
-      if (root!.hasBothChildren) {
+      if (root!.hasNoChildren) {
+        return root = null;
+      } else if (root!.hasBothChildren) {
         final value = root!.right!.leftmost.value;
-        _removeNode(value, root!);
         root = _getNode(value)..setChildrenFrom(root);
+        return _removeNode(value, root!);
+      } else {
+        return root = root!.child;
       }
-      return root;
     }
   }
 
@@ -108,14 +109,16 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     if (areNotEqual(item, child.value)) {
       return _removeNode(item, child);
     } else {
-      if (child.hasNoChildren) parent.removeChildByRatio(ratio);
-      if (child.hasSingleChild) parent.setChildByRatio(ratio, child.child);
-      if (child.hasBothChildren) {
+      if (child.hasNoChildren) {
+        return parent..removeChildByRatio(ratio);
+      } else if (child.hasBothChildren) {
         final value = child.right!.leftmost.value;
-        _removeNode(value, child);
-        parent.setChildByRatio(ratio, _getNode(value)..setChildrenFrom(child));
+        final node = _getNode(value)..setChildrenFrom(child);
+        parent.setChildByRatio(ratio, node);
+        return _removeNode(value, node);
+      } else {
+        return parent..setChildByRatio(ratio, child.child);
       }
-      return parent.getChildByRatio(ratio) ?? parent;
     }
   }
 
@@ -123,6 +126,7 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     var node = root;
     while (node != null) {
       yield node.value;
+      if (areEqual(item, node.value)) break;
       node = node.getChildByRatio(compare(item, node.value));
     }
   }

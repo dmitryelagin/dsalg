@@ -30,6 +30,11 @@ class LinkedBinaryNode<T, N extends LinkedBinaryNode<T, N>>
 
   N? get parent => _parent;
 
+  N? get sibling {
+    if (_parent == null) return null;
+    return _parent!.left == this ? _parent!.right : _parent!.left;
+  }
+
   void _changeParent(N? parent) {
     if (_parent?.left == this) _parent!.left = null;
     if (_parent?.right == this) _parent!.right = null;

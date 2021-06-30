@@ -31,10 +31,9 @@ void main() {
 
     test('should be able to traverse breadth first', () {
       const result = [10, 6, 17, 2, 8, 15, 22, 1, 3, 9, 20, 23];
-      items = [10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22];
       tree
         ..clear()
-        ..insertAll(items);
+        ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
       expect(tree.breadthFirstTraversal, result);
       final traversal = worstTree.breadthFirstTraversal.toList();
       var decreaseCount = 0;
@@ -47,10 +46,9 @@ void main() {
 
     test('should be able to traverse depth first pre order', () {
       const result = [10, 6, 2, 1, 3, 8, 9, 17, 15, 22, 20, 23];
-      items = [10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22];
       tree
         ..clear()
-        ..insertAll(items);
+        ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
       expect(tree.depthFirstPreOrderTraversal, result);
       _checkDepthFirstTraversalIndirectly(
         worstTree.depthFirstPreOrderTraversal.toList(),
@@ -63,10 +61,9 @@ void main() {
 
     test('should be able to traverse depth first post order', () {
       const result = [1, 3, 2, 9, 8, 6, 15, 20, 23, 22, 17, 10];
-      items = [10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22];
       tree
         ..clear()
-        ..insertAll(items);
+        ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22]);
       expect(tree.depthFirstPostOrderTraversal, result);
       _checkDepthFirstTraversalIndirectly(
         worstTree.depthFirstPostOrderTraversal.toList(),
@@ -126,6 +123,22 @@ void main() {
           ..sort(compareInt)
           ..removeWhere(otherItems.contains),
       );
+    });
+
+    test('should stay balanced after nodes removal', () {
+      tree.removeAll(otherItems);
+      _checkDepthFirstTraversalIndirectly(
+        tree.depthFirstPreOrderTraversal.toList(),
+      );
+      _checkDepthFirstTraversalIndirectly(
+        tree.depthFirstPostOrderTraversal.toList(),
+      );
+      const result = [15, 2, 22, 1, 9, 17, 23, 3, 20];
+      tree
+        ..clear()
+        ..insertAll([10, 6, 15, 8, 20, 3, 9, 17, 2, 1, 23, 22])
+        ..removeAll([6, 8, 10]);
+      expect(tree.breadthFirstTraversal, result);
     });
   });
 }

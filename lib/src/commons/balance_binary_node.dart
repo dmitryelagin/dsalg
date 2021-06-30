@@ -26,7 +26,10 @@ class BalanceBinaryNode<T, N extends BalanceBinaryNode<T, N>>
     _alignHeight();
   }
 
-  N? get tallestChild => _heightDifference < 0 ? right : left;
+  N? get tallestChild {
+    if (_heightDifference == 0) return isLeftOf(parent) ? left : right;
+    return _heightDifference > 0 ? left : right;
+  }
 
   bool get isBalanced => _heightDifference.abs() <= 1;
   bool get isUnbalanced => !isBalanced;
