@@ -11,9 +11,4 @@ class NodeChange<T, N extends Node<T, N>> {
   final N? previous;
   final N? current;
   final N? parent;
-
-  bool get isNode => !isRoot;
-  bool get isRoot => parent == null;
-  bool get isChanged => !isNotChanged;
-  bool get isNotChanged => previous == current;
 }
