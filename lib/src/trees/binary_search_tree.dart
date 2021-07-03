@@ -11,6 +11,5 @@ class BinarySearchTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
 }
 
 class _BinaryNode<T> extends BinaryNode<T, _BinaryNode<T>> {
-  _BinaryNode(T value, [_BinaryNode<T>? left, _BinaryNode<T>? right])
-      : super(value, left, right);
+  _BinaryNode(T value) : super(value);
 }

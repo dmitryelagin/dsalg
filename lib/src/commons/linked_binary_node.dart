@@ -2,7 +2,7 @@ import 'binary_node.dart';
 
 class LinkedBinaryNode<T, N extends LinkedBinaryNode<T, N>>
     extends BinaryNode<T, N> {
-  LinkedBinaryNode(T value, [N? left, N? right]) : super(value, left, right);
+  LinkedBinaryNode(T value) : super(value);
 
   N? _left;
   N? _right;

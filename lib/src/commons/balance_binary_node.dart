@@ -4,7 +4,7 @@ import 'linked_binary_node.dart';
 
 class BalanceBinaryNode<T, N extends BalanceBinaryNode<T, N>>
     extends LinkedBinaryNode<T, N> {
-  BalanceBinaryNode(T value, [N? left, N? right]) : super(value, left, right);
+  BalanceBinaryNode(T value) : super(value);
 
   int _height = 0;
 

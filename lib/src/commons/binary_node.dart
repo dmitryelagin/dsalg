@@ -1,7 +1,7 @@
 import 'node.dart';
 
 class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
-  BinaryNode(this.value, [this.left, this.right]);
+  BinaryNode(this.value);
 
   @override
   T value;
@@ -14,9 +14,12 @@ class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
 
   N? get child => left ?? right;
 
-  bool get hasNoChildren => left == null && right == null;
+  bool get hasLeft => left != null;
+  bool get hasRight => right != null;
+  bool get hasChild => child != null;
+  bool get hasNoChildren => child == null;
+  bool get hasBothChildren => hasLeft && hasRight;
   bool get hasSingleChild => !hasNoChildren && !hasBothChildren;
-  bool get hasBothChildren => left != null && right != null;
 
   bool isLeftOf(N? node) => this == node?.left;
   bool isRightOf(N? node) => this == node?.right;
