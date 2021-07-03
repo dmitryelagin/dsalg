@@ -29,4 +29,9 @@ class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
     left = other.left;
     right = other.right;
   }
+
+  void clearChildren() {
+    left = null;
+    right = null;
+  }
 }

@@ -115,6 +115,62 @@ void main() {
         tree.depthFirstPostOrderTraversal.toList(),
       );
     });
+
+    test('should be properly splitted by existing item', () {
+      items.sort(compareInt);
+      final index = random.nextInt(items.length), item = items[index];
+      final first = items.sublist(0, index), second = items.sublist(index + 1);
+      final trees = tree.split(item);
+      expect(trees.first.depthFirstInOrderTraversal, first);
+      expect(trees.last.depthFirstInOrderTraversal, second);
+      expect(tree.isEmpty, isTrue);
+    });
+
+    test('should be properly splitted by non-existing item', () {
+      items.sort(compareInt);
+      final index = random.nextInt(items.length), item = items[index];
+      items.removeAt(index);
+      final first = items.sublist(0, index), second = items.sublist(index);
+      final trees = tree.split(item);
+      expect(trees.first.depthFirstInOrderTraversal, first);
+      expect(trees.last.depthFirstInOrderTraversal, second);
+      expect(tree.isEmpty, isTrue);
+    });
+
+    test('should be splitted if empty', () {
+      final trees = emptyTree.split(absentItem);
+      expect(trees.first, isNotNull);
+      expect(trees.first.isEmpty, isTrue);
+      expect(trees.last, isNotNull);
+      expect(trees.last.isEmpty, isTrue);
+    });
+
+    test('should be properly merged around item', () {
+      items.sort(compareInt);
+      final index = random.nextInt(items.length), item = items[index];
+      final trees = tree.split(item);
+      final mergedTree = Treap.merge(compareInt, trees.first, item, trees.last);
+      expect(mergedTree.depthFirstInOrderTraversal, items);
+      expect(trees.first.isEmpty, isTrue);
+      expect(trees.last.isEmpty, isTrue);
+    });
+
+    test('should merge only item if trees fail comparison constraints', () {
+      items.sort(compareInt);
+      final index = random.nextInt(items.length), item = items[index];
+      final trees = tree.split(item);
+      final mergedTree = Treap.merge(compareInt, trees.last, item, trees.first);
+      expect(mergedTree.depthFirstInOrderTraversal, [item]);
+    });
+
+    test('should merge item and non-empty tree', () {
+      items.sort(compareInt);
+      final index = random.nextInt(items.length), item = items[index];
+      final trees = tree.split(item);
+      final firstTraversal = trees.first.depthFirstInOrderTraversal.toList();
+      final mergedTree = Treap.merge(compareInt, trees.first, item, emptyTree);
+      expect(mergedTree.depthFirstInOrderTraversal, [...firstTraversal, item]);
+    });
   });
 }
 
