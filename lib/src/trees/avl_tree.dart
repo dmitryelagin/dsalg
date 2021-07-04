@@ -21,13 +21,14 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   }
 
   @override
-  void remove(T item) {
+  T? remove(T item) {
     final change = removeItem(item);
     var node = change.current ?? change.parent;
     while (node != null) {
       _rebalance(node);
       node = node.parent;
     }
+    return change.previous?.value;
   }
 
   void _rebalance(_BinaryNode<T>? z) {

@@ -41,14 +41,15 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   }
 
   @override
-  void remove(T item) {
-    if (isEmpty) return;
+  T? remove(T item) {
+    if (isEmpty) return null;
     final node = getSearchPath(item).last;
-    if (areNotEqual(_compare(node.value, item))) return;
+    if (areNotEqual(_compare(node.value, item))) return null;
     _sink(node..priority = double.infinity);
     if (node == root) clear();
     if (node.isLeftOf(node.parent)) node.parent!.left = null;
     if (node.isRightOf(node.parent)) node.parent!.right = null;
+    return node.value;
   }
 
   Iterable<Treap<T>> split(T item) {

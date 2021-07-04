@@ -1,6 +1,7 @@
 import '../commons/binary_node.dart';
 import '../commons/binary_search_node.dart';
 import '../commons/node_change.dart';
+import '../utils/iterable_utils.dart';
 import 'base_binary_tree.dart';
 
 abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
@@ -50,13 +51,10 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
     items.forEach(insert);
   }
 
-  void remove(T item) {
-    removeItem(item);
-  }
+  T? remove(T item) => removeItem(item).previous?.value;
 
-  void removeAll(Iterable<T> items) {
-    items.forEach(remove);
-  }
+  Iterable<T> removeAll(Iterable<T> items) =>
+      items.map(remove).whereNotNull.toList();
 }
 
 extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
