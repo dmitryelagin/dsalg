@@ -139,9 +139,8 @@ void main() {
       items.sort(compareInt);
       final index = random.nextInt(items.length), item = items[index];
       final trees = tree.split(item);
-      final unionTree = Treap.union(trees.first, trees.last);
-      expect(unionTree.depthFirstInOrderTraversal, items..remove(item));
-      expect(trees.first.isEmpty, isTrue);
+      trees.first.union(trees.last);
+      expect(trees.first.depthFirstInOrderTraversal, items..remove(item));
       expect(trees.last.isEmpty, isTrue);
     });
 
@@ -154,12 +153,10 @@ void main() {
         return random.nextInt(absentItem - margin) + margin;
       });
       final items = {...firstItems, ...secondItems}.toList();
-      final firstTree = Treap(compareInt, firstItems);
-      final secondTree = Treap(compareInt, secondItems);
-      final unionTree = Treap.union(secondTree, firstTree);
+      final tree = Treap(compareInt, firstItems);
+      final unionTree = Treap(compareInt, secondItems)..union(tree);
       expect(unionTree.depthFirstInOrderTraversal, items..sort(compareInt));
-      expect(firstTree.isEmpty, isTrue);
-      expect(secondTree.isEmpty, isTrue);
+      expect(tree.isEmpty, isTrue);
       _checkDepthFirstTraversalIndirectly(
         unionTree.depthFirstPreOrderTraversal.toList(),
       );
@@ -169,9 +166,9 @@ void main() {
     });
 
     test('should not fail with empty cases', () {
-      var unionTree = Treap.union(Treap(compareInt), Treap(compareInt));
+      var unionTree = Treap(compareInt)..union(Treap(compareInt));
       expect(unionTree.depthFirstInOrderTraversal, isEmpty);
-      unionTree = Treap.union(tree, emptyTree);
+      unionTree = tree..union(emptyTree);
       expect(unionTree.depthFirstInOrderTraversal, items..sort(compareInt));
     });
   });

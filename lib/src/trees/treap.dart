@@ -11,18 +11,6 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     insertAll(items);
   }
 
-  Treap.union(Treap<T> a, Treap<T> b, [Comparator<T>? compare, Random? random])
-      : _compare = compare ?? a._compare,
-        _random = random ?? _defaultRandom,
-        super(
-          _getNodeFactory(random ?? _defaultRandom),
-          compare ?? a._compare,
-        ) {
-    root = _unionNodes(a.root, b.root);
-    a.clear();
-    b.clear();
-  }
-
   static final _defaultRandom = Random();
 
   final Comparator<T> _compare;
@@ -52,6 +40,11 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
         for (final node in _splitNodes(item))
           Treap(_compare, const [], _random)..root = node,
       ];
+
+  void union(Treap<T> other) {
+    root = _unionNodes(root, other.root);
+    other.clear();
+  }
 
   Iterable<_BinaryNode<T>?> _splitNodes(T item) {
     final node = insertItem(item).current!..priority = -double.infinity;
