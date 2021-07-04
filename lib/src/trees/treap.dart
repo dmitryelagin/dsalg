@@ -11,20 +11,16 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     insertAll(items);
   }
 
-  Treap.merge(this._compare, Treap<T> l, T item, Treap<T> r, [Random? random])
-      : _random = random ?? _defaultRandom,
-        super(_getNodeFactory(random ?? _defaultRandom), _compare) {
-    if ((l.isNotEmpty && _compare(l.max, item) < 0) &&
-        (r.isNotEmpty && _compare(item, r.min) < 0)) {
-      final node = insertItem(item).current!
-        ..left = l._extractRoot()
-        ..right = r._extractRoot();
-      _sink(node);
-    } else {
-      if (l.isEmpty && r.isNotEmpty) root = r._extractRoot();
-      if (r.isEmpty && l.isNotEmpty) root = l._extractRoot();
-      insert(item);
-    }
+  Treap.union(Treap<T> a, Treap<T> b, [Comparator<T>? compare, Random? random])
+      : _compare = compare ?? a._compare,
+        _random = random ?? _defaultRandom,
+        super(
+          _getNodeFactory(random ?? _defaultRandom),
+          compare ?? a._compare,
+        ) {
+    root = _unionNodes(a.root, b.root);
+    a.clear();
+    b.clear();
   }
 
   static final _defaultRandom = Random();
@@ -52,16 +48,42 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     return node.value;
   }
 
-  Iterable<Treap<T>> split(T item) {
+  Iterable<Treap<T>> split(T item) => [
+        for (final node in _splitNodes(item))
+          Treap(_compare, const [], _random)..root = node,
+      ];
+
+  Iterable<_BinaryNode<T>?> _splitNodes(T item) {
     final node = insertItem(item).current!..priority = -double.infinity;
     _bubble(node);
-    final left = node.left, right = node.right;
+    final nodes = [node.left, node.right];
     node.clearChildren();
     clear();
-    return [
-      Treap(_compare, const [], _random)..root = left,
-      Treap(_compare, const [], _random)..root = right,
-    ];
+    return nodes;
+  }
+
+  _BinaryNode<T>? _unionNodes(_BinaryNode<T>? a, _BinaryNode<T>? b) {
+    if (a == null) return b;
+    if (b == null) return a;
+    root = a.priority < b.priority ? b : a;
+    final item = root!.value;
+    final highTrees = _splitNodes(item);
+    root = a.priority < b.priority ? a : b;
+    final lowTrees = _splitNodes(item);
+    final highNode = _unionNodes(highTrees.last, lowTrees.last);
+    final lowNode = _unionNodes(highTrees.first, lowTrees.first);
+    return _mergeNodes(lowNode, item, highNode);
+  }
+
+  _BinaryNode<T>? _mergeNodes(_BinaryNode<T>? a, T item, _BinaryNode<T>? b) {
+    clear();
+    insertItem(item).current!
+      ..left = a
+      ..right = b;
+    _sink(root!);
+    final node = root;
+    clear();
+    return node;
   }
 
   void _bubble(_BinaryNode<T> node) {
@@ -84,12 +106,6 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
       }
       if (node == root) root = node.parent;
     }
-  }
-
-  _BinaryNode<T>? _extractRoot() {
-    final node = root;
-    clear();
-    return node;
   }
 }
 

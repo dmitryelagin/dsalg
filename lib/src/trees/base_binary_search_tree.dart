@@ -22,23 +22,23 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
   }
 
   bool contains(T item) =>
-      isNotEmpty && areEqual(compare(item, getSearchPath(item).last.value));
+      isNotEmpty && areEqual(_compare(item, getSearchPath(item).last.value));
 
   T get(T item) {
     if (isEmpty) throw StateError('Nothing to return');
     final value = getSearchPath(item).last.value;
-    if (areEqual(compare(item, value))) return value;
+    if (areEqual(_compare(item, value))) return value;
     throw StateError('Item is not found');
   }
 
   T getClosestTo(T item) {
     if (isEmpty) throw StateError('Nothing to return');
     final path = getSearchPath(item);
-    var target = path.first.value, targetRatio = compare(item, target);
+    var target = path.first.value, targetRatio = _compare(item, target);
     for (final node in path.skip(1)) {
-      if (compare(item, node.value).abs() > targetRatio.abs()) continue;
+      if (_compare(item, node.value).abs() > targetRatio.abs()) continue;
       target = node.value;
-      targetRatio = compare(item, target);
+      targetRatio = _compare(item, target);
     }
     return target;
   }
@@ -59,8 +59,6 @@ abstract class BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
 
 extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     on BaseBinarySearchTree<T, N> {
-  int compare(T a, T b) => _compare(a, b);
-
   bool areEqual(int ratio) => ratio == 0;
   bool areNotEqual(int ratio) => ratio != 0;
 
@@ -68,7 +66,7 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
     var node = root;
     while (node != null) {
       yield node;
-      final ratio = compare(item, node.value);
+      final ratio = _compare(item, node.value);
       if (areEqual(ratio)) break;
       node = node.getChildByRatio(ratio);
     }
@@ -76,7 +74,7 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
 
   NodeChange<T, N> insertItem(T item) {
     if (isNotEmpty) {
-      final ratio = compare(item, root!.value);
+      final ratio = _compare(item, root!.value);
       if (areNotEqual(ratio)) return _insertNode(item, root!, ratio);
     }
     final node = _getNode(item)..setChildrenFrom(root);
@@ -85,7 +83,7 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
 
   NodeChange<T, N> removeItem(T item) {
     if (isEmpty) return const NodeChange.unchanged();
-    final ratio = compare(item, root!.value);
+    final ratio = _compare(item, root!.value);
     if (areNotEqual(ratio)) return _removeNode(item, root!, ratio);
     if (root!.hasNoChildren) return NodeChange(root, root = null);
     if (root!.hasSingleChild) return NodeChange(root, root = root!.child);
@@ -93,20 +91,20 @@ extension BaseBinarySearchTreeUtils<T, N extends BinaryNode<T, N>>
   }
 
   NodeChange<T, N> _insertNode(T item, N parent, [int? ratio]) {
-    ratio ??= compare(item, parent.value);
+    ratio ??= _compare(item, parent.value);
     final node = parent.getChildByRatio(ratio);
     if (node != null) {
-      final nodeRatio = compare(item, node.value);
+      final nodeRatio = _compare(item, node.value);
       if (areNotEqual(nodeRatio)) return _insertNode(item, node, nodeRatio);
     }
     return parent.setChildByRatio(ratio, _getNode(item)..setChildrenFrom(node));
   }
 
   NodeChange<T, N> _removeNode(T item, N parent, [int? ratio]) {
-    ratio ??= compare(item, parent.value);
+    ratio ??= _compare(item, parent.value);
     final node = parent.getChildByRatio(ratio);
     if (node == null) return const NodeChange.unchanged();
-    final nodeRatio = compare(item, node.value);
+    final nodeRatio = _compare(item, node.value);
     if (areNotEqual(nodeRatio)) return _removeNode(item, node, nodeRatio);
     if (node.hasNoChildren) return parent.removeChildByRatio(ratio);
     if (node.hasSingleChild) return parent.setChildByRatio(ratio, node.child);
