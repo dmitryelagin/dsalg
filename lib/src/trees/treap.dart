@@ -7,7 +7,7 @@ import 'base_binary_tree.dart';
 class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   Treap(this._compare, [Iterable<T> items = const [], Random? random])
       : _random = random ?? _defaultRandom,
-        super(_getNodeFactory(random ?? _defaultRandom), _compare) {
+        super(_createNodeFactory(random ?? _defaultRandom), _compare) {
     insertAll(items);
   }
 
@@ -16,7 +16,7 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   final Comparator<T> _compare;
   final Random _random;
 
-  static _BinaryNode<T> Function(T) _getNodeFactory<T>(Random random) =>
+  static _BinaryNode<T> Function(T) _createNodeFactory<T>(Random random) =>
       (value) => _BinaryNode(value, random.nextDouble());
 
   @override
@@ -27,7 +27,7 @@ class Treap<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   @override
   T? remove(T item) {
     if (isEmpty) return null;
-    final node = getSearchPath(item).last;
+    final node = getNodeClosestTo(item);
     if (areNotEqual(_compare(node.value, item))) return null;
     _sink(node..priority = double.infinity);
     if (node == root) clear();

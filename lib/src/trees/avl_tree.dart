@@ -4,11 +4,11 @@ import 'base_binary_tree.dart';
 
 class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   AVLTree(Comparator<T> compare, [Iterable<T> items = const []])
-      : super(_getNode, compare) {
+      : super(_createNode, compare) {
     insertAll(items);
   }
 
-  static _BinaryNode<T> _getNode<T>(T value) => _BinaryNode(value);
+  static _BinaryNode<T> _createNode<T>(T value) => _BinaryNode(value);
 
   @override
   void insert(T item) {

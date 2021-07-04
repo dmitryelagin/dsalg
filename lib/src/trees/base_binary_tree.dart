@@ -26,7 +26,7 @@ abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   T _getValue(N node) => node.value;
 }
 
-extension BaseBinaryTreeUtils<T, N extends BinaryNode<T, N>>
+extension ProtectedBaseBinaryTree<T, N extends BinaryNode<T, N>>
     on BaseBinaryTree<T, N> {
   N? get root => _root;
 
