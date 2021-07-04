@@ -15,20 +15,20 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   @override
   T get(T item) {
     final node = getNode(item);
-    _splayNode(node);
+    _splay(node);
     return node.value;
   }
 
   @override
   T getClosestTo(T item) {
     final node = getNodeClosestTo(item);
-    _splayNode(node);
+    _splay(node);
     return node.value;
   }
 
   @override
   void insert(T item) {
-    _splayNode(insertItem(item).current!);
+    _splay(insertItem(item).current!);
   }
 
   @override
@@ -44,7 +44,7 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   Iterable<_BinaryNode<T>?> _splitNodes(T item) {
     final node = getNodeClosestTo(item);
     if (areNotEqual(_compare(item, node.value))) return const [null, null];
-    _splayNode(node);
+    _splay(node);
     final nodes = [node, node.right];
     node.right = null;
     return nodes;
@@ -54,11 +54,11 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     if (a == null) return b;
     if (b == null) return a;
     final node = a.rightmost;
-    _splayNode(node);
+    _splay(node);
     return node..right = b;
   }
 
-  void _splayNode(_BinaryNode<T> x) {
+  void _splay(_BinaryNode<T> x) {
     root = x;
     while (x.hasParent) {
       final y = x.parent!;
