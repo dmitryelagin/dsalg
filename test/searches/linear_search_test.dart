@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dsalg/searches.dart';
+import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 void main() {

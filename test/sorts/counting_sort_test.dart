@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dsalg/sorts.dart';
+import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
