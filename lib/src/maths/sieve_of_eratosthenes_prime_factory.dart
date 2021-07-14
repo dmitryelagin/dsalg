@@ -5,7 +5,7 @@ class SieveOfEratosthenesPrimeFactory {
 
   final _checks = <bool>[];
 
-  Iterable<int> getAllBefore(int limit) sync* {
+  Iterable<int> getAllBelow(int limit) sync* {
     final lastCheckIndex = _checks.length - 1;
     if (limit > _checks.length) {
       if (_checks.length >= limit) return;

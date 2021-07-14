@@ -1,5 +1,5 @@
 export 'collections.dart';
-export 'primes.dart';
+export 'maths.dart';
 export 'searches.dart';
 export 'sorts.dart';
 export 'trees.dart';
