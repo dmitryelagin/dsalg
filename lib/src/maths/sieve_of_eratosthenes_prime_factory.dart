@@ -8,7 +8,6 @@ class SieveOfEratosthenesPrimeFactory {
   Iterable<int> getAllBelow(int limit) sync* {
     final lastCheckIndex = _checks.length - 1;
     if (limit > _checks.length) {
-      if (_checks.length >= limit) return;
       _checks.addAll(List.filled(limit - _checks.length, true));
     }
     for (var i = 2; i < limit; i += 1) {
