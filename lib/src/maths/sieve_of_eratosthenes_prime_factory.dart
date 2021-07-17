@@ -1,25 +1,26 @@
 import 'dart:math';
 
+import '../bits/bit_array.dart';
+
 class SieveOfEratosthenesPrimeFactory {
   static final instance = SieveOfEratosthenesPrimeFactory();
 
-  final _checks = <bool>[];
+  final _checks = BitArray();
 
   Iterable<int> getAllBelow(int limit) sync* {
     final lastCheckIndex = _checks.length - 1;
-    if (limit > _checks.length) {
-      _checks.addAll(List.filled(limit - _checks.length, true));
-    }
-    for (var i = 2; i < limit; i += 1) {
-      if (!_checks[i]) continue;
-      yield i;
-      for (var j = max(i * i, lastCheckIndex ~/ i * i + i); j < limit; j += i) {
-        _checks[j] = false;
+    _checks.tryGrowFor(limit);
+    for (var i = 2; i < _checks.length; i += 1) {
+      if (_checks.isSetBit(i)) continue;
+      if (i <= limit) yield i;
+      final startIndex = max(i * i, lastCheckIndex ~/ i * i + i);
+      for (var j = startIndex; j < _checks.length; j += i) {
+        _checks.setBit(j);
       }
     }
   }
 
   void invalidate() {
-    _checks.clear();
+    _checks.reset();
   }
 }
