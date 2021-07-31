@@ -6,9 +6,17 @@ import 'package:test/test.dart';
 import '../utils/compare_utils.dart';
 
 void main() {
+  const absentItem = 1000;
+  final random = Random();
+  var compareInt = IntComparator();
+  var compareIntReversed = IntComparator();
+
+  setUp(() {
+    compareInt = IntComparator();
+    compareIntReversed = IntComparator()..invert();
+  });
+
   group('SplayTree', () {
-    const absentItem = 1000;
-    final random = Random();
     final emptyTree = SplayTree(compareInt);
     var items = <int>[];
     var worstItems = <int>[];
@@ -35,7 +43,7 @@ void main() {
       expect(tree.breadthFirstTraversal, [17, 9, 20, 8, 15, 3, 10, 6]);
       expect(
         worstTree.breadthFirstTraversal,
-        worstItems..sort(compareInt.reversed),
+        worstItems..sort(compareIntReversed),
       );
     });
 
@@ -46,7 +54,7 @@ void main() {
       expect(tree.depthFirstPreOrderTraversal, [17, 9, 8, 3, 6, 15, 10, 20]);
       expect(
         worstTree.depthFirstPreOrderTraversal,
-        worstItems..sort(compareInt.reversed),
+        worstItems..sort(compareIntReversed),
       );
     });
 

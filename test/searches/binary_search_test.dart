@@ -6,11 +6,12 @@ import 'package:test/test.dart';
 import '../utils/compare_utils.dart';
 
 void main() {
+  final random = Random();
+
   group('BinarySearch', () {
     test('should find index in random list', () {
-      final random = Random();
       final items = List.generate(1000, (_) => random.nextInt(1000))
-        ..sort(compareInt);
+        ..sort(IntComparator());
       final target = items[random.nextInt(1000)];
       expect(items[items.binarySearch(target.compareTo)], target);
     });

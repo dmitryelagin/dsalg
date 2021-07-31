@@ -1,34 +1,31 @@
-import '../commons/linked_binary_node.dart';
-import 'base_binary_search_tree.dart';
-import 'base_binary_tree.dart';
+part of 'binary_tree.dart';
 
-class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
-  SplayTree(this._compare, [Iterable<T> items = const []])
-      : super(_createNode, _compare) {
+class SplayTree<T> extends _BaseBinarySearchTree<T, _SplayTreeNode<T>> {
+  SplayTree(Comparator<T> compare, [Iterable<T> items = const []])
+      : super(_createSplayTreeNode, compare) {
     insertAll(items);
   }
 
-  final Comparator<T> _compare;
-
-  static _BinaryNode<T> _createNode<T>(T value) => _BinaryNode(value);
+  static _SplayTreeNode<T> _createSplayTreeNode<T>(T value) =>
+      _SplayTreeNode(value);
 
   @override
   T get(T item) {
-    final node = getNode(item);
+    final node = _getNode(item);
     _splay(node);
     return node.value;
   }
 
   @override
   T getClosestTo(T item) {
-    final node = getNodeClosestTo(item);
+    final node = _getNodeClosestTo(item);
     _splay(node);
     return node.value;
   }
 
   @override
   void insert(T item) {
-    _splay(insertItem(item).current!);
+    _splay(_insertItem(item).current!);
   }
 
   @override
@@ -36,21 +33,21 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     if (isEmpty) return null;
     final nodes = _splitNodes(item), first = nodes.first;
     if (first == null) return null;
-    root = _mergeNodes(first.left, nodes.last);
+    _root = _mergeNodes(first.left, nodes.last);
     first.left = null;
     return first.value;
   }
 
-  Iterable<_BinaryNode<T>?> _splitNodes(T item) {
-    final node = getNodeClosestTo(item);
-    if (areNotEqual(_compare(item, node.value))) return const [null, null];
+  Iterable<_SplayTreeNode<T>?> _splitNodes(T item) {
+    final node = _getNodeClosestTo(item);
+    if (_compare.areNotEqual(item, node.value)) return const [null, null];
     _splay(node);
     final nodes = [node, node.right];
     node.right = null;
     return nodes;
   }
 
-  _BinaryNode<T>? _mergeNodes(_BinaryNode<T>? a, _BinaryNode<T>? b) {
+  _SplayTreeNode<T>? _mergeNodes(_SplayTreeNode<T>? a, _SplayTreeNode<T>? b) {
     if (a == null) return b;
     if (b == null) return a;
     final node = a.rightmost;
@@ -58,8 +55,8 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     return node..right = b;
   }
 
-  void _splay(_BinaryNode<T> x) {
-    root = x;
+  void _splay(_SplayTreeNode<T> x) {
+    _root = x;
     while (x.hasParent) {
       final y = x.parent!;
       final isLeftXY = x.isLeftOf(y), isRightXY = x.isRightOf(y);
@@ -90,6 +87,6 @@ class SplayTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
   }
 }
 
-class _BinaryNode<T> extends LinkedBinaryNode<T, _BinaryNode<T>> {
-  _BinaryNode(T value) : super(value);
+class _SplayTreeNode<T> extends LinkedBinaryNode<T, _SplayTreeNode<T>> {
+  _SplayTreeNode(T value) : super(value);
 }

@@ -1,38 +1,34 @@
-import '../collections/queue.dart';
-import '../commons/binary_node.dart';
+part of 'binary_tree.dart';
 
-abstract class BaseBinaryTree<T, N extends BinaryNode<T, N>> {
+abstract class _BaseBinaryTree<T, N extends BinaryNode<T, N>> {
   N? _root;
 
-  bool get isEmpty => root == null;
-  bool get isNotEmpty => root != null;
+  bool get isEmpty => _root == null;
+  bool get isNotEmpty => _root != null;
 
   Iterable<T> get breadthFirstTraversal =>
-      _breadthFirstSearch(root).map(_getValue);
+      _breadthFirstSearch(_root).map(_getValue);
 
   Iterable<T> get depthFirstPreOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.preOrder, root).map(_getValue);
+      _depthFirstSearch(_DepthFirstSearchType.preOrder, _root).map(_getValue);
 
   Iterable<T> get depthFirstInOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.inOrder, root).map(_getValue);
+      _depthFirstSearch(_DepthFirstSearchType.inOrder, _root).map(_getValue);
 
   Iterable<T> get depthFirstPostOrderTraversal =>
-      _depthFirstSearch(_DepthFirstSearchType.postOrder, root).map(_getValue);
+      _depthFirstSearch(_DepthFirstSearchType.postOrder, _root).map(_getValue);
+
+  void invert() {
+    _depthFirstSearch(_DepthFirstSearchType.preOrder, _root).map((node) {
+      node.swapChildren();
+    });
+  }
 
   void clear() {
-    root = null;
+    _root = null;
   }
 
   T _getValue(N node) => node.value;
-}
-
-extension ProtectedBaseBinaryTree<T, N extends BinaryNode<T, N>>
-    on BaseBinaryTree<T, N> {
-  N? get root => _root;
-
-  set root(N? value) {
-    _root = value;
-  }
 
   Iterable<N> _breadthFirstSearch(N? parent) sync* {
     final nodes = Queue([if (parent != null) parent]);

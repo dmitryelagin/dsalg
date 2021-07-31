@@ -1,18 +1,16 @@
-import '../commons/balance_binary_node.dart';
-import 'base_binary_search_tree.dart';
-import 'base_binary_tree.dart';
+part of 'binary_tree.dart';
 
-class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
+class AVLTree<T> extends _BaseBinarySearchTree<T, _AVLTreeNode<T>> {
   AVLTree(Comparator<T> compare, [Iterable<T> items = const []])
-      : super(_createNode, compare) {
+      : super(_createAVLTreeNode, compare) {
     insertAll(items);
   }
 
-  static _BinaryNode<T> _createNode<T>(T value) => _BinaryNode(value);
+  static _AVLTreeNode<T> _createAVLTreeNode<T>(T value) => _AVLTreeNode(value);
 
   @override
   void insert(T item) {
-    var node = insertItem(item).current!;
+    var node = _insertItem(item).current!;
     while (node.isBalanced) {
       if (node.hasNoParent) break;
       node = node.parent!;
@@ -22,7 +20,7 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
 
   @override
   T? remove(T item) {
-    final change = removeItem(item);
+    final change = _removeItem(item);
     var node = change.current ?? change.parent;
     while (node != null) {
       _rebalance(node);
@@ -31,7 +29,7 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     return change.previous?.value;
   }
 
-  void _rebalance(_BinaryNode<T>? z) {
+  void _rebalance(_AVLTreeNode<T>? z) {
     if (z == null || z.isBalanced) return;
     final y = z.tallestChild!, x = y.tallestChild!;
     final isLeftYZ = y.isLeftOf(z), isRightYZ = y.isRightOf(z);
@@ -40,11 +38,11 @@ class AVLTree<T> extends BaseBinarySearchTree<T, _BinaryNode<T>> {
     if (isRightYZ && isLeftXY) y.rotateRight();
     if (isLeftYZ) z.rotateRight();
     if (isRightYZ) z.rotateLeft();
-    if (y.hasNoParent) root = y;
-    if (x.hasNoParent) root = x;
+    if (y.hasNoParent) _root = y;
+    if (x.hasNoParent) _root = x;
   }
 }
 
-class _BinaryNode<T> extends BalanceBinaryNode<T, _BinaryNode<T>> {
-  _BinaryNode(T value) : super(value);
+class _AVLTreeNode<T> extends BalanceBinaryNode<T, _AVLTreeNode<T>> {
+  _AVLTreeNode(T value) : super(value);
 }

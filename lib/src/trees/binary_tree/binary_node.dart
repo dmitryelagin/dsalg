@@ -1,4 +1,4 @@
-import 'node.dart';
+import '../commons/node.dart';
 
 class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
   BinaryNode(this.value);
@@ -28,6 +28,12 @@ class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
     if (other == null) return;
     left = other.left;
     right = other.right;
+  }
+
+  void swapChildren() {
+    final node = left;
+    left = right;
+    right = node;
   }
 
   void clearChildren() {

@@ -1,5 +1,5 @@
-extension ComparatorUtils<T> on Comparator<T> {
-  Comparator<T> get reversed => (a, b) => this(a, b) * (-1);
-}
+import 'package:dsalg/dsalg.dart';
 
-int compareInt(int a, int b) => a - b;
+class IntComparator extends MemoizedComparator<int> {
+  IntComparator() : super((a, b) => a - b);
+}

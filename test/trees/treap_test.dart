@@ -6,9 +6,15 @@ import 'package:test/test.dart';
 import '../utils/compare_utils.dart';
 
 void main() {
+  const absentItem = 1000;
+  final random = Random();
+  var compareInt = IntComparator();
+
+  setUp(() {
+    compareInt = IntComparator();
+  });
+
   group('Treap', () {
-    const absentItem = 1000;
-    final random = Random();
     final emptyTree = Treap(compareInt);
     var items = <int>[];
     var worstItems = <int>[];

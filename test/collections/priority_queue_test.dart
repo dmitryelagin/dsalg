@@ -6,9 +6,15 @@ import 'package:test/test.dart';
 import '../utils/compare_utils.dart';
 
 void main() {
+  final random = Random();
+  var compareInt = IntComparator();
+
+  setUp(() {
+    compareInt = IntComparator();
+  });
+
   group('PriorityQueue', () {
     test('should insert and extract items in correct order', () {
-      final random = Random();
       final firstItems = List.generate(500, (_) => random.nextInt(1000));
       final queue = PriorityQueue(compareInt, firstItems);
       final secondItems = List.generate(500, (_) => random.nextInt(1000))

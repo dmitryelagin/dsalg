@@ -32,7 +32,7 @@ class BalanceBinaryNode<T, N extends BalanceBinaryNode<T, N>>
   }
 
   bool get isBalanced => _heightDifference.abs() <= 1;
-  bool get isUnbalanced => !isBalanced;
+  bool get isUnbalanced => _heightDifference.abs() > 1;
 
   int get _heightDifference => (left?._height ?? -1) - (right?._height ?? -1);
 
