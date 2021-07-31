@@ -1,34 +1,20 @@
-import '../commons/linked_list_entry.dart';
+import 'linked_list.dart';
 
 class Queue<T> {
   Queue([Iterable<T> items = const []]) {
     items.forEach(insert);
   }
 
-  LinkedListEntry<T>? _first;
-  LinkedListEntry<T>? _last;
+  final _items = LinkedList<T>();
 
-  int _length = 0;
+  int get length => _items.length;
 
-  int get length => _length;
-
-  bool get isEmpty => _first == null;
-  bool get isNotEmpty => _first != null;
+  bool get isEmpty => _items.isEmpty;
+  bool get isNotEmpty => _items.isNotEmpty;
 
   void insert(T item) {
-    final entry = LinkedListEntry(item);
-    _first ??= entry;
-    _last?.next = entry;
-    _last = entry;
-    _length += 1;
+    _items.insertLast(item);
   }
 
-  T extract() {
-    final entry = _first;
-    if (entry == null) throw StateError('Nothing to extract');
-    _first = entry.next;
-    if (_first == null) _last = null;
-    _length -= 1;
-    return entry.value;
-  }
+  T extract() => _items.extractFirst();
 }

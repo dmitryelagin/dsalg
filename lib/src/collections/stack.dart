@@ -1,29 +1,20 @@
-import '../commons/linked_list_entry.dart';
+import 'linked_list.dart';
 
 class Stack<T> {
   Stack([Iterable<T> items = const []]) {
     items.forEach(insert);
   }
 
-  LinkedListEntry<T>? _first;
+  final _items = LinkedList<T>();
 
-  int _length = 0;
+  int get length => _items.length;
 
-  int get length => _length;
-
-  bool get isEmpty => _first == null;
-  bool get isNotEmpty => _first != null;
+  bool get isEmpty => _items.isEmpty;
+  bool get isNotEmpty => _items.isNotEmpty;
 
   void insert(T item) {
-    _first = LinkedListEntry(item)..next = _first;
-    _length += 1;
+    _items.insertFirst(item);
   }
 
-  T extract() {
-    final entry = _first;
-    if (entry == null) throw StateError('Nothing to extract');
-    _first = entry.next;
-    _length -= 1;
-    return entry.value;
-  }
+  T extract() => _items.extractFirst();
 }
