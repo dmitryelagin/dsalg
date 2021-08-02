@@ -1,16 +1,17 @@
 part of 'binary_tree.dart';
 
-class BinarySearchTree<T>
-    extends _BaseBinarySearchTree<T, _BinarySearchTreeNode<T>> {
-  BinarySearchTree(Comparator<T> compare, [Iterable<T> items = const []])
-      : super(_createBinarySearchTreeNode, compare) {
-    insertAll(items);
+class BinarySearchTree<K, V>
+    extends _BaseBinarySearchTree<K, V, _BinarySearchNode<K, V>> {
+  BinarySearchTree(Comparator<K> compare, [Map<K, V> entries = const {}])
+      : super(_nodeFactory, compare) {
+    addAll(entries);
   }
 
-  static _BinarySearchTreeNode<T> _createBinarySearchTreeNode<T>(T value) =>
-      _BinarySearchTreeNode(value);
+  static _BinarySearchNode<K, V> _nodeFactory<K, V>(K key, V value) =>
+      _BinarySearchNode(key, value);
 }
 
-class _BinarySearchTreeNode<T> extends BinaryNode<T, _BinarySearchTreeNode<T>> {
-  _BinarySearchTreeNode(T value) : super(value);
+class _BinarySearchNode<K, V>
+    extends BinaryNode<K, V, _BinarySearchNode<K, V>> {
+  _BinarySearchNode(K key, V value) : super(key, value);
 }

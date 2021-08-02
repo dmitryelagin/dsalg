@@ -13,8 +13,8 @@ class Stack<T> {
   bool get isNotEmpty => _items.isNotEmpty;
 
   void insert(T item) {
-    _items.insertFirst(item);
+    _items.addFirst(item);
   }
 
-  T extract() => _items.extractFirst();
+  T extract() => _items.removeFirst();
 }

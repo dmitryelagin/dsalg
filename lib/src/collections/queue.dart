@@ -13,8 +13,8 @@ class Queue<T> {
   bool get isNotEmpty => _items.isNotEmpty;
 
   void insert(T item) {
-    _items.insertLast(item);
+    _items.addLast(item);
   }
 
-  T extract() => _items.extractFirst();
+  T extract() => _items.removeFirst();
 }

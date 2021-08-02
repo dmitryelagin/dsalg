@@ -1,6 +1,6 @@
 class LinkedList<T> {
   LinkedList([Iterable<T> items = const []]) {
-    items.forEach(insertLast);
+    items.forEach(addLast);
   }
 
   _LinkedListEntry<T>? _first;
@@ -29,13 +29,13 @@ class LinkedList<T> {
     _getEntry(key).value = item;
   }
 
-  void insertFirst(T item) {
+  void addFirst(T item) {
     _first = _LinkedListEntry(item, _first);
     _last ??= _first;
     _length += 1;
   }
 
-  void insertLast(T item) {
+  void addLast(T item) {
     final entry = _LinkedListEntry(item);
     _first ??= entry;
     _last?.next = entry;
@@ -43,11 +43,11 @@ class LinkedList<T> {
     _length += 1;
   }
 
-  void insert(int key, T item) {
+  void add(int key, T item) {
     if (key == 0) {
-      insertFirst(item);
+      addFirst(item);
     } else if (key == length) {
-      insertLast(item);
+      addLast(item);
     } else {
       final previous = _getEntry(key - 1);
       previous.next = _LinkedListEntry(item, previous.next);
@@ -55,7 +55,7 @@ class LinkedList<T> {
     }
   }
 
-  T extractFirst() {
+  T removeFirst() {
     if (isEmpty) throw StateError('Nothing to extract');
     final entry = _first!;
     _first = entry.next;
@@ -64,11 +64,11 @@ class LinkedList<T> {
     return entry.value;
   }
 
-  T extractLast() => extract(length - 1);
+  T removeLast() => remove(length - 1);
 
-  T extract(int key) {
+  T remove(int key) {
     if (isEmpty) throw StateError('Nothing to extract');
-    if (key == 0) return extractFirst();
+    if (key == 0) return removeFirst();
     final previous = _getEntry(key - 1), current = previous.next;
     if (current == null) throw RangeError.index(key, this);
     previous.next = current.next;

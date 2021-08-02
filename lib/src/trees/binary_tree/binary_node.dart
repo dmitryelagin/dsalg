@@ -1,10 +1,10 @@
 import '../commons/node.dart';
 
-class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
-  BinaryNode(this.value);
+class BinaryNode<K, V, N extends BinaryNode<K, V, N>> implements Node {
+  BinaryNode(this.key, this.value);
 
-  @override
-  T value;
+  K key;
+  V value;
 
   N? left;
   N? right;
@@ -23,6 +23,14 @@ class BinaryNode<T, N extends BinaryNode<T, N>> implements Node<T, N> {
 
   bool isLeftOf(N? node) => this == node?.left;
   bool isRightOf(N? node) => this == node?.right;
+
+  MapEntry<K, V> toEntry() => MapEntry(key, value);
+
+  void setEntryFrom(N? other) {
+    if (other == null) return;
+    key = other.key;
+    value = other.value;
+  }
 
   void setChildrenFrom(N? other) {
     if (other == null) return;

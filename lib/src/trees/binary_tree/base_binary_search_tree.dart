@@ -1,42 +1,45 @@
 part of 'binary_tree.dart';
 
-abstract class _BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
-    extends _BaseBinaryTree<T, N> {
-  _BaseBinarySearchTree(this._createNode, Comparator<T> compare)
-      : _compare = Comparator(compare);
+abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
+    extends _BaseBinaryTree<K, V, N> {
+  _BaseBinarySearchTree(this._createNode, this._compare);
 
-  final N Function(T) _createNode;
-  final Comparator<T> _compare;
+  final N Function(K, V) _createNode;
+  final Comparator<K> _compare;
 
-  T get min {
-    if (isNotEmpty) return _root!.leftmost.value;
-    throw StateError('Nothing to return');
+  MapEntry<K, V> get min {
+    _assertIsNotEmpty();
+    return _root!.leftmost.toEntry();
   }
 
-  T get max {
-    if (isNotEmpty) return _root!.rightmost.value;
-    throw StateError('Nothing to return');
+  MapEntry<K, V> get max {
+    _assertIsNotEmpty();
+    return _root!.rightmost.toEntry();
   }
 
-  bool contains(T item) =>
-      isNotEmpty && _compare.areEqual(item, getClosestTo(item));
+  V operator [](K key) => _getNode(key).value;
 
-  T get(T item) => _getNode(item).value;
-
-  T getClosestTo(T item) => _getNodeClosestTo(item).value;
-
-  void insert(T item) {
-    _insertItem(item);
+  void operator []=(K key, V value) {
+    add(key, value);
   }
 
-  void insertAll(Iterable<T> items) {
-    items.forEach(insert);
+  MapEntry<K, V> getClosestTo(K key) => _getNodeClosestTo(key).toEntry();
+
+  bool containsKey(K key) =>
+      isNotEmpty && _compare.areEqual(key, _getNodeClosestTo(key).key);
+
+  void add(K key, V value) {
+    _addItem(key, value);
   }
 
-  T? remove(T item) => _removeItem(item).previous?.value;
+  void addAll(Map<K, V> entries) {
+    entries.forEach(add);
+  }
 
-  Iterable<T> removeAll(Iterable<T> items) =>
-      items.map(remove).whereNotNull.toList();
+  V? remove(K key) => _removeItem(key).first?.value;
+
+  Iterable<V> removeAll(Iterable<K> keys) =>
+      keys.map(remove).whereNotNull.toList();
 
   @override
   void invert() {
@@ -44,81 +47,87 @@ abstract class _BaseBinarySearchTree<T, N extends BinaryNode<T, N>>
     super.invert();
   }
 
-  N _getNode(T item) {
-    if (isEmpty) throw StateError('Nothing to return');
-    final node = _getSearchPath(item).last;
-    if (_compare.areEqual(item, node.value)) return node;
+  N _getNode(K key) {
+    _assertIsNotEmpty();
+    final node = _getSearchPath(key).last;
+    if (_compare.areEqual(key, node.key)) return node;
     throw StateError('Item is not found');
   }
 
-  N _getNodeClosestTo(T item) {
-    if (isEmpty) throw StateError('Nothing to return');
-    final path = _getSearchPath(item);
-    var target = path.first, targetRatio = _compare(item, target.value);
+  N _getNodeClosestTo(K key) {
+    _assertIsNotEmpty();
+    final path = _getSearchPath(key);
+    var target = path.first, targetRatio = _compare(key, target.key).abs();
     for (final node in path.skip(1)) {
-      if (_compare(item, node.value).abs() > targetRatio.abs()) continue;
+      if (_compare(key, node.key).abs() > targetRatio) continue;
       target = node;
-      targetRatio = _compare(item, target.value);
+      targetRatio = _compare(key, target.key).abs();
     }
     return target;
   }
 
-  Iterable<N> _getSearchPath(T item) sync* {
+  Iterable<N> _getSearchPath(K key) sync* {
     var node = _root;
     while (node != null) {
       yield node;
-      final ratio = _compare(item, node.value);
+      final ratio = _compare(key, node.key);
       if (ratio == 0) break;
       node = node.getChildByRatio(ratio);
     }
   }
 
-  NodeChange<T, N> _insertItem(T item) {
-    if (isNotEmpty && _compare.areNotEqual(item, _root!.value)) {
-      return _insertChild(item, _root!);
+  NodeTuple<N> _addItem(K key, V value) {
+    if (isNotEmpty && _compare.areNotEqual(key, _root!.key)) {
+      return _addChild(key, value, _root!);
     }
-    final node = _createNode(item)..setChildrenFrom(_root);
-    return NodeChange(_root, _root = node);
+    final node = _createNode(key, value)..setChildrenFrom(_root);
+    return NodeTuple(_root, _root = node);
   }
 
-  NodeChange<T, N> _insertChild(T item, N parent) {
-    final ratio = _compare(item, parent.value);
+  NodeTuple<N> _addChild(K key, V value, N parent) {
+    final ratio = _compare(key, parent.key);
     final node = parent.getChildByRatio(ratio);
-    if (node != null && _compare.areNotEqual(item, node.value)) {
-      return _insertChild(item, node);
+    if (node != null && _compare.areNotEqual(key, node.key)) {
+      return _addChild(key, value, node);
     }
-    final child = _createNode(item)..setChildrenFrom(node);
+    final child = _createNode(key, value)..setChildrenFrom(node);
     return parent.setChildByRatio(ratio, child);
   }
 
-  NodeChange<T, N> _removeItem(T item) {
-    if (isEmpty) return const NodeChange.unchanged();
-    if (_compare.areNotEqual(item, _root!.value)) {
-      return _removeChild(item, _root!);
+  NodeTuple<N> _removeItem(K key) {
+    if (isEmpty) return const NodeTuple.empty();
+    if (_compare.areNotEqual(key, _root!.key)) {
+      return _removeChild(key, _root!);
     }
-    if (_root!.hasNoChildren) return NodeChange(_root, _root = null);
-    if (_root!.hasSingleChild) return NodeChange(_root, _root = _root!.child);
-    return _removeChild(_root!.value = _root!.right!.leftmost.value, _root!);
+    if (_root!.hasNoChildren) return NodeTuple(_root, _root = null);
+    if (_root!.hasSingleChild) return NodeTuple(_root, _root = _root!.child);
+    _root!.setEntryFrom(_root!.right!.leftmost);
+    return _removeChild(_root!.key, _root!);
   }
 
-  NodeChange<T, N> _removeChild(T item, N parent) {
-    final ratio = _compare(item, parent.value);
+  NodeTuple<N> _removeChild(K key, N parent) {
+    final ratio = _compare(key, parent.key);
     final node = parent.getChildByRatio(ratio);
-    if (node == null) return const NodeChange.unchanged();
-    if (_compare.areNotEqual(item, node.value)) {
-      return _removeChild(item, node);
+    if (node == null) return const NodeTuple.empty();
+    if (_compare.areNotEqual(key, node.key)) {
+      return _removeChild(key, node);
     }
     if (node.hasNoChildren) return parent.setChildByRatio(ratio, null);
     if (node.hasSingleChild) return parent.setChildByRatio(ratio, node.child);
-    return _removeChild(node.value = node.right!.leftmost.value, node);
+    node.setEntryFrom(node.right!.leftmost);
+    return _removeChild(node.key, node);
+  }
+
+  void _assertIsNotEmpty() {
+    if (isEmpty) throw StateError('Nothing to return');
   }
 }
 
-extension _BaseBinarySearchTreeNodeUtils<T, N extends BinaryNode<T, N>>
-    on BinaryNode<T, N> {
+extension _BaseBinarySearchTreeNodeUtils<K, V, N extends BinaryNode<K, V, N>>
+    on BinaryNode<K, V, N> {
   N? getChildByRatio(int ratio) => ratio < 0 ? left : right;
 
-  NodeChange<T, N> setChildByRatio(int ratio, N? node) => NodeChange(
+  NodeTuple<N> setChildByRatio(int ratio, N? node) => NodeTuple(
         getChildByRatio(ratio),
         ratio < 0 ? left = node : right = node,
         this as N,

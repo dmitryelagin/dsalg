@@ -4,111 +4,53 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
+import '../utils/data_utils.dart';
+import '../utils/int_utils.dart';
+import '../utils/iterable_utils.dart';
 
 void main() {
   const absentItem = 1000;
   final random = Random();
   var compareInt = IntComparator();
+  final emptyTree = Treap<int, int>(compareInt);
+  var items = <int>[], otherItems = <int>[];
+  var tree = Treap<int, int>(compareInt);
 
   setUp(() {
     compareInt = IntComparator();
+    final firstItems = createIntMap(500, absentItem);
+    tree = Treap(compareInt, firstItems);
+    final secondItems = createIntMap(500, absentItem);
+    tree.addAll(secondItems);
+    items = {...firstItems.keys, ...secondItems.keys}.toList();
+    otherItems = createIntList(200, absentItem)..add(absentItem);
   });
 
   group('Treap', () {
-    final emptyTree = Treap(compareInt);
-    var items = <int>[];
+    var worstTree = Treap<int, int>(compareInt);
     var worstItems = <int>[];
-    var otherItems = <int>[];
-    var tree = Treap(compareInt);
-    var worstTree = Treap(compareInt);
 
     setUp(() {
-      final firstItems = List.generate(500, (_) => random.nextInt(absentItem));
-      tree = Treap(compareInt, firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(absentItem));
-      tree.insertAll(secondItems);
-      items = {...firstItems, ...secondItems}.toList();
       worstItems = List.of(items)..sort(compareInt);
-      worstTree = Treap(compareInt, worstItems);
-      otherItems = List.generate(200, (_) => random.nextInt(absentItem))
-        ..add(absentItem);
-    });
-
-    test('should be able to traverse depth first in order', () {
-      expect(tree.depthFirstInOrderTraversal, items..sort(compareInt));
+      worstTree = Treap(compareInt, worstItems.toMap());
     });
 
     test('should be able to traverse depth first with decent performance', () {
       _checkDepthFirstTraversalIndirectly(
-        worstTree.depthFirstPreOrderTraversal.toList(),
+        worstTree.depthFirstPreOrderTraversalKeys.toList(),
       );
       _checkDepthFirstTraversalIndirectly(
-        worstTree.depthFirstPostOrderTraversal.toList(),
-      );
-    });
-
-    test('should find min value', () {
-      expect(tree.min, items.reduce(min));
-    });
-
-    test('should throw when has no min value to find', () {
-      expect(() => emptyTree.min, throwsStateError);
-    });
-
-    test('should find max value', () {
-      expect(tree.max, items.reduce(max));
-    });
-
-    test('should throw when has no max value to find', () {
-      expect(() => emptyTree.max, throwsStateError);
-    });
-
-    test('should determine if it contains an item', () {
-      for (final item in otherItems) {
-        expect(tree.contains(item), items.contains(item));
-      }
-    });
-
-    test('should find an item', () {
-      for (final item in otherItems.where(items.contains)) {
-        expect(items.contains(tree.get(item)), isTrue);
-      }
-    });
-
-    test('should throw when item is not found', () {
-      expect(() => tree.get(absentItem), throwsStateError);
-    });
-
-    test('should find an item closest to argument', () {
-      int getBig() => 2000;
-      tree.removeAll(otherItems);
-      final items = tree.depthFirstInOrderTraversal.toList();
-      for (final other in otherItems) {
-        final small = items.lastWhere((item) => item < other, orElse: getBig);
-        final large = items.firstWhere((item) => item > other, orElse: getBig);
-        final diff = min((other - small).abs(), (other - large).abs());
-        final target = tree.getClosestTo(other);
-        expect((other - target).abs(), diff);
-      }
-    });
-
-    test('should remove nodes and preserve search structure', () {
-      tree.removeAll(otherItems);
-      expect(
-        tree.depthFirstInOrderTraversal,
-        items
-          ..sort(compareInt)
-          ..removeWhere(otherItems.contains),
+        worstTree.depthFirstPostOrderTraversalKeys.toList(),
       );
     });
 
     test('should have decent performance after nodes change', () {
       tree.removeAll(otherItems);
       _checkDepthFirstTraversalIndirectly(
-        tree.depthFirstPreOrderTraversal.toList(),
+        tree.depthFirstPreOrderTraversalKeys.toList(),
       );
       _checkDepthFirstTraversalIndirectly(
-        tree.depthFirstPostOrderTraversal.toList(),
+        tree.depthFirstPostOrderTraversalKeys.toList(),
       );
     });
 
@@ -117,8 +59,14 @@ void main() {
       final index = random.nextInt(items.length), item = items[index];
       final first = items.sublist(0, index), second = items.sublist(index + 1);
       final trees = tree.split(item);
-      expect(trees.first.depthFirstInOrderTraversal, first);
-      expect(trees.last.depthFirstInOrderTraversal, second);
+      expect(
+        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        first.toMapEntries().toString(),
+      );
+      expect(
+        trees.last.depthFirstInOrderTraversalEntries.toString(),
+        second.toMapEntries().toString(),
+      );
       expect(tree.isEmpty, isTrue);
     });
 
@@ -128,8 +76,14 @@ void main() {
       items.removeAt(index);
       final first = items.sublist(0, index), second = items.sublist(index);
       final trees = tree.split(item);
-      expect(trees.first.depthFirstInOrderTraversal, first);
-      expect(trees.last.depthFirstInOrderTraversal, second);
+      expect(
+        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        first.toMapEntries().toString(),
+      );
+      expect(
+        trees.last.depthFirstInOrderTraversalEntries.toString(),
+        second.toMapEntries().toString(),
+      );
       expect(tree.isEmpty, isTrue);
     });
 
@@ -146,36 +100,119 @@ void main() {
       final index = random.nextInt(items.length), item = items[index];
       final trees = tree.split(item);
       trees.first.union(trees.last);
-      expect(trees.first.depthFirstInOrderTraversal, items..remove(item));
+      items.remove(item);
+      expect(
+        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        items.toMapEntries().toString(),
+      );
       expect(trees.last.isEmpty, isTrue);
     });
 
-    test('should be properly union', () {
+    test('should union properly', () {
       const margin = absentItem ~/ 3;
-      final firstItems = List.generate(500, (_) {
-        return random.nextInt(absentItem - margin);
-      });
-      final secondItems = List.generate(500, (_) {
-        return random.nextInt(absentItem - margin) + margin;
-      });
+      final firstItems = createIntList(500, absentItem - margin);
+      final secondItems = createIntList(500, absentItem - margin, margin);
       final items = {...firstItems, ...secondItems}.toList();
-      final tree = Treap(compareInt, firstItems);
-      final unionTree = Treap(compareInt, secondItems)..union(tree);
-      expect(unionTree.depthFirstInOrderTraversal, items..sort(compareInt));
+      final tree = Treap<int, int>(compareInt, firstItems.toMap());
+      final unionTree = Treap<int, int>(compareInt, secondItems.toMap())
+        ..union(tree);
+      items.sort(compareInt);
+      expect(
+        unionTree.depthFirstInOrderTraversalEntries.toString(),
+        items.toMapEntries().toString(),
+      );
       expect(tree.isEmpty, isTrue);
       _checkDepthFirstTraversalIndirectly(
-        unionTree.depthFirstPreOrderTraversal.toList(),
+        unionTree.depthFirstPreOrderTraversalKeys.toList(),
       );
       _checkDepthFirstTraversalIndirectly(
-        unionTree.depthFirstPostOrderTraversal.toList(),
+        unionTree.depthFirstPostOrderTraversalKeys.toList(),
       );
     });
 
     test('should not fail with empty cases', () {
-      var unionTree = Treap(compareInt)..union(Treap(compareInt));
-      expect(unionTree.depthFirstInOrderTraversal, isEmpty);
+      var unionTree = Treap<int, int>(compareInt)
+        ..union(Treap<int, int>(compareInt));
+      expect(unionTree.depthFirstInOrderTraversalEntries, isEmpty);
       unionTree = tree..union(emptyTree);
-      expect(unionTree.depthFirstInOrderTraversal, items..sort(compareInt));
+      expect(
+        unionTree.depthFirstInOrderTraversalEntries.toString(),
+        items.copySort(compareInt).toMapEntries().toString(),
+      );
+    });
+  });
+
+  group('Treap as BaseBinarySearchTree', () {
+    int getBigItem() => 2000;
+
+    test('should be able to traverse depth first in order', () {
+      expect(
+        tree.entries.toString(),
+        items.copySort(compareInt).toMapEntries().toString(),
+      );
+    });
+
+    test('should remove nodes and preserve search structure', () {
+      tree.removeAll(otherItems);
+      items
+        ..sort(compareInt)
+        ..removeWhere(otherItems.contains);
+      expect(
+        tree.entries.toString(),
+        items.toMapEntries().toString(),
+      );
+    });
+
+    test('should find min value', () {
+      expect(
+        tree.min.toString(),
+        items.reduce(min).toMapEntry().toString(),
+      );
+    });
+
+    test('should throw when has no min value to find', () {
+      expect(() => emptyTree.min, throwsStateError);
+    });
+
+    test('should find max value', () {
+      expect(
+        tree.max.toString(),
+        items.reduce(max).toMapEntry().toString(),
+      );
+    });
+
+    test('should throw when has no max value to find', () {
+      expect(() => emptyTree.max, throwsStateError);
+    });
+
+    test('should determine if it contains an item', () {
+      for (final item in otherItems) {
+        expect(tree.containsKey(item), items.contains(item));
+      }
+    });
+
+    test('should find an item', () {
+      for (final item in otherItems.where(items.contains)) {
+        expect(items.contains(tree[item]), isTrue);
+      }
+    });
+
+    test('should throw when item is not found', () {
+      expect(() => tree[absentItem], throwsStateError);
+    });
+
+    test('should find an item closest to argument', () {
+      tree.removeAll(otherItems);
+      final items = tree.depthFirstInOrderTraversalKeys.toList();
+      for (final other in otherItems) {
+        final small =
+            items.lastWhere((item) => item < other, orElse: getBigItem);
+        final large =
+            items.firstWhere((item) => item > other, orElse: getBigItem);
+        final diff = min((other - small).abs(), (other - large).abs());
+        final target = tree.getClosestTo(other).key;
+        expect((other - target).abs(), diff);
+      }
     });
   });
 }

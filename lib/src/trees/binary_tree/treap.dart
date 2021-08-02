@@ -1,29 +1,29 @@
 part of 'binary_tree.dart';
 
-class Treap<T> extends _BaseBinarySearchTree<T, _TreapNode<T>> {
-  Treap(Comparator<T> compare, [Iterable<T> items = const [], Random? random])
+class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
+  Treap(Comparator<K> compare, [Map<K, V> entries = const {}, Random? random])
       : _random = random ?? _defaultRandom,
-        super(_createTreapNodeFactory(random ?? _defaultRandom), compare) {
-    insertAll(items);
+        super(_getNodeFactory(random ?? _defaultRandom), compare) {
+    addAll(entries);
   }
 
   static final _defaultRandom = Random();
 
   final Random _random;
 
-  static _TreapNode<T> Function(T) _createTreapNodeFactory<T>(Random random) =>
-      (value) => _TreapNode(value, random.nextDouble());
+  static _TreapNode<K, V> Function(K, V) _getNodeFactory<K, V>(Random random) =>
+      (key, value) => _TreapNode(key, value, random.nextDouble());
 
   @override
-  void insert(T item) {
-    _bubble(_insertItem(item).current!);
+  void add(K key, V value) {
+    _bubble(_addItem(key, value).next!);
   }
 
   @override
-  T? remove(T item) {
+  V? remove(K key) {
     if (isEmpty) return null;
-    final node = _getNodeClosestTo(item);
-    if (_compare.areNotEqual(node.value, item)) return null;
+    final node = _getNodeClosestTo(key);
+    if (_compare.areNotEqual(node.key, key)) return null;
     _sink(node..priority = double.infinity);
     if (node == _root) clear();
     if (node.isLeftOf(node.parent)) node.parent!.left = null;
@@ -31,50 +31,50 @@ class Treap<T> extends _BaseBinarySearchTree<T, _TreapNode<T>> {
     return node.value;
   }
 
-  Iterable<Treap<T>> split(T item) => [
-        for (final node in _splitNodes(item))
-          Treap(_compare, const [], _random).._root = node,
-      ];
+  Iterable<Treap<K, V>> split(K key) {
+    final nodes = _splitNodes(key);
+    return [
+      Treap(_compare, const {}, _random).._root = nodes.first,
+      Treap(_compare, const {}, _random).._root = nodes.next,
+    ];
+  }
 
-  void union(Treap<T> other) {
+  void union(Treap<K, V> other) {
     _root = _unionNodes(_root, other._root);
     other.clear();
   }
 
-  Iterable<_TreapNode<T>?> _splitNodes(T item) {
-    final node = _insertItem(item).current!..priority = -double.infinity;
+  NodeTuple<_TreapNode<K, V>> _splitNodes(K key) {
+    if (isEmpty) return const NodeTuple.empty();
+    final node = _addItem(key, _root!.value).next!..priority = -double.infinity;
     _bubble(node);
-    final nodes = [node.left, node.right];
+    final nodes = NodeTuple(node.left, node.right);
     node.clearChildren();
     clear();
     return nodes;
   }
 
-  _TreapNode<T>? _unionNodes(_TreapNode<T>? a, _TreapNode<T>? b) {
+  _TreapNode<K, V>? _unionNodes(_TreapNode<K, V>? a, _TreapNode<K, V>? b) {
     if (a == null) return b;
     if (b == null) return a;
     _root = a.priority < b.priority ? b : a;
-    final item = _root!.value;
-    final highTrees = _splitNodes(item);
+    final key = _root!.key, value = _root!.value;
+    final highTrees = _splitNodes(key);
     _root = a.priority < b.priority ? a : b;
-    final lowTrees = _splitNodes(item);
-    final highNode = _unionNodes(highTrees.last, lowTrees.last);
+    final lowTrees = _splitNodes(key);
+    final highNode = _unionNodes(highTrees.next, lowTrees.next);
     final lowNode = _unionNodes(highTrees.first, lowTrees.first);
-    return _mergeNodes(lowNode, item, highNode);
-  }
-
-  _TreapNode<T>? _mergeNodes(_TreapNode<T>? a, T item, _TreapNode<T>? b) {
     clear();
-    _insertItem(item).current!
-      ..left = a
-      ..right = b;
+    _addItem(key, value).next!
+      ..left = lowNode
+      ..right = highNode;
     _sink(_root!);
     final node = _root;
     clear();
     return node;
   }
 
-  void _bubble(_TreapNode<T> node) {
+  void _bubble(_TreapNode<K, V> node) {
     var parent = node.parent;
     while (node.hasParent && node.priority < parent!.priority) {
       if (node.isLeftOf(parent)) parent.rotateRight();
@@ -84,7 +84,7 @@ class Treap<T> extends _BaseBinarySearchTree<T, _TreapNode<T>> {
     if (node.hasNoParent) _root = node;
   }
 
-  void _sink(_TreapNode<T> node) {
+  void _sink(_TreapNode<K, V> node) {
     while (node.hasChild && node.priority > node.lowPriorityChild!.priority) {
       if (node.hasBothChildren && node.left!.priority < node.right!.priority ||
           node.hasSingleChild && node.hasLeft) {
@@ -97,6 +97,6 @@ class Treap<T> extends _BaseBinarySearchTree<T, _TreapNode<T>> {
   }
 }
 
-class _TreapNode<T> extends PriorityBinaryNode<T, _TreapNode<T>> {
-  _TreapNode(T value, double priority) : super(value, priority);
+class _TreapNode<K, V> extends PriorityBinaryNode<K, V, _TreapNode<K, V>> {
+  _TreapNode(K key, V value, double priority) : super(key, value, priority);
 }

@@ -1,16 +1,17 @@
 part of 'binary_tree.dart';
 
-class AVLTree<T> extends _BaseBinarySearchTree<T, _AVLTreeNode<T>> {
-  AVLTree(Comparator<T> compare, [Iterable<T> items = const []])
-      : super(_createAVLTreeNode, compare) {
-    insertAll(items);
+class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
+  AVLTree(Comparator<K> compare, [Map<K, V> entries = const {}])
+      : super(_nodeFactory, compare) {
+    addAll(entries);
   }
 
-  static _AVLTreeNode<T> _createAVLTreeNode<T>(T value) => _AVLTreeNode(value);
+  static _AVLNode<K, V> _nodeFactory<K, V>(K key, V value) =>
+      _AVLNode(key, value);
 
   @override
-  void insert(T item) {
-    var node = _insertItem(item).current!;
+  void add(K key, V value) {
+    var node = _addItem(key, value).next!;
     while (node.isBalanced) {
       if (node.hasNoParent) break;
       node = node.parent!;
@@ -19,17 +20,17 @@ class AVLTree<T> extends _BaseBinarySearchTree<T, _AVLTreeNode<T>> {
   }
 
   @override
-  T? remove(T item) {
-    final change = _removeItem(item);
-    var node = change.current ?? change.parent;
+  V? remove(K key) {
+    final change = _removeItem(key);
+    var node = change.next ?? change.parent;
     while (node != null) {
       _rebalance(node);
       node = node.parent;
     }
-    return change.previous?.value;
+    return change.first?.value;
   }
 
-  void _rebalance(_AVLTreeNode<T>? z) {
+  void _rebalance(_AVLNode<K, V>? z) {
     if (z == null || z.isBalanced) return;
     final y = z.tallestChild!, x = y.tallestChild!;
     final isLeftYZ = y.isLeftOf(z), isRightYZ = y.isRightOf(z);
@@ -43,6 +44,6 @@ class AVLTree<T> extends _BaseBinarySearchTree<T, _AVLTreeNode<T>> {
   }
 }
 
-class _AVLTreeNode<T> extends BalanceBinaryNode<T, _AVLTreeNode<T>> {
-  _AVLTreeNode(T value) : super(value);
+class _AVLNode<K, V> extends BalanceBinaryNode<K, V, _AVLNode<K, V>> {
+  _AVLNode(K key, V value) : super(key, value);
 }
