@@ -59,7 +59,7 @@ abstract class _BaseBinaryTree<K, V, N extends BinaryNode<K, V, N>> {
 
   void invert() {
     for (final node in _depthFirstPreOrderTraversal) {
-      node.swapChildren();
+      if (node.hasChild) node.swapChildren();
     }
   }
 

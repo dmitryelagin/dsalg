@@ -4,28 +4,20 @@ class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
     extends BinaryNode<K, V, N> {
   LinkedBinaryNode(K key, V value) : super(key, value);
 
-  N? _left;
-  N? _right;
   N? _parent;
 
   @override
-  N? get left => _left;
-
-  @override
   set left(N? node) {
-    if (_left?.parent == this) _left!._parent = null;
+    if (left?.parent == this) left!._parent = null;
     node?._changeParent(this as N);
-    _left = node;
+    super.left = node;
   }
 
   @override
-  N? get right => _right;
-
-  @override
   set right(N? node) {
-    if (_right?.parent == this) _right!._parent = null;
+    if (right?.parent == this) right!._parent = null;
     node?._changeParent(this as N);
-    _right = node;
+    super.right = node;
   }
 
   N? get parent => _parent;

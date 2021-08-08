@@ -9,16 +9,10 @@ class BalanceBinaryNode<K, V, N extends BalanceBinaryNode<K, V, N>>
   int _height = 0;
 
   @override
-  N? get left => super.left;
-
-  @override
   set left(N? node) {
     super.left = node;
     _alignHeight();
   }
-
-  @override
-  N? get right => super.right;
 
   @override
   set right(N? node) {
