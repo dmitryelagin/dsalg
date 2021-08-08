@@ -27,7 +27,7 @@ class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
     if (isRightOf(parent)) return parent!.left;
   }
 
-  bool get hasParent => !hasNoParent;
+  bool get hasParent => parent != null;
   bool get hasNoParent => parent == null;
 
   void rotateLeft() {

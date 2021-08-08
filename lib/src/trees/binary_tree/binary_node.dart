@@ -24,7 +24,7 @@ class BinaryNode<K, V, N extends BinaryNode<K, V, N>> implements Node {
   bool isLeftOf(N? node) => this == node?.left;
   bool isRightOf(N? node) => this == node?.right;
 
-  MapEntry<K, V> toEntry() => MapEntry(key, value);
+  MapEntry<K, V> toMapEntry() => MapEntry(key, value);
 
   void setEntryFrom(N? other) {
     if (other == null) return;

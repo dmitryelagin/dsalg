@@ -20,7 +20,7 @@ class SplayTree<K, V> extends _BaseBinarySearchTree<K, V, _SplayNode<K, V>> {
   MapEntry<K, V> getClosestTo(K key) {
     final node = _getNodeClosestTo(key);
     _splay(node);
-    return node.toEntry();
+    return node.toMapEntry();
   }
 
   @override

@@ -9,12 +9,12 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
 
   MapEntry<K, V> get min {
     _assertIsNotEmpty();
-    return _root!.leftmost.toEntry();
+    return _root!.leftmost.toMapEntry();
   }
 
   MapEntry<K, V> get max {
     _assertIsNotEmpty();
-    return _root!.rightmost.toEntry();
+    return _root!.rightmost.toMapEntry();
   }
 
   V operator [](K key) => _getNode(key).value;
@@ -23,7 +23,7 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
     add(key, value);
   }
 
-  MapEntry<K, V> getClosestTo(K key) => _getNodeClosestTo(key).toEntry();
+  MapEntry<K, V> getClosestTo(K key) => _getNodeClosestTo(key).toMapEntry();
 
   bool containsKey(K key) =>
       isNotEmpty && _compare.areEqual(key, _getNodeClosestTo(key).key);

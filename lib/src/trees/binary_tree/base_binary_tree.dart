@@ -69,7 +69,7 @@ abstract class _BaseBinaryTree<K, V, N extends BinaryNode<K, V, N>> {
 
   K _getKey(N node) => node.key;
   V _getValue(N node) => node.value;
-  MapEntry<K, V> _getEntry(N node) => node.toEntry();
+  MapEntry<K, V> _getEntry(N node) => node.toMapEntry();
 
   Iterable<N> _breadthFirstSearch(N? parent) sync* {
     final nodes = Queue([if (parent != null) parent]);
