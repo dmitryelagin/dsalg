@@ -58,16 +58,15 @@ void main() {
       items.sort(compareInt);
       final index = random.nextInt(items.length), item = items[index];
       final first = items.sublist(0, index), second = items.sublist(index + 1);
-      final trees = tree.split(item);
+      final other = tree.split(item);
       expect(
-        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        tree.depthFirstInOrderTraversalEntries.toString(),
         first.toMapEntries().toString(),
       );
       expect(
-        trees.last.depthFirstInOrderTraversalEntries.toString(),
+        other.depthFirstInOrderTraversalEntries.toString(),
         second.toMapEntries().toString(),
       );
-      expect(tree.isEmpty, isTrue);
     });
 
     test('should be properly splitted by non-existing item', () {
@@ -75,37 +74,41 @@ void main() {
       final index = random.nextInt(items.length), item = items[index];
       items.removeAt(index);
       final first = items.sublist(0, index), second = items.sublist(index);
-      final trees = tree.split(item);
+      final other = tree.split(item);
       expect(
-        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        tree.depthFirstInOrderTraversalEntries.toString(),
         first.toMapEntries().toString(),
       );
       expect(
-        trees.last.depthFirstInOrderTraversalEntries.toString(),
+        other.depthFirstInOrderTraversalEntries.toString(),
         second.toMapEntries().toString(),
       );
-      expect(tree.isEmpty, isTrue);
+    });
+
+    test('should be less than other tree after split', () {
+      final index = random.nextInt(items.length);
+      final other = tree.split(items[index]);
+      expect(tree.max.key, lessThan(other.min.key));
     });
 
     test('should be splitted if empty', () {
-      final trees = emptyTree.split(absentItem);
-      expect(trees.first, isNotNull);
-      expect(trees.first.isEmpty, isTrue);
-      expect(trees.last, isNotNull);
-      expect(trees.last.isEmpty, isTrue);
+      final other = emptyTree.split(absentItem);
+      expect(emptyTree.isEmpty, isTrue);
+      expect(other, isNotNull);
+      expect(other.isEmpty, isTrue);
     });
 
     test('should be properly merged after split', () {
       items.sort(compareInt);
       final index = random.nextInt(items.length), item = items[index];
-      final trees = tree.split(item);
-      trees.first.union(trees.last);
+      final other = tree.split(item);
+      tree.union(other);
       items.remove(item);
       expect(
-        trees.first.depthFirstInOrderTraversalEntries.toString(),
+        tree.depthFirstInOrderTraversalEntries.toString(),
         items.toMapEntries().toString(),
       );
-      expect(trees.last.isEmpty, isTrue);
+      expect(other.isEmpty, isTrue);
     });
 
     test('should union properly', () {

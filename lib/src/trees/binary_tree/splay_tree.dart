@@ -31,28 +31,19 @@ class SplayTree<K, V> extends _BaseBinarySearchTree<K, V, _SplayNode<K, V>> {
   @override
   V? remove(K key) {
     if (isEmpty) return null;
-    final nodes = _splitNodes(key), first = nodes.first;
-    if (first == null) return null;
-    _root = _mergeNodes(first.left, nodes.next);
-    first.left = null;
-    return first.value;
-  }
-
-  NodeTuple<_SplayNode<K, V>> _splitNodes(K key) {
     final node = _getNodeClosestTo(key);
-    if (_compare.areNotEqual(key, node.key)) return const NodeTuple.empty();
+    if (_compare.areNotEqual(key, node.key)) return null;
     _splay(node);
-    final nodes = NodeTuple(node, node.right);
+    final left = node.left, right = node.right;
     node.right = null;
-    return nodes;
-  }
-
-  _SplayNode<K, V>? _mergeNodes(_SplayNode<K, V>? a, _SplayNode<K, V>? b) {
-    if (a == null) return b;
-    if (b == null) return a;
-    final node = a.rightmost;
-    _splay(node);
-    return node..right = b;
+    if (left == null || right == null) {
+      _root = left ?? right;
+    } else {
+      _splay(left.rightmost);
+      _root!.right = right;
+    }
+    node.left = null;
+    return node.value;
   }
 
   void _splay(_SplayNode<K, V> x) {

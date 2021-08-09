@@ -31,47 +31,43 @@ class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
     return node.value;
   }
 
-  Iterable<Treap<K, V>> split(K key) {
-    final nodes = _splitNodes(key);
-    return [
-      Treap(_compare, const {}, _random).._root = nodes.first,
-      Treap(_compare, const {}, _random).._root = nodes.next,
-    ];
-  }
+  Treap<K, V> split(K key) =>
+      Treap(_compare, const {}, _random).._root = _split(key);
 
   void union(Treap<K, V> other) {
-    _root = _unionNodes(_root, other._root);
+    _union(_root, other._root);
     other.clear();
   }
 
-  NodeTuple<_TreapNode<K, V>> _splitNodes(K key) {
-    if (isEmpty) return const NodeTuple.empty();
+  _TreapNode<K, V>? _split(K key) {
+    if (isEmpty) return null;
     final node = _addItem(key, _root!.value).next!..priority = -double.infinity;
     _bubble(node);
-    final nodes = NodeTuple(node.left, node.right);
+    _root = node.left;
+    final right = node.right;
     node.clearChildren();
-    clear();
-    return nodes;
+    return right;
   }
 
-  _TreapNode<K, V>? _unionNodes(_TreapNode<K, V>? a, _TreapNode<K, V>? b) {
-    if (a == null) return b;
-    if (b == null) return a;
-    _root = a.priority < b.priority ? b : a;
-    final key = _root!.key, value = _root!.value;
-    final highTrees = _splitNodes(key);
-    _root = a.priority < b.priority ? a : b;
-    final lowTrees = _splitNodes(key);
-    final highNode = _unionNodes(highTrees.next, lowTrees.next);
-    final lowNode = _unionNodes(highTrees.first, lowTrees.first);
-    clear();
-    _addItem(key, value).next!
-      ..left = lowNode
-      ..right = highNode;
-    _sink(_root!);
-    final node = _root;
-    clear();
-    return node;
+  void _union(_TreapNode<K, V>? a, _TreapNode<K, V>? b) {
+    if (a == null || b == null) {
+      _root = a ?? b;
+    } else {
+      _root = a.priority < b.priority ? b : a;
+      final key = _root!.key, value = _root!.value;
+      final highRight = _split(key), highLeft = _root;
+      _root = a.priority < b.priority ? a : b;
+      final lowRight = _split(key), lowLeft = _root;
+      _union(highRight, lowRight);
+      final highNode = _root;
+      _union(highLeft, lowLeft);
+      final lowNode = _root;
+      clear();
+      _addItem(key, value).next!
+        ..left = lowNode
+        ..right = highNode;
+      _sink(_root!);
+    }
   }
 
   void _bubble(_TreapNode<K, V> node) {
