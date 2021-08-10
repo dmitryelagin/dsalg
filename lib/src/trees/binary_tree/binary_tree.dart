@@ -17,3 +17,5 @@ part 'base_binary_search_tree.dart';
 part 'base_mutable_binary_tree.dart';
 part 'splay_tree.dart';
 part 'treap.dart';
+
+abstract class BinaryTree<K, V> implements _BaseBinaryTree<K, V> {}
