@@ -1,43 +1,53 @@
 part of 'binary_tree.dart';
 
-abstract class _BaseBinarySearchTree<K, V, N extends MutableBinaryNode<K, V, N>>
-    extends _BaseMutableBinaryTree<K, V, N> {
+abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
+    extends _BaseBinaryTree<K, V, N> implements BaseBinarySearchTree<K, V> {
   _BaseBinarySearchTree(this._createNode, this._compare);
 
   final N Function(K, V) _createNode;
   final Comparator<K> _compare;
 
+  @override
   MapEntry<K, V> get min {
     _assertIsNotEmpty();
     return _root!.leftmost.toMapEntry();
   }
 
+  @override
   MapEntry<K, V> get max {
     _assertIsNotEmpty();
     return _root!.rightmost.toMapEntry();
   }
 
+  @override
   V operator [](K key) => _getNode(key).value;
 
+  @override
   void operator []=(K key, V value) {
     add(key, value);
   }
 
+  @override
   MapEntry<K, V> getClosestTo(K key) => _getNodeClosestTo(key).toMapEntry();
 
+  @override
   bool containsKey(K key) =>
       isNotEmpty && _compare.areEqual(key, _getNodeClosestTo(key).key);
 
+  @override
   void add(K key, V value) {
     _addItem(key, value);
   }
 
+  @override
   void addAll(Map<K, V> entries) {
     entries.forEach(add);
   }
 
+  @override
   V? remove(K key) => _removeItem(key).first?.value;
 
+  @override
   Iterable<V> removeAll(Iterable<K> keys) =>
       keys.map(remove).whereNotNull.toList();
 
@@ -123,8 +133,7 @@ abstract class _BaseBinarySearchTree<K, V, N extends MutableBinaryNode<K, V, N>>
   }
 }
 
-extension _MutableBinaryNodeUtils<K, V, N extends MutableBinaryNode<K, V, N>>
-    on N {
+extension _BinaryNodeUtils<K, V, N extends BinaryNode<K, V, N>> on N {
   N? getChildByRatio(int ratio) => ratio < 0 ? left : right;
 
   NodeTuple<N> setChildByRatio(int ratio, N? node) => NodeTuple(
