@@ -1,7 +1,7 @@
-import 'binary_node.dart';
+import 'mutable_binary_node.dart';
 
 class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
-    extends BinaryNode<K, V, N> {
+    extends MutableBinaryNode<K, V, N> {
   LinkedBinaryNode(K key, V value) : super(key, value);
 
   N? _parent;
