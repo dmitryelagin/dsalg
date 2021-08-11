@@ -103,4 +103,13 @@ void testBaseBinarySearchTree(
       expect((other - target).abs(), diff);
     }
   });
+
+  test('should properly invert tree structure', () {
+    final inOrder = tree.depthFirstInOrderTraversalKeys.toList();
+    final preOrder = tree.depthFirstPreOrderTraversalKeys.toList();
+    tree.invert();
+    expect(tree.depthFirstInOrderTraversalKeys, inOrder.reversed);
+    expect(tree.depthFirstPreOrderTraversalKeys.first, preOrder.first);
+    expect(tree.depthFirstPreOrderTraversalKeys, isNot(preOrder.reversed));
+  });
 }
