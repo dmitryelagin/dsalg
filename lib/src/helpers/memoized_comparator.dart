@@ -6,7 +6,7 @@ class MemoizedComparator<T> extends Comparator<T> {
   T? _a;
   T? _b;
 
-  int _ratio = 0;
+  var _ratio = 0;
 
   @override
   int call(T a, T b) {

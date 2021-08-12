@@ -3,7 +3,7 @@ import 'dart:math';
 class FibonacciSeriesFactory {
   static final instance = FibonacciSeriesFactory();
 
-  var _cache = <int>[0, 1];
+  var _cache = [0, 1];
 
   Iterable<int> getAllBelow(int limit) sync* {
     final cachedLimit = min(limit, _cache.length);

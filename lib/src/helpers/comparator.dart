@@ -3,7 +3,7 @@ class Comparator<T> {
 
   final int Function(T, T) _compare;
 
-  int _modifier = 1;
+  var _modifier = 1;
 
   int call(T a, T b) => _compare(a, b) * _modifier;
 

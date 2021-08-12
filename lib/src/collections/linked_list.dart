@@ -6,7 +6,7 @@ class LinkedList<T> {
   _LinkedListEntry<T>? _first;
   _LinkedListEntry<T>? _last;
 
-  int _length = 0;
+  var _length = 0;
 
   int get length => _length;
 

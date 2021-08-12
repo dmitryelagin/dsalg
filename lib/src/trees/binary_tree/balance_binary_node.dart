@@ -6,7 +6,7 @@ class BalanceBinaryNode<K, V, N extends BalanceBinaryNode<K, V, N>>
     extends LinkedBinaryNode<K, V, N> {
   BalanceBinaryNode(K key, V value) : super(key, value);
 
-  int _height = 0;
+  var _height = 0;
 
   @override
   set left(N? node) {
