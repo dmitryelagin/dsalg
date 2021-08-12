@@ -11,7 +11,7 @@ class LinkedList<T> {
   int get length => _length;
 
   bool get isEmpty => _first == null || _last == null;
-  bool get isNotEmpty => !isEmpty;
+  bool get isNotEmpty => _first != null && _last != null;
 
   T get first {
     if (isEmpty) throw StateError('Nothing to return');
