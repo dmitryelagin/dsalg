@@ -49,5 +49,13 @@ void main() {
       final permutations = items.permutations;
       expect(permutations.length, items.length.factorial.toInt());
     });
+
+    test('should not mutate original list', () {
+      final items = createIntSet(itemsAmount, absentItem);
+      final permutation = items.permutations.iterator;
+      while (permutation.moveNext()) {
+        expect(permutation.current, containsAll(items));
+      }
+    });
   });
 }
