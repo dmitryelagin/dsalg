@@ -1,3 +1,3 @@
 # DSAlg
 
-A library with popular data structures and algorythms.
+A library with data structures and algorythms.
