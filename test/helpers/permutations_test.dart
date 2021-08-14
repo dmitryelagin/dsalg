@@ -16,7 +16,7 @@ void main() {
     });
 
     test('should return all permutations of non-repeated items', () {
-      final items = createIntSet(itemsAmount, absentItem).toList();
+      final items = createIntSet(itemsAmount, absentItem);
       final permutations = items.permutations;
       expect(permutations.length, items.length.factorial.toInt());
       for (final permutation in permutations) {
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('should not fail when list has repeated items', () {
-      final items = createIntSet(itemsAmount ~/ 2, absentItem).toList();
+      final items = createIntSet(itemsAmount ~/ 2, absentItem);
       items.addAll(items.toList());
       final lessItems = items.toSet().toList();
       final permutations = items.permutations;

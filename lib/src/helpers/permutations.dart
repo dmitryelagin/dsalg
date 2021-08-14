@@ -1,17 +1,17 @@
-extension Permutations<T> on List<T> {
+extension Permutations<T> on Iterable<T> {
   Iterable<List<T>> get permutations =>
-      isNotEmpty ? List.of(this)._permutations : const [[]];
+      isNotEmpty ? _getPermutations(List.of(this)) : const [[]];
 
-  Iterable<List<T>> get _permutations sync* {
-    if (length == 1) {
-      yield [first];
+  Iterable<List<T>> _getPermutations(List<T> items) sync* {
+    if (items.length == 1) {
+      yield [items.first];
     } else {
-      for (var i = 0; i < length; i += 1) {
-        final item = removeLast();
-        for (final items in _permutations) {
-          yield items..add(item);
+      for (var i = 0; i < items.length; i += 1) {
+        final item = items.removeLast();
+        for (final permutation in _getPermutations(items)) {
+          yield permutation..add(item);
         }
-        insert(0, item);
+        items.insert(0, item);
       }
     }
   }
