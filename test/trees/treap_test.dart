@@ -10,8 +10,8 @@ import 'commons/base_binary_search_tree_test.dart';
 
 void main() {
   group('Treap', () {
-    testBaseBinarySearchTree(<K, V>(compare, [entries = const {}]) {
-      return Treap<K, V>(compare, entries);
+    testBaseBinarySearchTree(<K, V>(compare, [entries]) {
+      return Treap<K, V>(compare, entries ?? const {});
     });
   });
 

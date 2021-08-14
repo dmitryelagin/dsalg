@@ -9,8 +9,8 @@ import 'commons/base_binary_search_tree_test.dart';
 
 void main() {
   group('BinarySearchTree', () {
-    testBaseBinarySearchTree(<K, V>(compare, [entries = const {}]) {
-      return BinarySearchTree<K, V>(compare, entries);
+    testBaseBinarySearchTree(<K, V>(compare, [entries]) {
+      return BinarySearchTree<K, V>(compare, entries ?? const {});
     });
   });
 

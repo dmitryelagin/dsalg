@@ -9,13 +9,13 @@ import '../../utils/int_utils.dart';
 import '../../utils/iterable_utils.dart';
 
 void main() {
-  // testBaseBinarySearchTree(<K, V>(compare, [entries = const {}]) {
-  //   return BinarySearchTree<K, V>(compare, entries);
+  // testBaseBinarySearchTree(<K, V>(compare, [entries]) {
+  //   return BinarySearchTree<K, V>(compare, entries ?? const {});
   // });
 }
 
 void testBaseBinarySearchTree(
-  BaseBinarySearchTree<K, V> Function<K, V>(Comparator<K>, [Map<K, V>])
+  BaseBinarySearchTree<K, V> Function<K, V>(Comparator<K>, [Map<K, V>?])
       createTree,
 ) {
   int getBigItem() => 2000;

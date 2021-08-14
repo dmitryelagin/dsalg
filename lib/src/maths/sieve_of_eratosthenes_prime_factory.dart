@@ -2,8 +2,8 @@ import 'dart:math';
 
 import '../bits/bit_array.dart';
 
-class SieveOfEratosthenesPrimeFactory {
-  static final instance = SieveOfEratosthenesPrimeFactory();
+class SieveOfEratosthenesPrimeSeriesFactory {
+  static final instance = SieveOfEratosthenesPrimeSeriesFactory();
 
   final _checks = BitArray();
 
