@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import '../helpers/permutations.dart';
 import '../utils/iterable_utils.dart';
 
-class TravellingSalespersonProblemBruteForceApproach<T> {
-  const TravellingSalespersonProblemBruteForceApproach(this._getDistance);
+class TravellingSalespersonProblemBruteForce<T> {
+  const TravellingSalespersonProblemBruteForce(this._getDistance);
 
   final num Function(T a, T b) _getDistance;
 
@@ -18,11 +16,12 @@ class TravellingSalespersonProblemBruteForceApproach<T> {
       final totalDistance = permutation.foldBinary(0, _accumulateDistance) +
           _getDistance(sites.first, permutation.first) +
           _getDistance(sites.first, permutation.last);
-      if (totalDistance < smallestDistance) result = permutation;
-      smallestDistance = min(totalDistance, smallestDistance);
+      if (totalDistance >= smallestDistance) continue;
+      smallestDistance = totalDistance;
+      result = permutation;
     }
     return [sites.first, ...result];
   }
 
-  num _accumulateDistance(T a, T b, num total) => total + _getDistance(a, b);
+  num _accumulateDistance(num total, T a, T b) => total + _getDistance(a, b);
 }

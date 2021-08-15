@@ -76,5 +76,12 @@ void main() {
         firstItems.length + secondItems.length - removedAmount,
       );
     });
+
+    test('should iterate through all list items', () {
+      list.forEach((item) {
+        expect(item, items.first);
+        items.removeAt(0);
+      });
+    });
   });
 }

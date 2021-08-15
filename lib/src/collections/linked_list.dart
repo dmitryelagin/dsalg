@@ -77,6 +77,15 @@ class LinkedList<T> {
     return current.value;
   }
 
+  void forEach(void Function(T) callback) {
+    if (isEmpty) return;
+    var entry = _first;
+    while (entry != null) {
+      callback(entry.value);
+      entry = entry.next;
+    }
+  }
+
   Iterable<T> toIterable() sync* {
     var current = _first;
     while (current != null) {
