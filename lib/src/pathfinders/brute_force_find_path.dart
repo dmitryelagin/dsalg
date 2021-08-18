@@ -6,10 +6,10 @@ class TravellingSalespersonProblemBruteForce<T> {
   final num Function(T a, T b) _getDistance;
 
   Iterable<T> findPath(Iterable<T> sites) {
-    num smallestDistance = double.infinity;
     if (sites.isEmpty) return const [];
     final targets = sites.skip(1);
     if (targets.isEmpty) return [sites.first];
+    num smallestDistance = double.infinity;
     Iterable<T> result = const [];
     for (final permutation in targets.permutations) {
       var totalDistance = _getDistance(sites.first, permutation.last);

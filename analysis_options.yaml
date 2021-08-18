@@ -108,7 +108,7 @@ linter:
     - parameter_assignments
     # - prefer_adjacent_string_concatenation lints/recommended
     - prefer_asserts_in_initializer_lists
-    - prefer_asserts_with_message
+    # - prefer_asserts_with_message
     # - prefer_collection_literals lints/recommended
     # - prefer_conditional_assignment lints/recommended
     - prefer_const_constructors
