@@ -8,7 +8,5 @@ class NodeTuple<N extends Node> {
         next = null,
         parent = null;
 
-  final N? first;
-  final N? next;
-  final N? parent;
+  final N? first, next, parent;
 }

@@ -3,8 +3,7 @@ import 'comparator.dart';
 class MemoizedComparator<T> extends Comparator<T> {
   MemoizedComparator(int Function(T, T) compare) : super(compare);
 
-  T? _a;
-  T? _b;
+  T? _a, _b;
 
   var _ratio = 0;
 

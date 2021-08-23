@@ -3,8 +3,7 @@ class LinkedList<T> {
     items.forEach(addLast);
   }
 
-  _LinkedListEntry<T>? _first;
-  _LinkedListEntry<T>? _last;
+  _LinkedListEntry<T>? _first, _last;
 
   var _length = 0;
 

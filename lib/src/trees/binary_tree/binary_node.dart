@@ -10,8 +10,7 @@ class BinaryNode<K, V, N extends BinaryNode<K, V, N>>
   @override
   V value;
 
-  N? left;
-  N? right;
+  N? left, right;
 
   N get leftmost => left?.leftmost ?? (this as N);
   N get rightmost => right?.rightmost ?? (this as N);
