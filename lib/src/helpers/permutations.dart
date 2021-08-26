@@ -1,6 +1,6 @@
 extension Permutations<T> on Iterable<T> {
   Iterable<List<T>> get permutations =>
-      isNotEmpty ? _getPermutations(List.of(this)) : const [[]];
+      isNotEmpty ? _getPermutations(toList()) : const [[]];
 
   Iterable<List<T>> _getPermutations(List<T> items) sync* {
     if (items.length == 1) {

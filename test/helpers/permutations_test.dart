@@ -54,6 +54,7 @@ void main() {
       final items = createIntSet(itemsAmount, absentItem);
       final permutation = items.permutations.iterator;
       while (permutation.moveNext()) {
+        expect(permutation.current, isNot(same(items)));
         expect(permutation.current, containsAll(items));
       }
     });

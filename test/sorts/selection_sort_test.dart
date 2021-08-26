@@ -21,7 +21,7 @@ void main() {
 
     test('should sort random lists', () {
       final items = List.generate(1000, (_) => random.nextInt(1000));
-      final itemsCopy = List.of(items);
+      final itemsCopy = items.toList();
       expect(items..selectionSort(compareInt), itemsCopy..sort(compareInt));
     });
   });
