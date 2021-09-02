@@ -7,8 +7,9 @@ import '../utils/data_utils.dart';
 
 void main() {
   group('lerp', () {
+    final random = Random();
+
     test('should return interpolated value between numbers', () {
-      final random = Random();
       final firstItems = createIntList(1000, 500, -500);
       final secondItems = createIntList(1000, 500, -500);
       for (var i = 0; i < firstItems.length; i += 1) {
@@ -22,6 +23,14 @@ void main() {
           expect(c.toStringAsPrecision(10), t.toStringAsPrecision(10));
         }
       }
+    });
+
+    test('should return accurate numbers when case is edge case', () {
+      final multiplier = random.nextInt(1 << 32);
+      final a = random.nextDouble() * multiplier;
+      final b = random.nextDouble() * multiplier;
+      expect(lerp(a, b, 0), a);
+      expect(lerp(a, b, 1), b);
     });
   });
 }
