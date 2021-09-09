@@ -6,9 +6,9 @@ import 'package:test/test.dart';
 import '../utils/data_utils.dart';
 
 void main() {
-  group('lerp', () {
-    final random = Random();
+  final random = Random();
 
+  group('lerp', () {
     test('should return interpolated value between numbers', () {
       final firstItems = createIntList(1000, 500, -500);
       final secondItems = createIntList(1000, 500, -500);
@@ -31,6 +31,33 @@ void main() {
       final b = random.nextDouble() * multiplier;
       expect(lerp(a, b, 0), a);
       expect(lerp(a, b, 1), b);
+    });
+  });
+
+  group('lerpRecursive', () {
+    test('should apply lerp callback recursively', () {
+      for (var i = 0; i < 100; i += 1) {
+        final items = createIntList(4, 500, -500);
+        final t = random.nextDouble() * 2 - 0.5;
+        final a = lerp(items[0], items[1], t);
+        final b = lerp(items[1], items[2], t);
+        final c = lerp(items[2], items[3], t);
+        final d = lerp(a, b, t);
+        final e = lerp(b, c, t);
+        expect(lerpRecursive(lerp, items, t), lerp(d, e, t));
+      }
+      expect(lerpRecursive(lerp, [1, 5, 9, 6, 9], 0.5), 6.75);
+      expect(lerpRecursive(lerp, [2, 6, 8, 4, 7, 9], 0.5), 6.125);
+    });
+
+    test('should return terminal results when case is edge case', () {
+      final items = createIntList(1000, 500, -500);
+      expect(lerpRecursive(lerp, items, 0), items.first);
+      expect(lerpRecursive(lerp, items, 1), items.last);
+    });
+
+    test('should throw when items collection is empty', () {
+      expect(() => lerpRecursive<num>(lerp, const [], 1), throwsStateError);
     });
   });
 }
