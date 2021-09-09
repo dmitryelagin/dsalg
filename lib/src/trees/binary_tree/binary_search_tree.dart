@@ -3,12 +3,9 @@ part of 'binary_tree.dart';
 class BinarySearchTree<K, V>
     extends _BaseBinarySearchTree<K, V, _BinarySearchNode<K, V>> {
   BinarySearchTree(Comparator<K> compare, [Map<K, V> entries = const {}])
-      : super(_nodeFactory, compare) {
+      : super(_BinarySearchNode.new, compare) {
     addAll(entries);
   }
-
-  static _BinarySearchNode<K, V> _nodeFactory<K, V>(K key, V value) =>
-      _BinarySearchNode(key, value);
 }
 
 class _BinarySearchNode<K, V>

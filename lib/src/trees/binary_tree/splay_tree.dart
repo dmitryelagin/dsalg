@@ -2,12 +2,9 @@ part of 'binary_tree.dart';
 
 class SplayTree<K, V> extends _BaseBinarySearchTree<K, V, _SplayNode<K, V>> {
   SplayTree(Comparator<K> compare, [Map<K, V> entries = const {}])
-      : super(_nodeFactory, compare) {
+      : super(_SplayNode.new, compare) {
     addAll(entries);
   }
-
-  static _SplayNode<K, V> _nodeFactory<K, V>(K key, V value) =>
-      _SplayNode(key, value);
 
   @override
   V operator [](K key) {

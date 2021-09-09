@@ -1,6 +1,9 @@
 include: package:lints/recommended.yaml
 
 analyzer:
+  enable-experiment:
+    # Remove after stable release
+    - constructor-tearoffs
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false

@@ -87,7 +87,7 @@ void main() {
     });
 
     test('should be less than other tree after split', () {
-      final index = random.nextInt(items.length);
+      final index = random.nextInt(items.length - 2) + 1;
       final other = tree.split(items[index]);
       expect(tree.max.key, lessThan(other.min.key));
     });

@@ -2,12 +2,9 @@ part of 'binary_tree.dart';
 
 class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
   AVLTree(Comparator<K> compare, [Map<K, V> entries = const {}])
-      : super(_nodeFactory, compare) {
+      : super(_AVLNode.new, compare) {
     addAll(entries);
   }
-
-  static _AVLNode<K, V> _nodeFactory<K, V>(K key, V value) =>
-      _AVLNode(key, value);
 
   @override
   void add(K key, V value) {
