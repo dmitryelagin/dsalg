@@ -80,7 +80,7 @@ abstract class _BaseBinaryTree<K, V, N extends BinaryNode<K, V, N>>
 
   @override
   void invert() {
-    for (final node in _depthFirstPostOrderTraversal.cast<N>()) {
+    for (final node in _depthFirstPostOrderTraversal) {
       if (node.hasChild) node.swapChildren();
     }
   }
