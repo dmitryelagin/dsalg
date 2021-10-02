@@ -34,13 +34,13 @@ void main() {
         final result = PointUtils.lerp(a, b, t);
         if (a.x != b.x) {
           final cX = (result.x - a.x) / (b.x - a.x);
-          expect(cX.toStringAsPrecision(10), t.toStringAsPrecision(10));
+          expect(cX.toStringAsPrecision(8), t.toStringAsPrecision(8));
         } else {
           expect(result.x, a.x);
         }
         if (a.y != b.y) {
           final cY = (result.y - a.y) / (b.y - a.y);
-          expect(cY.toStringAsPrecision(10), t.toStringAsPrecision(10));
+          expect(cY.toStringAsPrecision(8), t.toStringAsPrecision(8));
         } else {
           expect(result.y, a.y);
         }

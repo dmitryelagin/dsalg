@@ -20,7 +20,7 @@ void main() {
           expect(result, a);
         } else {
           final c = (result - a) / (b - a);
-          expect(c.toStringAsPrecision(10), t.toStringAsPrecision(10));
+          expect(c.toStringAsPrecision(8), t.toStringAsPrecision(8));
         }
       }
     });

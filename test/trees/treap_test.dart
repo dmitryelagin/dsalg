@@ -61,12 +61,12 @@ void main() {
       final first = items.sublist(0, index), second = items.sublist(index + 1);
       final other = tree.split(item);
       expect(
-        tree.depthFirstInOrderTraversalEntries.toString(),
-        first.toMapEntries().toString(),
+        tree.depthFirstInOrderTraversalEntries.toList().toString(),
+        first.toMapEntries().toList().toString(),
       );
       expect(
-        other.depthFirstInOrderTraversalEntries.toString(),
-        second.toMapEntries().toString(),
+        other.depthFirstInOrderTraversalEntries.toList().toString(),
+        second.toMapEntries().toList().toString(),
       );
     });
 
@@ -77,12 +77,12 @@ void main() {
       final first = items.sublist(0, index), second = items.sublist(index);
       final other = tree.split(item);
       expect(
-        tree.depthFirstInOrderTraversalEntries.toString(),
-        first.toMapEntries().toString(),
+        tree.depthFirstInOrderTraversalEntries.toList().toString(),
+        first.toMapEntries().toList().toString(),
       );
       expect(
-        other.depthFirstInOrderTraversalEntries.toString(),
-        second.toMapEntries().toString(),
+        other.depthFirstInOrderTraversalEntries.toList().toString(),
+        second.toMapEntries().toList().toString(),
       );
     });
 
@@ -106,8 +106,8 @@ void main() {
       tree.union(other);
       items.remove(item);
       expect(
-        tree.depthFirstInOrderTraversalEntries.toString(),
-        items.toMapEntries().toString(),
+        tree.depthFirstInOrderTraversalEntries.toList().toString(),
+        items.toMapEntries().toList().toString(),
       );
       expect(other.isEmpty, isTrue);
     });
@@ -122,8 +122,8 @@ void main() {
         ..union(tree);
       items.sort(compareInt);
       expect(
-        unionTree.depthFirstInOrderTraversalEntries.toString(),
-        items.toMapEntries().toString(),
+        unionTree.depthFirstInOrderTraversalEntries.toList().toString(),
+        items.toMapEntries().toList().toString(),
       );
       expect(tree.isEmpty, isTrue);
       _checkDepthFirstTraversalIndirectly(
@@ -140,8 +140,8 @@ void main() {
       expect(unionTree.depthFirstInOrderTraversalEntries, isEmpty);
       unionTree = tree..union(emptyTree);
       expect(
-        unionTree.depthFirstInOrderTraversalEntries.toString(),
-        items.copySort(compareInt).toMapEntries().toString(),
+        unionTree.depthFirstInOrderTraversalEntries.toList().toString(),
+        items.copySort(compareInt).toMapEntries().toList().toString(),
       );
     });
   });
