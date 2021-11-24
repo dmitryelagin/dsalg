@@ -18,21 +18,24 @@ class BitArray {
   int get length => _chunks.length * _chunkSize;
 
   static int _getChunkIndex(int i) => i >> 5;
+  static int _getMaskIndex(int i) => i & _chunkIndexMask;
 
-  bool operator [](int i) =>
-      _chunks[_getChunkIndex(i)] & _setMask[i & _chunkIndexMask] != 0;
+  bool operator [](int i) {
+    tryGrowFor(i);
+    return _chunks[_getChunkIndex(i)] & _setMask[_getMaskIndex(i)] != 0;
+  }
 
   bool isSetBit(int i) => this[i];
   bool isUnsetBit(int i) => !this[i];
 
   void setBit(int i) {
     tryGrowFor(i);
-    _chunks[_getChunkIndex(i)] |= _setMask[i & _chunkIndexMask];
+    _chunks[_getChunkIndex(i)] |= _setMask[_getMaskIndex(i)];
   }
 
   void unsetBit(int i) {
     tryGrowFor(i);
-    _chunks[_getChunkIndex(i)] &= _unsetMask[i & _chunkIndexMask];
+    _chunks[_getChunkIndex(i)] &= _unsetMask[_getMaskIndex(i)];
   }
 
   void invertBit(int i) {
