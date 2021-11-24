@@ -1,7 +1,7 @@
 extension BitMask on int {
   Iterable<int> get bits sync* {
     for (var i = 0; i < bitLength; i += 1) {
-      yield this[i];
+      yield this[i] ? 1 : 0;
     }
   }
 
@@ -16,10 +16,10 @@ extension BitMask on int {
 
   int get unsetBitsAmount => bitLength - setBitsAmount;
 
-  int operator [](int i) => this >> i & 1;
+  bool operator [](int i) => (this >> i & 1) != 0;
 
-  bool isSetBit(int i) => this[i] == 1;
-  bool isUnsetBit(int i) => this[i] == 0;
+  bool isSetBit(int i) => this[i];
+  bool isUnsetBit(int i) => !this[i];
 
   int setBit(int i) => this | 1 << i;
   int unsetBit(int i) => this & ~(1 << i);

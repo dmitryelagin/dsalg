@@ -26,7 +26,7 @@ void main() {
       for (var i = 0; i < bits.length; i += 1) {
         expect(array.isSetBit(i), bits[i] == 1);
         expect(array.isUnsetBit(i), bits[i] == 0);
-        expect(array[i], bits[i]);
+        expect(array[i], bits[i] == 1);
       }
     });
 
@@ -34,7 +34,7 @@ void main() {
       array.setBits(bitsToChange);
       for (var i = 0; i < bits.length; i += 1) {
         if (bitsToChange.contains(i)) bits[i] = 1;
-        expect(array[i], bits[i]);
+        expect(array[i], bits[i] == 1);
       }
     });
 
@@ -42,7 +42,7 @@ void main() {
       array.unsetBits(bitsToChange);
       for (var i = 0; i < bits.length; i += 1) {
         if (bitsToChange.contains(i)) bits[i] = 0;
-        expect(array[i], bits[i]);
+        expect(array[i], bits[i] == 1);
       }
     });
 
@@ -51,7 +51,7 @@ void main() {
       array.invertBits(bitsToChange);
       for (var i = 0; i < bits.length; i += 1) {
         if (bitsToChange.contains(i)) bits[i] = bits[i] == 0 ? 1 : 0;
-        expect(array[i], bits[i]);
+        expect(array[i], bits[i] == 1);
       }
     });
   });

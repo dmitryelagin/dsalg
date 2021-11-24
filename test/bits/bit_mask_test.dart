@@ -23,7 +23,7 @@ void main() {
       for (var i = bits.length - 1; i >= 0; i -= 1) {
         expect(number.isSetBit(i), bitsReversed[i] == 1);
         expect(number.isUnsetBit(i), bitsReversed[i] == 0);
-        expect(number[i], bitsReversed[i]);
+        expect(number[i], bitsReversed[i] == 1);
       }
     });
 
