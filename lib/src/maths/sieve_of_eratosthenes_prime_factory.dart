@@ -9,7 +9,7 @@ class SieveOfEratosthenesPrimeSeriesFactory {
 
   Iterable<int> getAllBelow(int limit) sync* {
     final lastCheckIndex = _checks.length - 1;
-    _checks.tryGrowFor(limit);
+    _checks.length = limit;
     for (var i = 2; i < _checks.length; i += 1) {
       if (_checks.isSetBit(i)) continue;
       if (i <= limit) yield i;

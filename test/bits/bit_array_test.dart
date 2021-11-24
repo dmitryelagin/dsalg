@@ -30,6 +30,16 @@ void main() {
       }
     });
 
+    test('should properly set bit with correct state', () {
+      final array = BitArray();
+      for (var i = bits.length - 1; i >= 0; i -= 1) {
+        array[i] = bits[i] == 1;
+      }
+      for (var i = 0; i < bits.length; i += 1) {
+        expect(array[i], bits[i] == 1);
+      }
+    });
+
     test('should properly set bits', () {
       array.setBits(bitsToChange);
       for (var i = 0; i < bits.length; i += 1) {
