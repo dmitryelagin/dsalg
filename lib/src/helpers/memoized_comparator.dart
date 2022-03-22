@@ -1,7 +1,7 @@
 import 'comparator.dart';
 
 class MemoizedComparator<T> extends Comparator<T> {
-  MemoizedComparator(int Function(T, T) compare) : super(compare);
+  MemoizedComparator(super.compare);
 
   T? _a, _b;
 

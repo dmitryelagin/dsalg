@@ -76,5 +76,5 @@ class SplayTree<K, V> extends _BaseBinarySearchTree<K, V, _SplayNode<K, V>> {
 }
 
 class _SplayNode<K, V> extends LinkedBinaryNode<K, V, _SplayNode<K, V>> {
-  _SplayNode(K key, V value) : super(key, value);
+  _SplayNode(super.key, super.value);
 }

@@ -2,7 +2,7 @@ import 'binary_node.dart';
 
 class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
     extends BinaryNode<K, V, N> {
-  LinkedBinaryNode(K key, V value) : super(key, value);
+  LinkedBinaryNode(super.key, super.value);
 
   N? _parent;
 
@@ -25,6 +25,7 @@ class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
   N? get sibling {
     if (isLeftOf(parent)) return parent!.right;
     if (isRightOf(parent)) return parent!.left;
+    return null;
   }
 
   bool get hasParent => parent != null;

@@ -4,7 +4,7 @@ description: >-
   A library with popular data structures and algorythms.
 environment:
   # Update after stable release
-  sdk: ">=2.15.0-82.1.beta <3.0.0"
+  sdk: ">=2.17.0-212.0.dev <3.0.0"
 dev_dependencies:
   lints: ^1.0.0
   test: ^1.17.0

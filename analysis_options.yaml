@@ -1,21 +1,19 @@
 include: package:lints/recommended.yaml
 
 analyzer:
-  enable-experiment:
-    # Remove after stable release
-    - constructor-tearoffs
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
 
 linter:
-  rules: # Dart 2.14.0-301.2.beta, lints 1.0.1
+  rules: # Dart 2.16.1, lints 1.0.1
     - always_declare_return_types
-    # - always_put_control_body_on_new_line
+    # - always_put_control_body_on_new_line custom_change
     - always_put_required_named_parameters_first
     # - always_require_non_null_named_parameters lints/recommended
-    # - always_specify_types
-    # - always_use_package_imports
+    # - always_specify_types custom_change
+    # - always_use_package_imports custom_change
     # - annotate_overrides lints/recommended
     - avoid_annotating_with_dynamic
     - avoid_bool_literals_in_conditional_expressions
@@ -25,14 +23,15 @@ linter:
     - avoid_double_and_int_checks
     - avoid_dynamic_calls
     # - avoid_empty_else lints/core
-    - avoid_equals_and_hash_code_on_mutable_classes
+    # - avoid_equals_and_hash_code_on_mutable_classes custom_change
     - avoid_escaping_inner_quotes
     - avoid_field_initializers_in_const_classes
+    - avoid_final_parameters
     # - avoid_function_literals_in_foreach_calls lints/recommended
     - avoid_implementing_value_types
     # - avoid_init_to_null lints/recommended
     - avoid_js_rounded_ints
-    # - avoid_multiple_declarations_per_line
+    # - avoid_multiple_declarations_per_line custom_change
     # - avoid_null_checks_in_equality_operators lints/recommended
     - avoid_positional_boolean_parameters
     - avoid_print
@@ -64,6 +63,7 @@ linter:
     - cast_nullable_to_non_nullable
     - close_sinks
     - comment_references
+    - conditional_uri_does_not_exist
     # - constant_identifier_names lints/recommended
     # - control_flow_in_finally lints/recommended
     # - curly_braces_in_flow_control_structures lints/core
@@ -95,6 +95,8 @@ linter:
     - no_adjacent_strings_in_list
     - no_default_cases
     # - no_duplicate_case_values lints/core
+    - no_leading_underscores_for_library_prefixes
+    - no_leading_underscores_for_local_identifiers
     - no_logic_in_create_state
     - no_runtimeType_toString
     # - non_constant_identifier_names lints/core
@@ -102,7 +104,7 @@ linter:
     - null_check_on_nullable_type_parameter
     # - null_closures lints/recommended
     - omit_local_variable_types
-    # - one_member_abstracts
+    # - one_member_abstracts custom_change
     - only_throw_errors
     # - overridden_fields lints/recommended
     - package_api_docs
@@ -111,7 +113,7 @@ linter:
     - parameter_assignments
     # - prefer_adjacent_string_concatenation lints/recommended
     - prefer_asserts_in_initializer_lists
-    # - prefer_asserts_with_message
+    # - prefer_asserts_with_message custom_change
     # - prefer_collection_literals lints/recommended
     # - prefer_conditional_assignment lints/recommended
     - prefer_const_constructors
@@ -120,13 +122,13 @@ linter:
     - prefer_const_literals_to_create_immutables
     - prefer_constructors_over_static_methods
     # - prefer_contains lints/recommended
-    # - prefer_double_quotes
+    # - prefer_double_quotes custom_change
     # - prefer_equal_for_default_values lints/recommended
-    # - prefer_expression_function_bodies
+    # - prefer_expression_function_bodies custom_change
     # - prefer_final_fields lints/recommended
     - prefer_final_in_for_each
     - prefer_final_locals
-    # - prefer_final_parameters
+    # - prefer_final_parameters custom_change
     # - prefer_for_elements_to_map_fromIterable lints/recommended
     - prefer_foreach
     # - prefer_function_declarations_over_variables lints/recommended
@@ -150,10 +152,12 @@ linter:
     # - prefer_typing_uninitialized_variables lints/core
     # - prefer_void_to_null lints/recommended
     # - provide_deprecation_message lints/core
-    # - public_member_api_docs
+    # - public_member_api_docs custom_change
     # - recursive_getters lints/recommended
     - require_trailing_commas
+    - secure_pubspec_urls
     - sized_box_for_whitespace
+    - sized_box_shrink_expand
     # - slash_for_doc_comments lints/recommended
     - sort_child_properties_last
     - sort_constructors_first
@@ -168,9 +172,11 @@ linter:
     - unnecessary_await_in_return
     # - unnecessary_brace_in_string_interps lints/recommended
     # - unnecessary_const lints/recommended
-    # - unnecessary_final
+    - unnecessary_constructor_name
+    # - unnecessary_final custom_change
     # - unnecessary_getters_setters lints/recommended
     - unnecessary_lambdas
+    - unnecessary_late
     # - unnecessary_new lints/recommended
     - unnecessary_null_aware_assignments
     - unnecessary_null_checks
@@ -186,6 +192,7 @@ linter:
     # - unrelated_type_equality_checks lints/core
     - unsafe_html
     - use_build_context_synchronously
+    - use_decorated_box
     - use_full_hex_values_for_flutter_colors
     # - use_function_type_syntax_for_parameters lints/recommended
     - use_if_null_to_convert_nulls_to_bools
@@ -201,3 +208,8 @@ linter:
     - use_to_and_as_if_applicable
     # - valid_regexps lints/core
     # - void_checks lints/core
+
+    # DEV
+    - use_colored_box
+    - use_enums
+    - use_super_parameters

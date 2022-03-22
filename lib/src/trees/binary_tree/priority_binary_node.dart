@@ -2,7 +2,7 @@ import 'linked_binary_node.dart';
 
 class PriorityBinaryNode<K, V, N extends PriorityBinaryNode<K, V, N>>
     extends LinkedBinaryNode<K, V, N> {
-  PriorityBinaryNode(K key, V value, this.priority) : super(key, value);
+  PriorityBinaryNode(super.key, super.value, this.priority);
 
   double priority;
 

@@ -94,5 +94,5 @@ class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
 }
 
 class _TreapNode<K, V> extends PriorityBinaryNode<K, V, _TreapNode<K, V>> {
-  _TreapNode(K key, V value, double priority) : super(key, value, priority);
+  _TreapNode(super.key, super.value, super.priority);
 }

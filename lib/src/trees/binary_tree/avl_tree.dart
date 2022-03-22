@@ -42,5 +42,5 @@ class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
 }
 
 class _AVLNode<K, V> extends BalanceBinaryNode<K, V, _AVLNode<K, V>> {
-  _AVLNode(K key, V value) : super(key, value);
+  _AVLNode(super.key, super.value);
 }

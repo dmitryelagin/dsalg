@@ -5,6 +5,6 @@ import 'commons/base_comparator_test.dart';
 
 void main() {
   group('Comparator', () {
-    testBaseComparator(<T>(compare) => Comparator(compare));
+    testBaseComparator(Comparator.new);
   });
 }

@@ -10,5 +10,5 @@ class BinarySearchTree<K, V>
 
 class _BinarySearchNode<K, V>
     extends LinkedBinaryNode<K, V, _BinarySearchNode<K, V>> {
-  _BinarySearchNode(K key, V value) : super(key, value);
+  _BinarySearchNode(super.key, super.value);
 }
