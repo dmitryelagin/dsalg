@@ -10,7 +10,7 @@ A library with data structures and algorythms.
 - Linked List
 - Priority Queue
 - Queue
-_ Stack
+- Stack
 
 ### Helpers
 - Comparator
