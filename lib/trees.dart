@@ -7,3 +7,4 @@ export 'src/trees/binary_tree/binary_tree.dart'
         BinarySearchTree,
         SplayTree,
         Treap;
+export 'src/trees/trie/trie.dart';

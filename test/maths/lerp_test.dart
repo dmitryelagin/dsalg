@@ -10,8 +10,8 @@ void main() {
 
   group('lerp', () {
     test('should return interpolated value between numbers', () {
-      final firstItems = createIntList(1000, 500, -500);
-      final secondItems = createIntList(1000, 500, -500);
+      final firstItems = random.nextIntList(1000, 500, -500);
+      final secondItems = random.nextIntList(1000, 500, -500);
       for (var i = 0; i < firstItems.length; i += 1) {
         final t = random.nextDouble() * 2 - 0.5;
         final a = firstItems[i], b = secondItems[i];
@@ -37,7 +37,7 @@ void main() {
   group('lerpRecursive', () {
     test('should apply lerp callback recursively', () {
       for (var i = 0; i < 100; i += 1) {
-        final items = createIntList(4, 500, -500);
+        final items = random.nextIntList(4, 500, -500);
         final t = random.nextDouble() * 2 - 0.5;
         final a = lerp(items[0], items[1], t);
         final b = lerp(items[1], items[2], t);
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('should return terminal results when case is edge case', () {
-      final items = createIntList(1000, 500, -500);
+      final items = random.nextIntList(1000, 500, -500);
       expect(lerpRecursive(lerp, items, 0), items.first);
       expect(lerpRecursive(lerp, items, 1), items.last);
     });

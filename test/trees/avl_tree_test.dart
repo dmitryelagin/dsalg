@@ -9,6 +9,9 @@ import '../utils/iterable_utils.dart';
 import 'commons/base_binary_search_tree_test.dart';
 
 void main() {
+  const absentItem = 1000;
+  final random = Random();
+
   group('AVLTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
       return AVLTree<K, V>(compare, entries ?? const {});
@@ -16,7 +19,6 @@ void main() {
   });
 
   group('AVLTree', () {
-    const absentItem = 1000;
     var compareInt = IntComparator();
     var tree = AVLTree<int, int>(compareInt);
     var items = <int>[], otherItems = <int>[];
@@ -24,12 +26,12 @@ void main() {
 
     setUp(() {
       compareInt = IntComparator();
-      final firstItems = createIntMap(500, absentItem);
+      final firstItems = random.nextIntMap(500, absentItem);
       tree = AVLTree(compareInt, firstItems);
-      final secondItems = createIntMap(500, absentItem);
+      final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
-      otherItems = createIntList(200, absentItem)..add(absentItem);
+      otherItems = random.nextIntList(200, absentItem)..add(absentItem);
       final worstItems = items.copySort(compareInt).reversed;
       worstTree = AVLTree(compareInt, worstItems.toMap());
     });

@@ -20,6 +20,7 @@ void testBaseBinarySearchTree(
 ) {
   int getBigItem() => 2000;
   const absentItem = 1000;
+  final random = Random();
   var compareInt = IntComparator();
   var tree = createTree<int, int>(compareInt);
   final emptyTree = createTree<int, int>(compareInt);
@@ -27,12 +28,12 @@ void testBaseBinarySearchTree(
 
   setUp(() {
     compareInt = IntComparator();
-    final firstItems = createIntMap(500, absentItem);
+    final firstItems = random.nextIntMap(500, absentItem);
     tree = createTree(compareInt, firstItems);
-    final secondItems = createIntMap(500, absentItem);
+    final secondItems = random.nextIntMap(500, absentItem);
     tree.addAll(secondItems);
     items = {...firstItems.keys, ...secondItems.keys}.toList();
-    otherItems = createIntList(200, absentItem)..add(absentItem);
+    otherItems = random.nextIntList(200, absentItem)..add(absentItem);
   });
 
   test('should be able to traverse depth first in order', () {

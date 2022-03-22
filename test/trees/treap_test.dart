@@ -9,6 +9,9 @@ import '../utils/iterable_utils.dart';
 import 'commons/base_binary_search_tree_test.dart';
 
 void main() {
+  const absentItem = 1000;
+  final random = Random();
+
   group('Treap', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
       return Treap<K, V>(compare, entries ?? const {});
@@ -16,8 +19,6 @@ void main() {
   });
 
   group('Treap', () {
-    const absentItem = 1000;
-    final random = Random();
     var compareInt = IntComparator();
     final emptyTree = Treap<int, int>(compareInt);
     var items = <int>[], otherItems = <int>[];
@@ -26,12 +27,12 @@ void main() {
 
     setUp(() {
       compareInt = IntComparator();
-      final firstItems = createIntMap(500, absentItem);
+      final firstItems = random.nextIntMap(500, absentItem);
       tree = Treap(compareInt, firstItems);
-      final secondItems = createIntMap(500, absentItem);
+      final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
-      otherItems = createIntList(200, absentItem)..add(absentItem);
+      otherItems = random.nextIntList(200, absentItem)..add(absentItem);
       final worstItems = items.copySort(compareInt);
       worstTree = Treap(compareInt, worstItems.toMap());
     });
@@ -114,8 +115,8 @@ void main() {
 
     test('should union properly', () {
       const margin = absentItem ~/ 3;
-      final firstItems = createIntList(500, absentItem - margin);
-      final secondItems = createIntList(500, absentItem - margin, margin);
+      final firstItems = random.nextIntList(500, absentItem - margin);
+      final secondItems = random.nextIntList(500, absentItem - margin, margin);
       final items = {...firstItems, ...secondItems}.toList();
       final tree = Treap<int, int>(compareInt, firstItems.toMap());
       final unionTree = Treap<int, int>(compareInt, secondItems.toMap())

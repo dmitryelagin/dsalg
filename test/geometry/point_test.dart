@@ -10,7 +10,7 @@ void main() {
     final random = Random();
 
     test('should properly get coordinate parts', () {
-      final items = createIntList(100, 1000), points = <Point>[];
+      final items = random.nextIntList(100, 1000), points = <Point>[];
       for (var i = 0; i < items.length / 2; i += 2) {
         points.add(Point(items[i], items[i + 1]));
       }
@@ -21,10 +21,12 @@ void main() {
     });
 
     test('should return interpolated value between points', () {
-      final firstItems = createIntList(1000, 500, -500)
+      final firstItems = random
+          .nextIntList(1000, 500, -500)
           .map((item) => item.toDouble())
           .toList();
-      final secondItems = createIntList(1000, 500, -500)
+      final secondItems = random
+          .nextIntList(1000, 500, -500)
           .map((item) => item.toDouble())
           .toList();
       for (var i = 0; i < firstItems.length / 2; i += 2) {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dsalg/dsalg.dart';
 import 'package:dsalg/src/trees/binary_tree/binary_tree.dart';
 import 'package:test/test.dart';
@@ -8,6 +10,9 @@ import '../utils/iterable_utils.dart';
 import 'commons/base_binary_search_tree_test.dart';
 
 void main() {
+  const absentItem = 1000;
+  final random = Random();
+
   group('BinarySearchTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
       return BinarySearchTree<K, V>(compare, entries ?? const {});
@@ -15,7 +20,6 @@ void main() {
   });
 
   group('BinarySearchTree', () {
-    const absentItem = 1000;
     var compareInt = IntComparator();
     var tree = BinarySearchTree<int, int>(compareInt);
     var items = <int>[];
@@ -24,9 +28,9 @@ void main() {
 
     setUp(() {
       compareInt = IntComparator();
-      final firstItems = createIntMap(500, absentItem);
+      final firstItems = random.nextIntMap(500, absentItem);
       tree = BinarySearchTree(compareInt, firstItems);
-      final secondItems = createIntMap(500, absentItem);
+      final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
       worstItems = items.copySort(compareInt);

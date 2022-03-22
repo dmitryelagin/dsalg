@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
@@ -11,13 +13,14 @@ void testBaseComparator(
   Comparator<T> Function<T>(int Function(T, T)) createComparator,
 ) {
   const absentItem = 1000;
+  final random = Random();
   var compare = createComparator<int>((a, b) => a - b);
   var firstItems = <int>[], secondItems = <int>[];
 
   setUp(() {
     compare = createComparator((a, b) => a - b);
-    firstItems = createIntList(100, absentItem);
-    secondItems = createIntList(100, absentItem);
+    firstItems = random.nextIntList(100, absentItem);
+    secondItems = random.nextIntList(100, absentItem);
   });
 
   test('should return comparision result', () {

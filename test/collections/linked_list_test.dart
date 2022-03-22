@@ -14,11 +14,11 @@ void main() {
     var items = <int>[], list = LinkedList<int>();
 
     setUp(() {
-      firstItems = createIntList(500, absentItem);
+      firstItems = random.nextIntList(500, absentItem);
       list = LinkedList(firstItems);
-      secondItems = createIntList(500, absentItem)..forEach(list.addLast);
-      thirdItems = createIntList(500, absentItem)..forEach(list.addFirst);
-      fourthItems = createIntList(500, absentItem);
+      secondItems = random.nextIntList(500, absentItem)..forEach(list.addLast);
+      thirdItems = random.nextIntList(500, absentItem)..forEach(list.addFirst);
+      fourthItems = random.nextIntList(500, absentItem);
       for (var i = 0; i < fourthItems.length; i += 1) {
         list.add(thirdItems.length + i, fourthItems[i]);
       }
@@ -63,8 +63,10 @@ void main() {
     });
 
     test('should have correct length', () {
-      final firstItems = createIntList(100 + random.nextInt(500), absentItem);
-      final secondItems = createIntList(100 + random.nextInt(500), absentItem);
+      final firstItems =
+          random.nextIntList(100 + random.nextInt(500), absentItem);
+      final secondItems =
+          random.nextIntList(100 + random.nextInt(500), absentItem);
       list = LinkedList(firstItems);
       secondItems.forEach(list.addLast);
       final removedAmount = random.nextInt(200);
