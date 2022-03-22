@@ -209,7 +209,7 @@ linter:
     # - valid_regexps lints/core
     # - void_checks lints/core
 
-    # DEV
+    # Dart 2.17.0-212.0.dev
     - use_colored_box
     - use_enums
     - use_super_parameters
