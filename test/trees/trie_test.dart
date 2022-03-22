@@ -35,6 +35,8 @@ void main() {
     });
 
     test('should have valid empty or not empty state', () {
+      expect(tree.isEmpty, isTrue);
+      expect(tree.isNotEmpty, isFalse);
       tree.addAll({...firstData, ...secondData});
       expect(tree.isEmpty, isFalse);
       expect(tree.isNotEmpty, isTrue);
