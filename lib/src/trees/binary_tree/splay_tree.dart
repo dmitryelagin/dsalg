@@ -22,7 +22,7 @@ class SplayTree<K, V> extends _BaseBinarySearchTree<K, V, _SplayNode<K, V>> {
 
   @override
   void add(K key, V value) {
-    _splay(_addItem(key, value).next!);
+    _splay(_addItem(key, value));
   }
 
   @override

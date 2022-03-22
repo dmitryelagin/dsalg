@@ -8,7 +8,7 @@ class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
 
   @override
   void add(K key, V value) {
-    var node = _addItem(key, value).next!;
+    var node = _addItem(key, value);
     while (node.isBalanced) {
       if (node.hasNoParent) break;
       node = node.parent!;

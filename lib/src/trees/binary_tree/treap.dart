@@ -16,7 +16,7 @@ class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
 
   @override
   void add(K key, V value) {
-    _bubble(_addItem(key, value).next!);
+    _bubble(_addItem(key, value));
   }
 
   @override
@@ -41,7 +41,7 @@ class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
 
   _TreapNode<K, V>? _split(K key) {
     if (isEmpty) return null;
-    final node = _addItem(key, _root!.value).next!..priority = -double.infinity;
+    final node = _addItem(key, _root!.value)..priority = -double.infinity;
     _bubble(node);
     _root = node.left;
     final right = node.right;
@@ -63,7 +63,7 @@ class Treap<K, V> extends _BaseBinarySearchTree<K, V, _TreapNode<K, V>> {
       _union(highLeft, lowLeft);
       final lowNode = _root;
       clear();
-      _addItem(key, value).next!
+      _addItem(key, value)
         ..left = lowNode
         ..right = highNode;
       _sink(_root!);

@@ -86,22 +86,22 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
     }
   }
 
-  NodeTuple<N> _addItem(K key, V value) {
+  N _addItem(K key, V value) {
     if (isNotEmpty && _compare.areNotEqual(key, _root!.key)) {
       return _addChild(key, value, _root!);
     }
-    final node = _createNode(key, value)..setChildrenFrom(_root);
-    return NodeTuple(_root, _root = node);
+    return _root = _createNode(key, value)..setChildrenFrom(_root);
   }
 
-  NodeTuple<N> _addChild(K key, V value, N parent) {
+  N _addChild(K key, V value, N parent) {
     final ratio = _compare(key, parent.key);
     final node = parent.getChildByRatio(ratio);
     if (node != null && _compare.areNotEqual(key, node.key)) {
       return _addChild(key, value, node);
     }
     final child = _createNode(key, value)..setChildrenFrom(node);
-    return parent.setChildByRatio(ratio, child);
+    parent.setChildByRatio(ratio, child);
+    return child;
   }
 
   NodeTuple<N> _removeItem(K key) {
@@ -122,8 +122,14 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
     if (_compare.areNotEqual(key, node.key)) {
       return _removeChild(key, node);
     }
-    if (node.hasNoChildren) return parent.setChildByRatio(ratio, null);
-    if (node.hasSingleChild) return parent.setChildByRatio(ratio, node.child);
+    if (node.hasNoChildren) {
+      parent.removeChildByRatio(ratio);
+      return NodeTuple(node, null, parent);
+    }
+    if (node.hasSingleChild) {
+      parent.setChildByRatio(ratio, node.child);
+      return NodeTuple(node, node.child, parent);
+    }
     node.setEntryFrom(node.right!.leftmost);
     return _removeChild(node.key, node);
   }
@@ -136,9 +142,10 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
 extension _BinaryNodeUtils<K, V, N extends BinaryNode<K, V, N>> on N {
   N? getChildByRatio(int ratio) => ratio < 0 ? left : right;
 
-  NodeTuple<N> setChildByRatio(int ratio, N? node) => NodeTuple(
-        getChildByRatio(ratio),
-        ratio < 0 ? left = node : right = node,
-        this,
-      );
+  void setChildByRatio(int ratio, N? node) =>
+      ratio < 0 ? left = node : right = node;
+
+  void removeChildByRatio(int ratio) {
+    setChildByRatio(ratio, null);
+  }
 }
