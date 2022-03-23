@@ -10,6 +10,8 @@ class TrieNode<T> {
 
   bool _isUnset = true;
 
+  bool get isUnset => _isUnset;
+
   bool get isEmpty {
     if (!_isUnset) return false;
     for (final key in children.keys) {

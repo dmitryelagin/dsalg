@@ -24,8 +24,10 @@ class Trie<K, V> {
     add(key, value);
   }
 
-  bool containsKey(K key) => _getSearchPath(key, orElse: AbsentTrieNode.child)
-      .nothingIs<AbsentTrieNode<V>>();
+  bool containsKey(K key) {
+    final path = _getSearchPath(key, orElse: AbsentTrieNode.child);
+    return path.nothingIs<AbsentTrieNode<V>>() && !path.last.isUnset;
+  }
 
   void add(K key, V value) {
     _getSearchPath(key, orElse: TrieNode.child).last.value = value;

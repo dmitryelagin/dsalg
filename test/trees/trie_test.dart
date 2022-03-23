@@ -58,10 +58,15 @@ void main() {
     });
 
     test('should throw on reading of an absent key', () {
-      tree.add('first', 0);
-      expect(() => tree['second'], throwsStateError);
+      tree
+        ..add('first', 0)
+        ..add('first_next_last', 1);
       expect(tree.containsKey('first'), isTrue);
+      expect(tree.containsKey('first_next_last'), isTrue);
+      expect(tree.containsKey('first_next'), isFalse);
+      expect(() => tree['first_next'], throwsStateError);
       expect(tree.containsKey('second'), isFalse);
+      expect(() => tree['second'], throwsStateError);
     });
   });
 }
