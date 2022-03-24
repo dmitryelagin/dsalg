@@ -1,5 +1,6 @@
 export 'bits.dart';
 export 'collections.dart';
+export 'coordinates.dart';
 export 'helpers.dart';
 export 'maths.dart';
 export 'pathfinders.dart';

@@ -1,6 +1,6 @@
-extension IterableNullUtils<T> on Iterable<T?> {
-  Iterable<T> get whereNotNull => where(_isNotNull).cast();
+import 'dart:math';
 
+extension IterableUtils<T> on Iterable<T> {
   bool nothingIs<V extends T>() => !anyIs<V>();
 
   bool anyIs<V extends T>() {
@@ -16,6 +16,15 @@ extension IterableNullUtils<T> on Iterable<T?> {
     }
     return true;
   }
+}
+
+extension IterableNullUtils<T> on Iterable<T?> {
+  Iterable<T> get whereNotNull => where(_isNotNull).cast();
 
   bool _isNotNull<V>(V? item) => item != null;
+}
+
+extension IterableNumUtils<T extends num> on Iterable<T> {
+  T get minValue => reduce(min);
+  T get maxValue => reduce(max);
 }
