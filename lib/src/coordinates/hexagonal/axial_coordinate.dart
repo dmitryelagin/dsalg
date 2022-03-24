@@ -69,9 +69,10 @@ class AxialCoordinate
     final distance = distanceTo(other);
     yield this;
     for (var i = 1; i <= distance; i += 1) {
+      final ratio = i / distance;
       yield AxialCoordinate.fromNum(
-        lerp(q + epsilonQ, other.q + epsilonQ, i / distance),
-        lerp(r + epsilonR, other.r + epsilonR, i / distance),
+        lerp(q + epsilonQ, other.q + epsilonQ, ratio),
+        lerp(r + epsilonR, other.r + epsilonR, ratio),
       );
     }
   }

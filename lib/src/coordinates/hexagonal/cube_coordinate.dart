@@ -103,9 +103,10 @@ class CubeCoordinate
     final distance = distanceTo(other);
     yield this;
     for (var i = 1; i <= distance; i += 1) {
+      final ratio = i / distance;
       yield CubeCoordinate.fromNumXZ(
-        lerp(x + epsilonX, other.x + epsilonX, i / distance),
-        lerp(z + epsilonZ, other.z + epsilonZ, i / distance),
+        lerp(x + epsilonX, other.x + epsilonX, ratio),
+        lerp(z + epsilonZ, other.z + epsilonZ, ratio),
       );
     }
   }
