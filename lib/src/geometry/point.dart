@@ -7,10 +7,13 @@ extension PointUtils<T extends num> on Point<T> {
   static T getX<T extends num>(Point<T> point) => point.x;
   static T getY<T extends num>(Point<T> point) => point.y;
 
-  static Point<double> getCentroid(Iterable<Point> points) => Point(
-        points.map(getX).sum / points.length,
-        points.map(getY).sum / points.length,
-      );
+  static Point<double> getCentroid(Iterable<Point> points) {
+    assert(points.isNotEmpty);
+    return Point(
+      points.map(getX).sum / points.length,
+      points.map(getY).sum / points.length,
+    );
+  }
 
   static Point<double> lerp(Point a, Point b, double t) =>
       Point(math.lerp(a.x, b.x, t), math.lerp(a.y, b.y, t));

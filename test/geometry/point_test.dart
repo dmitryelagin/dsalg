@@ -63,6 +63,10 @@ void main() {
         points.reduce((a, b) => a + b) / points.length,
         PointUtils.getCentroid(points),
       );
+      expect(
+        () => PointUtils.getCentroid(const <Point>[]),
+        throwsA(const TypeMatcher<AssertionError>()),
+      );
     });
 
     test('should allow point coordinate division', () {
