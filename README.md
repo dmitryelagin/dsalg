@@ -12,6 +12,12 @@ A library with data structures and algorythms.
 - Queue
 - Stack
 
+### Coordinates
+- Axial
+- Cube
+- Doubled
+- Offset
+
 ### Helpers
 - Comparator
 - Memoized Comparator
@@ -25,22 +31,22 @@ A library with data structures and algorythms.
 - Trivial Prime Check
 
 ### Pathfinders
-- Brute-force Find Path
-- Nearest Neighbor Find Path
+- Brute-force
+- Nearest Neighbor
 
 ### Searches
-- Binary Search
-- Linear Search
+- Binary
+- Linear
 
 ### Sorts
-- Bubble Sort
-- Counting Sort
-- Heap Sort
-- Insertion Sort
-- Merge Sort
-- Quick Sort
-- Radix Sort
-- Selection Sort
+- Bubble
+- Counting
+- Heap
+- Insertion
+- Merge
+- Quick
+- Radix
+- Selection
 
 ### Trees
 - AVL Tree
