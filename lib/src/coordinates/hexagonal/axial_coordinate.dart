@@ -11,8 +11,9 @@ class AxialCoordinate
     with HexagonalCoordinateOrigin<AxialCoordinate> {
   const AxialCoordinate(this.q, this.r);
 
-  factory AxialCoordinate.fromNum(num q, num r) =>
-      AxialCoordinate.fromCube(CubeCoordinate.fromNumXZ(q, r));
+  AxialCoordinate.fromNum(num q, num r)
+      : q = q.round(),
+        r = r.round();
 
   factory AxialCoordinate.fromCube(CubeCoordinate coord) =>
       AxialCoordinate(coord.x, coord.z);
