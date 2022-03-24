@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:dsalg/dsalg.dart';
-import 'package:dsalg/src/trees/binary_tree/binary_tree.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';

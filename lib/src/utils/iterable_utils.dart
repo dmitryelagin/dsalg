@@ -27,4 +27,8 @@ extension IterableNullUtils<T> on Iterable<T?> {
 extension IterableNumUtils<T extends num> on Iterable<T> {
   T get minValue => reduce(min);
   T get maxValue => reduce(max);
+
+  num get sum => fold(0, _foldNums);
+
+  num _foldNums(num a, num b) => a + b;
 }

@@ -26,6 +26,14 @@ extension RandomDataUtils on Random {
 
   Map<int, int> nextIntMap(int length, int to, [int? from]) =>
       Map.fromIterable(nextIntList(length, to, from ?? 0));
+
+  List<Point<int>> nextIntPointList(int length, int to, [int from = 0]) =>
+      List.generate(length, (_) => nextIntPoint(to, from));
+
+  Point<int> nextIntPoint(int to, [int from = 0]) =>
+      Point(nextInt(to - from) + from, nextInt(to - from) + from);
+
+  Point<double> nextDoublePoint() => Point(nextDouble(), nextDouble());
 }
 
 extension IntListTestUtils on List<int> {

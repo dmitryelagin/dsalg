@@ -18,6 +18,9 @@ A library with data structures and algorythms.
 - Doubled
 - Offset
 
+### Geometry
+- Point
+
 ### Helpers
 - Comparator
 - Memoized Comparator
