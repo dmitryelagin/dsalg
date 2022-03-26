@@ -2,8 +2,8 @@ import 'dart:math';
 
 import '../../collections/queue.dart';
 import '../../helpers/comparator.dart';
+import '../../helpers/tuple.dart';
 import '../../utils/iterable_utils.dart';
-import '../commons/node_tuple.dart';
 import 'balance_binary_node.dart';
 import 'binary_node.dart';
 import 'linked_binary_node.dart';
