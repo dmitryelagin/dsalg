@@ -25,6 +25,7 @@ A library with data structures and algorythms.
 - Comparator
 - Memoized Comparator
 - Permutations
+- Tuple
 
 ### Maths
 - Factorial
