@@ -22,5 +22,17 @@ void main() {
         expect(result.third, values[2]);
       }
     });
+
+    test('should be equal to other tuple with the same members', () {
+      final a = Object(), b = Object(), c = Object(), d = Object();
+      expect(Pair(0, 1) == Pair(0, 1), isTrue);
+      expect(Pair(a, b) == Pair(a, b), isTrue);
+      expect(Pair(a, b) == Pair(a, c), isFalse);
+      expect(Pair(a, b) == Pair(b, a), isFalse);
+      expect(Trio(0, 1, 2) == Trio(0, 1, 2), isTrue);
+      expect(Trio(a, b, c) == Trio(a, b, c), isTrue);
+      expect(Trio(a, b, c) == Trio(a, b, d), isFalse);
+      expect(Trio(a, b, c) == Trio(c, b, a), isFalse);
+    });
   });
 }
