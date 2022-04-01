@@ -9,8 +9,9 @@ extension RadixSort<T> on List<T> {
     while (pass < passesAmount) {
       for (final item in result) {
         final key = getKey(item);
-        if (pass == 0) passesAmount = max(passesAmount, key.length);
         buckets[key.getDigit(pass)].add(item);
+        if (pass != 0) continue;
+        passesAmount = max(passesAmount, key.lengthMultiplication);
       }
       if (result == items) result = [];
       result.clear();
