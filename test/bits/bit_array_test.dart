@@ -79,6 +79,9 @@ void main() {
       expect(array.length, bits.length + addedLength * 2);
       array.invertBit(bits.length + addedLength * 3 - 1);
       expect(array.length, bits.length + addedLength * 3);
+      final outOfRangeValue = array[bits.length + addedLength * 4 - 1];
+      expect(array.length, bits.length + addedLength * 3);
+      expect(outOfRangeValue, isFalse);
       array.reset();
       expect(array.length, 0);
     });

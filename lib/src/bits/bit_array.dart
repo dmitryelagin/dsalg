@@ -30,10 +30,9 @@ class BitArray {
   static int _getChunkIndex(int i) => i >> _chunkIndexSize;
   static int _getMaskIndex(int i) => i & _chunkIndexMask;
 
-  bool operator [](int i) {
-    _tryGrowFor(i);
-    return _chunks[_getChunkIndex(i)] & _setMasks[_getMaskIndex(i)] != 0;
-  }
+  bool operator [](int i) =>
+      length > i &&
+      _chunks[_getChunkIndex(i)] & _setMasks[_getMaskIndex(i)] != 0;
 
   void operator []=(int i, bool value) {
     (value ? setBit : unsetBit)(i);
