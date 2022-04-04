@@ -1,4 +1,4 @@
-class BinaryNode<K, V, N extends BinaryNode<K, V, N>>
+abstract class BinaryNode<K, V, N extends BinaryNode<K, V, N>>
     implements MapEntry<K, V> {
   BinaryNode(this.key, this.value);
 

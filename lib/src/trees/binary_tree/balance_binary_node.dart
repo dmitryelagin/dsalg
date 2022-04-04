@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'linked_binary_node.dart';
 
-class BalanceBinaryNode<K, V, N extends BalanceBinaryNode<K, V, N>>
+abstract class BalanceBinaryNode<K, V, N extends BalanceBinaryNode<K, V, N>>
     extends LinkedBinaryNode<K, V, N> {
   BalanceBinaryNode(super.key, super.value);
 

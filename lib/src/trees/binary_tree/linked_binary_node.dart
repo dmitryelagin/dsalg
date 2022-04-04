@@ -1,6 +1,6 @@
 import 'binary_node.dart';
 
-class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
+abstract class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
     extends BinaryNode<K, V, N> {
   LinkedBinaryNode(super.key, super.value);
 
