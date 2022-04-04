@@ -14,6 +14,7 @@ void main() {
       array = BitArray();
       bits = List.generate(100, (_) => random.nextInt(2));
       for (var i = 0; i < bits.length; i += 1) {
+        if (bits[i] == 0) array.unsetBit(i);
         if (bits[i] == 1) array.setBit(i);
       }
       bitsToChange = List.generate(
@@ -63,6 +64,23 @@ void main() {
         if (bitsToChange.contains(i)) bits[i] = bits[i] == 0 ? 1 : 0;
         expect(array[i], bits[i] == 1);
       }
+    });
+
+    test('should properly handle length on all operations', () {
+      expect(array.length, bits.length);
+      array.setBit(array.length - 1);
+      expect(array.length, bits.length);
+      final addedLength = random.nextInt(10);
+      array.setBit(bits.length + addedLength - 1);
+      expect(array.length, bits.length + addedLength);
+      array.unsetBit(bits.length + addedLength - 1);
+      expect(array.length, bits.length + addedLength);
+      array.unsetBit(bits.length + addedLength * 2 - 1);
+      expect(array.length, bits.length + addedLength * 2);
+      array.invertBit(bits.length + addedLength * 3 - 1);
+      expect(array.length, bits.length + addedLength * 3);
+      array.reset();
+      expect(array.length, 0);
     });
   });
 }

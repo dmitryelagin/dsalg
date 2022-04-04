@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'bit_mask.dart';
 
 class BitArray {
-  BitArray([this._minLength = 0]) {
+  BitArray([this._minLength = 0]) : _length = _minLength {
     reset();
   }
 
@@ -19,7 +19,9 @@ class BitArray {
 
   late Uint32List _chunks;
 
-  int get length => _chunks.length * _chunkSize;
+  int _length;
+
+  int get length => _length;
 
   set length(int value) {
     _tryGrowFor(value - 1);
@@ -68,6 +70,7 @@ class BitArray {
 
   void reset() {
     _chunks = Uint32List((_minLength / _chunkSize).ceil());
+    _length = _minLength;
   }
 
   void _tryGrowFor(int i) {
@@ -77,5 +80,6 @@ class BitArray {
       chunks[j] = _chunks[j];
     }
     _chunks = chunks;
+    _length = i + 1;
   }
 }
