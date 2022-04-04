@@ -1,6 +1,6 @@
 part of 'binary_tree.dart';
 
-abstract class _BaseBinaryTree<K, V, N extends BinaryNode<K, V, N>>
+abstract class _BaseBinaryTree<K, V, N extends BaseBinaryNode<K, V, N>>
     implements BaseBinaryTree<K, V> {
   N? _root;
 

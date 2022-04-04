@@ -1,6 +1,6 @@
-abstract class BinaryNode<K, V, N extends BinaryNode<K, V, N>>
+abstract class BaseBinaryNode<K, V, N extends BaseBinaryNode<K, V, N>>
     implements MapEntry<K, V> {
-  BinaryNode(this.key, this.value);
+  BaseBinaryNode(this.key, this.value);
 
   @override
   K key;

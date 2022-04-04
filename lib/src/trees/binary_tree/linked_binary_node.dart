@@ -1,7 +1,7 @@
-import 'binary_node.dart';
+import 'base_binary_node.dart';
 
 abstract class LinkedBinaryNode<K, V, N extends LinkedBinaryNode<K, V, N>>
-    extends BinaryNode<K, V, N> {
+    extends BaseBinaryNode<K, V, N> {
   LinkedBinaryNode(super.key, super.value);
 
   N? _parent;

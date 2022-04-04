@@ -1,6 +1,6 @@
 part of 'binary_tree.dart';
 
-abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
+abstract class _BaseBinarySearchTree<K, V, N extends BaseBinaryNode<K, V, N>>
     extends _BaseBinaryTree<K, V, N> implements BaseBinarySearchTree<K, V> {
   _BaseBinarySearchTree(this._createNode, this._compare);
 
@@ -139,7 +139,7 @@ abstract class _BaseBinarySearchTree<K, V, N extends BinaryNode<K, V, N>>
   }
 }
 
-extension _BinaryNodeUtils<K, V, N extends BinaryNode<K, V, N>> on N {
+extension _BinaryNodeUtils<K, V, N extends BaseBinaryNode<K, V, N>> on N {
   N? getChildByRatio(int ratio) => ratio < 0 ? left : right;
 
   void setChildByRatio(int ratio, N? node) =>
