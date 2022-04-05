@@ -40,6 +40,9 @@ class BitArray {
 
   int get length => _length;
 
+  bool get isEmpty => _length == 0;
+  bool get isNotEmpty => !isEmpty;
+
   set length(int value) {
     _tryGrowFor(value - 1);
   }

@@ -115,5 +115,13 @@ void main() {
         expect(array[i], itemsReversed[i]);
       }
     });
+
+    test('should properly check array emptiness', () {
+      expect(array.isEmpty, isFalse);
+      expect(array.isNotEmpty, isTrue);
+      array.reset();
+      expect(array.isEmpty, isTrue);
+      expect(array.isNotEmpty, isFalse);
+    });
   });
 }
