@@ -2,6 +2,10 @@ abstract class BaseBinaryNode<K, V, N extends BaseBinaryNode<K, V, N>>
     implements MapEntry<K, V> {
   BaseBinaryNode(this.key, this.value);
 
+  BaseBinaryNode.fromMapEntry(MapEntry<K, V> entry)
+      : key = entry.key,
+        value = entry.value;
+
   @override
   K key;
 
