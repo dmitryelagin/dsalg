@@ -31,7 +31,7 @@ class DoubleHeightDoubledCoordinate extends DoubledCoordinate<
   DoubleHeightDoubledCoordinate.fromCube(CubeCoordinate coord)
       : super(coord.x, coord.z * 2 + coord.x);
 
-  static final zero = DoubleHeightDoubledCoordinate(0, 0);
+  static const zero = DoubleHeightDoubledCoordinate(0, 0);
 
   @override
   int distanceTo(DoubledCoordinate other) {
@@ -71,7 +71,7 @@ class DoubleWidthDoubledCoordinate extends DoubledCoordinate<
   DoubleWidthDoubledCoordinate.fromCube(CubeCoordinate coord)
       : super(coord.x * 2 + coord.z, coord.z);
 
-  static final zero = DoubleWidthDoubledCoordinate(0, 0);
+  static const zero = DoubleWidthDoubledCoordinate(0, 0);
 
   @override
   int distanceTo(DoubledCoordinate other) {

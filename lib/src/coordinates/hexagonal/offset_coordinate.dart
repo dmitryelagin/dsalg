@@ -35,7 +35,7 @@ class OddQOffsetCoordinate extends OffsetCoordinate<
   OddQOffsetCoordinate.fromCube(CubeCoordinate coord)
       : super(coord.x, (coord.z + (coord.x - (coord.x % 2)) / 2).round());
 
-  static final zero = OddQOffsetCoordinate(0, 0);
+  static const zero = OddQOffsetCoordinate(0, 0);
 
   @override
   OddQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) {
@@ -67,7 +67,7 @@ class EvenQOffsetCoordinate extends OffsetCoordinate<
   EvenQOffsetCoordinate.fromCube(CubeCoordinate coord)
       : super(coord.x, (coord.z + (coord.x + (coord.x % 2)) / 2).round());
 
-  static final zero = EvenQOffsetCoordinate(0, 0);
+  static const zero = EvenQOffsetCoordinate(0, 0);
 
   @override
   EvenQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) {
@@ -99,7 +99,7 @@ class OddROffsetCoordinate extends OffsetCoordinate<
   OddROffsetCoordinate.fromCube(CubeCoordinate coord)
       : super((coord.x + (coord.z - (coord.z % 2)) / 2).round(), coord.z);
 
-  static final zero = OddROffsetCoordinate(0, 0);
+  static const zero = OddROffsetCoordinate(0, 0);
 
   @override
   OddROffsetCoordinate shift(PointyToppedHexagonalDirection direction) {
@@ -131,7 +131,7 @@ class EvenROffsetCoordinate extends OffsetCoordinate<
   EvenROffsetCoordinate.fromCube(CubeCoordinate coord)
       : super((coord.x + (coord.z + (coord.z % 2)) / 2).round(), coord.z);
 
-  static final zero = EvenROffsetCoordinate(0, 0);
+  static const zero = EvenROffsetCoordinate(0, 0);
 
   @override
   EvenROffsetCoordinate shift(PointyToppedHexagonalDirection direction) {
