@@ -7,6 +7,8 @@ class Stack<T> {
 
   final _items = LinkedList<T>();
 
+  Iterable<T> get items => _items.toIterable();
+
   int get length => _items.length;
 
   bool get isEmpty => _items.isEmpty;

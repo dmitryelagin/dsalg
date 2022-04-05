@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../utils/data_utils.dart';
+
 void main() {
   final random = Random();
 
@@ -23,6 +25,12 @@ void main() {
     test('should throw when nothing to extract', () {
       final stack = Stack<int>();
       expect(stack.extract, throwsStateError);
+    });
+
+    test('should return all inserted items reversed', () {
+      final stack = Stack<int>();
+      final items = random.nextIntList(100, 1000)..forEach(stack.insert);
+      expect(stack.items, items.reversed);
     });
   });
 }
