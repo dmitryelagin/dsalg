@@ -1,6 +1,9 @@
 import 'dart:math';
 
 extension RandomDataUtils on Random {
+  List<bool> nextBoolList(int length) =>
+      [for (var i = 0; i < length; i += 1) nextBool()];
+
   List<String> nextStringList(int length, int min, int max) =>
       List.generate(length, (_) => nextString(min, max));
 

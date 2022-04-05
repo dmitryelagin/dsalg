@@ -7,6 +7,23 @@ class BitArray {
     reset();
   }
 
+  factory BitArray.from(Iterable<bool> values, [int minLength = 0]) {
+    final array = BitArray(minLength);
+    var index = values.length;
+    for (final value in values) {
+      array[index -= 1] = value;
+    }
+    return array;
+  }
+
+  factory BitArray.fromDataString(String data, [int minLength = 0]) {
+    final array = BitArray(minLength)
+      .._chunks = Uint32List.view(
+        Uint16List.fromList(data.codeUnits.reversed.toList()).buffer,
+      );
+    return array.._length = array._chunks.length * _chunkSize;
+  }
+
   static const _chunkSize = Uint32List.bytesPerElement * 8;
   static const _chunkIndexMask = _chunkSize - 1;
 
@@ -72,13 +89,17 @@ class BitArray {
     _length = _minLength;
   }
 
+  String toDataString() =>
+      String.fromCharCodes(Uint16List.view(_chunks.buffer).reversed);
+
   void _tryGrowFor(int i) {
     if (length > i) return;
+    _length = i + 1;
+    if (_chunks.length * _chunkSize > i) return;
     final chunks = Uint32List(_getChunkIndex(i) + 1);
     for (var j = 0; j < _chunks.length; j += 1) {
       chunks[j] = _chunks[j];
     }
     _chunks = chunks;
-    _length = i + 1;
   }
 }

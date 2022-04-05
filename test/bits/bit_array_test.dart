@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../utils/data_utils.dart';
+
 void main() {
   group('BitArray', () {
     final random = Random();
@@ -70,7 +72,7 @@ void main() {
       expect(array.length, bits.length);
       array.setBit(array.length - 1);
       expect(array.length, bits.length);
-      final addedLength = random.nextInt(10);
+      final addedLength = random.nextInt(10) + 1;
       array.setBit(bits.length + addedLength - 1);
       expect(array.length, bits.length + addedLength);
       array.unsetBit(bits.length + addedLength - 1);
@@ -84,6 +86,34 @@ void main() {
       expect(outOfRangeValue, isFalse);
       array.reset();
       expect(array.length, 0);
+    });
+
+    test('should save and read bits in string representation', () {
+      final array = BitArray();
+      var index = -1;
+      final values = random.nextIntList(100, 1 << 32);
+      for (final value in values) {
+        for (final bit in value.bits) {
+          array[index += 1] = bit == 1;
+        }
+      }
+      final data = array.toDataString();
+      expect(data.length, lessThan(array.length));
+      final actual = BitArray.fromDataString(data);
+      for (var i = 0; i < actual.length; i += 1) {
+        expect(actual[i], array[i]);
+      }
+      final text = random.nextString(10, 20);
+      expect(BitArray.fromDataString(text).toDataString(), text);
+    });
+
+    test('should create instance from bools reversed collection', () {
+      final items = random.nextBoolList(100);
+      final itemsReversed = items.reversed.toList();
+      final array = BitArray.from(items);
+      for (var i = 0; i < itemsReversed.length; i += 1) {
+        expect(array[i], itemsReversed[i]);
+      }
     });
   });
 }
