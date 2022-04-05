@@ -8,7 +8,6 @@ A library with data structures and algorythms.
 
 ### Collections
 - Linked List
-- Priority Queue
 - Queue
 - Stack
 
