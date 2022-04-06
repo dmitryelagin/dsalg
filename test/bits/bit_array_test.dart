@@ -107,6 +107,14 @@ void main() {
       expect(BitArray.fromDataString(text).toDataString(), text);
     });
 
+    test('should trim string representation if necessary', () {
+      expect((BitArray()..setBit(40)).toDataString().length, 3);
+      expect((BitArray()..setBit(47)).toDataString().length, 3);
+      expect((BitArray()..setBit(48)).toDataString().length, 4);
+      expect(BitArray.fromDataString('abc').toDataString(), 'abc');
+      expect(BitArray.fromDataString('abcd').toDataString(), 'abcd');
+    });
+
     test('should create instance from bools reversed collection', () {
       final items = random.nextBoolList(100);
       final itemsReversed = items.reversed.toList();

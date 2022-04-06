@@ -17,12 +17,16 @@ class BitArray {
   }
 
   factory BitArray.fromDataString(String data, [int minLength = 0]) {
+    final units = [
+      ...data.codeUnits.reversed,
+      if (data.codeUnits.length.isOdd) 0,
+    ];
     final array = BitArray(minLength)
-      .._chunks = Uint32List.view(
-        Uint16List.fromList(data.codeUnits.reversed.toList()).buffer,
-      );
-    return array.._length = array._chunks.length * _chunkSize;
+      .._chunks = Uint32List.sublistView(Uint16List.fromList(units));
+    return array.._length = data.codeUnits.length * _charSize;
   }
+
+  static const _charSize = Uint16List.bytesPerElement * 8;
 
   static const _chunkSize = Uint32List.bytesPerElement * 8;
   static const _chunkIndexMask = _chunkSize - 1;
@@ -92,8 +96,12 @@ class BitArray {
     _length = _minLength;
   }
 
-  String toDataString() =>
-      String.fromCharCodes(Uint16List.view(_chunks.buffer).reversed);
+  String toDataString() {
+    final codes = Uint16List.sublistView(_chunks).reversed;
+    return String.fromCharCodes(
+      length <= (codes.length - 1) * _charSize ? codes.skip(1) : codes,
+    );
+  }
 
   void _tryGrowFor(int i) {
     if (length > i) return;
