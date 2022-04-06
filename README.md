@@ -6,6 +6,9 @@ A library with data structures and algorythms.
 - Bit Array
 - Bit Mask
 
+### Codecs
+- Huffman
+
 ### Collections
 - Linked List
 - Queue
@@ -55,6 +58,7 @@ A library with data structures and algorythms.
 - AVL Tree
 - Binary Heap
 - Binary Search Tree
+- Binary Tree
 - Splay Tree
 - Treap
 - Trie

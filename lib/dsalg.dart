@@ -1,4 +1,5 @@
 export 'bits.dart';
+export 'codecs.dart';
 export 'collections.dart';
 export 'coordinates.dart';
 export 'geometry.dart';
