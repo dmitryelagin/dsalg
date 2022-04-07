@@ -30,12 +30,9 @@ class HuffmanCodec {
       unitNodes.insert(node);
     }
     final dictionary = _createDictionary(unitNodes.extract());
-    return HuffmanMessage(
-      dictionary,
-      BitArray.from([
-        for (final unit in message.codeUnits) ...?dictionary[unit],
-      ]),
-    );
+    final data =
+        BitArray.from(message.codeUnits.expand((unit) => dictionary[unit]!));
+    return HuffmanMessage(dictionary, data);
   }
 
   String decode(HuffmanMessage message) {
@@ -53,32 +50,28 @@ class HuffmanCodec {
     return buffer.toString();
   }
 
-  Map<int, Iterable<bool>> _createDictionary(BinaryNode<int, int> node) =>
-      Map.fromEntries(
-        _createDictionaryEntries(
-          node,
-          Stack(node.hasNoChildren ? const [false] : const []),
-        ),
-      );
-
-  Iterable<MapEntry<int, Iterable<bool>>> _createDictionaryEntries(
-    BinaryNode<int, int> node,
-    Stack<bool> path,
-  ) sync* {
-    if (node.hasNoChildren) {
-      yield MapEntry(node.key, path.items.toList().reversed);
-    } else {
-      if (node.hasLeft) {
-        path.insert(false);
-        yield* _createDictionaryEntries(node.left!, path);
-        path.extract();
-      }
-      if (node.hasRight) {
-        path.insert(true);
-        yield* _createDictionaryEntries(node.right!, path);
-        path.extract();
+  Map<int, Iterable<bool>> _createDictionary(BinaryNode<int, int> node) {
+    final path = Stack<bool>(node.hasNoChildren ? const [false] : const []);
+    Iterable<MapEntry<int, Iterable<bool>>> _createDictionaryEntries(
+      BinaryNode<int, int> node,
+    ) sync* {
+      if (node.hasNoChildren) {
+        yield MapEntry(node.key, path.items.toList().reversed);
+      } else {
+        if (node.hasLeft) {
+          path.insert(false);
+          yield* _createDictionaryEntries(node.left!);
+          path.extract();
+        }
+        if (node.hasRight) {
+          path.insert(true);
+          yield* _createDictionaryEntries(node.right!);
+          path.extract();
+        }
       }
     }
+
+    return Map.fromEntries(_createDictionaryEntries(node));
   }
 
   BinaryNode<int, int> _createUnitTree(Map<int, Iterable<bool>> dictionary) {

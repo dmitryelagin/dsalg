@@ -107,10 +107,7 @@ class BitArray {
     if (length > i) return;
     _length = i + 1;
     if (_chunks.length * _chunkSize > i) return;
-    final chunks = Uint32List(_getChunkIndex(i) + 1);
-    for (var j = 0; j < _chunks.length; j += 1) {
-      chunks[j] = _chunks[j];
-    }
-    _chunks = chunks;
+    _chunks = Uint32List(_getChunkIndex(i) + 1)
+      ..setRange(0, _chunks.length, _chunks);
   }
 }
