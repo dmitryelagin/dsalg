@@ -58,7 +58,6 @@ A library with data structures and algorythms.
 - AVL Tree
 - Binary Heap
 - Binary Search Tree
-- Binary Tree
 - Splay Tree
 - Treap
 - Trie
