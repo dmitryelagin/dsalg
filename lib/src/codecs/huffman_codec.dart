@@ -1,5 +1,6 @@
 import '../bits/bit_array.dart';
 import '../collections/stack.dart';
+import '../helpers/code_unit_frequencies.dart';
 import '../trees/binary_heap.dart';
 import '../trees/binary_tree/base_binary_node.dart';
 
@@ -55,10 +56,7 @@ class _UnitNode extends BaseBinaryNode<int, int, _UnitNode> {
 
   factory _UnitNode.fromString(String message) {
     assert(message.isNotEmpty);
-    final unitCounters = <int, int>{};
-    for (final unit in message.codeUnits) {
-      unitCounters[unit] = (unitCounters[unit] ?? 0) + 1;
-    }
+    final unitCounters = message.codeUnitFrequencies;
     final unitNodes = BinaryHeap<_UnitNode>(
       (a, b) => b.value.compareTo(a.value),
       unitCounters.entries.map(_UnitNode.fromEntry),
