@@ -37,6 +37,14 @@ extension RandomDataUtils on Random {
       Point(nextInt(to - from) + from, nextInt(to - from) + from);
 
   Point<double> nextDoublePoint() => Point(nextDouble(), nextDouble());
+
+  T nextItemFrom<T>(List<T> values) => values[nextInt(values.length)];
+
+  Iterable<T> nextItemsFrom<T>(List<T> values, int amount) sync* {
+    for (var i = 0; i < amount; i += 1) {
+      yield values[nextInt(values.length)];
+    }
+  }
 }
 
 extension IntListTestUtils on List<int> {

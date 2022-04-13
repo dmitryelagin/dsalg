@@ -24,8 +24,6 @@ class BinaryTree<K, V> extends _BaseBinaryTree<K, V, BinaryNode<K, V>> {
 
 class BinaryNode<K, V> extends BaseBinaryNode<K, V, BinaryNode<K, V>> {
   BinaryNode(super.key, super.value);
-
-  BinaryNode.fromMapEntry(super.entry) : super.fromMapEntry();
 }
 
 abstract class BaseBinaryTree<K, V> {
