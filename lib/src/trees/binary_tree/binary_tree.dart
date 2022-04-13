@@ -16,16 +16,6 @@ part 'base_binary_search_tree.dart';
 part 'splay_tree.dart';
 part 'treap.dart';
 
-class BinaryTree<K, V> extends _BaseBinaryTree<K, V, BinaryNode<K, V>> {
-  BinaryTree(BinaryNode<K, V> root) {
-    _root = root;
-  }
-}
-
-class BinaryNode<K, V> extends BaseBinaryNode<K, V, BinaryNode<K, V>> {
-  BinaryNode(super.key, super.value);
-}
-
 abstract class BaseBinaryTree<K, V> {
   bool get isEmpty;
   bool get isNotEmpty;
