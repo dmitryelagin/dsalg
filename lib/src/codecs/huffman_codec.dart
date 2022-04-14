@@ -29,12 +29,12 @@ class HuffmanCodec {
     );
   }
 
-  String decode(BitArray message) {
-    assert(message.isNotEmpty);
+  String decode(BitArray data) {
+    assert(data.isNotEmpty);
     final buffer = StringBuffer();
     var node = _unitTree;
-    for (var i = message.length - 1; i >= 0; i -= 1) {
-      node = message[i] ? node.right! : node.left!;
+    for (var i = data.length - 1; i >= 0; i -= 1) {
+      node = data[i] ? node.right! : node.left!;
       if (node.hasNoChildren) {
         buffer.writeCharCode(node.value);
         node = _unitTree;

@@ -12,7 +12,7 @@ void main() {
       path.split('').map((rune) => rune == '1');
 
   group('HuffmanCodec', () {
-    test('should encode standard message', () {
+    test('should encode and decode standard message', () {
       const message = 'A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED';
       final targetDictionary = {
         '_': '00',
@@ -33,9 +33,11 @@ void main() {
         '1101000111111001',
       ].map((value) => int.parse(value, radix: 2));
       final dictionary = HuffmanCodec.createDictionary(message);
-      final result = HuffmanCodec(dictionary).encode(message);
+      final codec = HuffmanCodec(dictionary);
+      final result = codec.encode(message);
       expect(dictionary, targetDictionary);
       expect(result.toDataString(), String.fromCharCodes(encodedMessage));
+      expect(codec.decode(result), message);
     });
 
     test('should produce same path lengths as in reference dictionary', () {
@@ -61,12 +63,6 @@ void main() {
       final referenceDictionary = {'a': '0', 'b': '11', 'c': '101', 'd': '100'}
           .map((key, value) => MapEntry(key.runes.first, getBinaryPath(value)));
       expect(HuffmanCodec.createDictionary(message), referenceDictionary);
-    });
-
-    test('should decode standard message', () {
-      const message = 'A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED';
-      final codec = HuffmanCodec.from(message);
-      expect(codec.decode(codec.encode(message)), message);
     });
 
     test('should properly encode and decode messages', () {
