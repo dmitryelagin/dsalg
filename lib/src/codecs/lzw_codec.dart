@@ -22,6 +22,10 @@ class LzwCodec extends Encoding {
 
   @override
   LzwDecoder get decoder => const LzwDecoder();
+
+  @override
+  String decode(List<int> encoded, {bool allowMalformed = false}) =>
+      decoder.convert(encoded, allowMalformed: allowMalformed);
 }
 
 class LzwEncoder extends Converter<String, List<int>> {
@@ -69,12 +73,17 @@ class LzwEncoder extends Converter<String, List<int>> {
 class LzwDecoder extends Converter<List<int>, String> {
   const LzwDecoder();
 
-  static StreamTransformer<int, String> decodeTransformer() =>
+  static StreamTransformer<int, String> decodeTransformer({
+    bool allowMalformed = false,
+  }) =>
       StreamTransformer.fromBind((stream) {
+        final utf8Decoder = allowMalformed
+            ? const Utf8Decoder(allowMalformed: true)
+            : const Utf8Decoder();
         final codeUnits = stream
             .transform(decodeUtf8CharTransformer())
             .map((word) => word.codeUnits);
-        return utf8.decoder.bind(codeUnits);
+        return utf8Decoder.bind(codeUnits);
       });
 
   static StreamTransformer<int, String> decodeUtf8CharTransformer() {
@@ -99,10 +108,12 @@ class LzwDecoder extends Converter<List<int>, String> {
   }
 
   @override
-  String convert(List<int> input) {
+  String convert(List<int> input, {bool allowMalformed = false}) {
     final buffer = StringBuffer();
     StreamController<int>(sync: true)
-      ..stream.transform(decodeTransformer()).listen(buffer.write)
+      ..stream
+          .transform(decodeTransformer(allowMalformed: allowMalformed))
+          .listen(buffer.write)
       ..addAll(input)
       ..close();
     return buffer.toString();

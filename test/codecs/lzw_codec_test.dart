@@ -5,6 +5,7 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/stream_controller_utils.dart';
 
 void main() {
   final random = Random();
@@ -66,6 +67,43 @@ void main() {
       }, (error, _) {
         expect(error, isArgumentError);
       });
+    });
+
+    test('should encode async data stream', () {
+      final items = random.nextStringList(100, 100, 500);
+      final expected = lzwCodec.encode(items.reduce((a, b) => a + b));
+      final actual = <int>[];
+      final controller = StreamController<String>()
+        ..stream.transform(LzwEncoder.encodeTransformer()).listen(actual.add)
+        ..addAll(items)
+        ..close();
+      expect(controller.done.then((_) => actual), completion(expected));
+    });
+
+    test('should decode async data stream', () {
+      final items = lzwCodec.encode(random.nextString(1000, 2000));
+      final expected = lzwCodec.decode(items);
+      final controller = StreamController<int>();
+      final actual = controller.stream
+          .transform(LzwDecoder.decodeTransformer())
+          .fold<String>('', (value, chunk) => value + chunk);
+      controller
+        ..addAll(items)
+        ..close();
+      expect(actual, completion(expected));
+    });
+
+    test('should decode malformed async data stream', () {
+      final items = random.nextIntList(100, 256);
+      final expected = lzwCodec.decode(items, allowMalformed: true);
+      final controller = StreamController<int>();
+      final actual = controller.stream
+          .transform(LzwDecoder.decodeTransformer(allowMalformed: true))
+          .fold<String>('', (value, chunk) => value + chunk);
+      controller
+        ..addAll(items)
+        ..close();
+      expect(actual, completion(expected));
     });
   });
 }
