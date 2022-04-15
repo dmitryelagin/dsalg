@@ -8,6 +8,7 @@ A library with data structures and algorythms.
 
 ### Codecs
 - Huffman
+- LZW
 
 ### Collections
 - Linked List

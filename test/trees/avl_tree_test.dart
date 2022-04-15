@@ -12,28 +12,28 @@ void main() {
   const absentItem = 1000;
   final random = Random();
 
-  group('AVLTree', () {
+  group('AvlTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-      return AVLTree<K, V>(compare, entries ?? const {});
+      return AvlTree<K, V>(compare, entries ?? const {});
     });
   });
 
-  group('AVLTree', () {
+  group('AvlTree', () {
     var compareInt = IntComparator();
-    var tree = AVLTree<int, int>(compareInt);
+    var tree = AvlTree<int, int>(compareInt);
     var items = <int>[], otherItems = <int>[];
-    var worstTree = AVLTree<int, int>(compareInt);
+    var worstTree = AvlTree<int, int>(compareInt);
 
     setUp(() {
       compareInt = IntComparator();
       final firstItems = random.nextIntMap(500, absentItem);
-      tree = AVLTree(compareInt, firstItems);
+      tree = AvlTree(compareInt, firstItems);
       final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
       otherItems = random.nextIntList(200, absentItem)..add(absentItem);
       final worstItems = items.copySort(compareInt).reversed;
-      worstTree = AVLTree(compareInt, worstItems.toMap());
+      worstTree = AvlTree(compareInt, worstItems.toMap());
     });
 
     test('should be able to traverse breadth first', () {

@@ -4,14 +4,14 @@ extension RandomDataUtils on Random {
   List<bool> nextBoolList(int length) =>
       [for (var i = 0; i < length; i += 1) nextBool()];
 
-  List<String> nextStringList(int length, int min, int max) =>
-      List.generate(length, (_) => nextString(min, max));
+  List<String> nextStringList(int length, int min, int max, [int? maxCode]) =>
+      List.generate(length, (_) => nextString(min, max, maxCode));
 
-  String nextString(int min, int max) {
+  String nextString(int min, int max, [int? maxCode]) {
     var length = nextInt(max - min) + min;
     final buffer = StringBuffer();
     while ((length -= 1) >= 0) {
-      buffer.writeCharCode(nextInt(128));
+      buffer.writeCharCode(nextInt(maxCode ?? 128));
     }
     return buffer.toString();
   }

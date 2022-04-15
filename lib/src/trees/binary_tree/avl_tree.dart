@@ -1,8 +1,8 @@
 part of 'binary_tree.dart';
 
-class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
-  AVLTree(Comparator<K> compare, [Map<K, V> entries = const {}])
-      : super(_AVLNode.new, compare) {
+class AvlTree<K, V> extends _BaseBinarySearchTree<K, V, _AvlNode<K, V>> {
+  AvlTree(Comparator<K> compare, [Map<K, V> entries = const {}])
+      : super(_AvlNode.new, compare) {
     addAll(entries);
   }
 
@@ -27,7 +27,7 @@ class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
     return change.first?.value;
   }
 
-  void _rebalance(_AVLNode<K, V>? z) {
+  void _rebalance(_AvlNode<K, V>? z) {
     if (z == null || z.isBalanced) return;
     final y = z.tallestChild!, x = y.tallestChild!;
     final isLeftYZ = y.isLeftOf(z), isRightYZ = y.isRightOf(z);
@@ -41,6 +41,6 @@ class AVLTree<K, V> extends _BaseBinarySearchTree<K, V, _AVLNode<K, V>> {
   }
 }
 
-class _AVLNode<K, V> extends BalanceBinaryNode<K, V, _AVLNode<K, V>> {
-  _AVLNode(super.key, super.value);
+class _AvlNode<K, V> extends BalanceBinaryNode<K, V, _AvlNode<K, V>> {
+  _AvlNode(super.key, super.value);
 }
