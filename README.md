@@ -26,7 +26,6 @@ A library with data structures and algorythms.
 
 ### Helpers
 - Code Unit Frequencies
-- Code Unit Probabilities
 - Comparator
 - Memoized Comparator
 - Permutations
