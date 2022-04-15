@@ -18,10 +18,10 @@ class LzwCodec extends Encoding {
   String get name => 'lzw';
 
   @override
-  Converter<String, List<int>> get encoder => const LzwEncoder();
+  LzwEncoder get encoder => const LzwEncoder();
 
   @override
-  Converter<List<int>, String> get decoder => const LzwDecoder();
+  LzwDecoder get decoder => const LzwDecoder();
 }
 
 class LzwEncoder extends Converter<String, List<int>> {

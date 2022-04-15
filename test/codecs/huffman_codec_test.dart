@@ -33,7 +33,7 @@ void main() {
         '1101000111111001',
       ].map((value) => int.parse(value, radix: 2));
       final dictionary = HuffmanCodec.createDictionary(message);
-      final codec = HuffmanCodec(dictionary);
+      final codec = HuffmanCodec.fromDictionary(dictionary);
       final result = codec.encode(message);
       expect(dictionary, targetDictionary);
       expect(result.toDataString(), String.fromCharCodes(encodedMessage));
@@ -96,7 +96,7 @@ void main() {
     test('should work with external dictionary', () {
       const source = 'this is an example of a huffman tree';
       final dictionary = HuffmanCodec.createDictionary(source);
-      final codec = HuffmanCodec(dictionary);
+      final codec = HuffmanCodec.fromDictionary(dictionary);
       final message = random
           .nextItemsFrom(source.split(''), random.nextInt(10) + 20)
           .join();
@@ -107,7 +107,7 @@ void main() {
     test('should throw on encoding when dictionary lacks message chars', () {
       const source = 'this is an example of a huffman tree';
       final dictionary = HuffmanCodec.createDictionary(source);
-      final codec = HuffmanCodec(dictionary);
+      final codec = HuffmanCodec.fromDictionary(dictionary);
       for (var i = 0; i < 100; i += 1) {
         final invalidMessage = '_${random.nextString(20, 30)}_';
         final invalidEncodedMessage = BitArray.fromDataString(invalidMessage);

@@ -1,51 +1,73 @@
+import 'dart:convert';
+
 import '../bits/bit_array.dart';
 import '../collections/stack.dart';
 import '../helpers/code_unit_frequencies.dart';
 import '../trees/binary_heap.dart';
 import '../trees/binary_tree/base_binary_node.dart';
 
-class HuffmanCodec {
-  HuffmanCodec(this._dictionary) : assert(_dictionary.isNotEmpty);
+class HuffmanCodec extends Codec<String, BitArray> {
+  const HuffmanCodec(this.encoder, this.decoder);
+
+  HuffmanCodec.fromDictionary(Map<int, Iterable<bool>> dictionary)
+      : assert(dictionary.isNotEmpty),
+        encoder = HuffmanEncoder(dictionary),
+        decoder = HuffmanDecoder.fromDictionary(dictionary);
 
   factory HuffmanCodec.from(String message) =>
-      HuffmanCodec(createDictionary(message));
-
-  final Map<int, Iterable<bool>> _dictionary;
-
-  _UnitNode? _unitTreeCache;
-
-  _UnitNode get _unitTree =>
-      _unitTreeCache ?? _UnitNode.fromDictionary(_dictionary);
+      HuffmanCodec.fromDictionary(createDictionary(message));
 
   static Map<int, Iterable<bool>> createDictionary(String message) =>
       _UnitNode.fromString(message).toDictionary();
 
-  BitArray encode(String message) {
-    assert(message.isNotEmpty);
+  @override
+  final HuffmanEncoder encoder;
+
+  @override
+  final HuffmanDecoder decoder;
+}
+
+class HuffmanEncoder extends Converter<String, BitArray> {
+  HuffmanEncoder(this._dictionary) : assert(_dictionary.isNotEmpty);
+
+  final Map<int, Iterable<bool>> _dictionary;
+
+  @override
+  BitArray convert(String input) {
+    assert(input.isNotEmpty);
     return BitArray.from(
-      message.codeUnits.expand(
-        (unit) => _dictionary[unit] ?? getMissedDictionaryValue(unit),
-      ),
+      input.codeUnits.expand((unit) {
+        return _dictionary[unit] ?? getMissedDictionaryValue(unit);
+      }),
     );
   }
 
-  String decode(BitArray data) {
-    assert(data.isNotEmpty);
+  Iterable<bool> getMissedDictionaryValue(int unit) {
+    final char = String.fromCharCode(unit);
+    throw StateError('Missing unit $unit ($char) in codec dictionary');
+  }
+}
+
+class HuffmanDecoder extends Converter<BitArray, String> {
+  HuffmanDecoder.fromDictionary(Map<int, Iterable<bool>> dictionary)
+      : assert(dictionary.isNotEmpty),
+        _unitTree = _UnitNode.fromDictionary(dictionary);
+
+  final _UnitNode _unitTree;
+
+  @override
+  String convert(BitArray input) {
+    assert(input.isNotEmpty);
     final buffer = StringBuffer();
     var node = _unitTree;
-    for (var i = data.length - 1; i >= 0; i -= 1) {
-      node = data[i] ? node.right! : node.left!;
+    for (var i = input.length - 1; i >= 0; i -= 1) {
+      node = input[i] ? node.right! : node.left!;
       if (node.hasNoChildren) {
         buffer.writeCharCode(node.value);
         node = _unitTree;
       }
     }
     return buffer.toString();
-  }
-
-  Iterable<bool> getMissedDictionaryValue(int unit) {
-    final char = String.fromCharCode(unit);
-    throw StateError('Missing unit $unit ($char) in codec dictionary');
   }
 }
 
