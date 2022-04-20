@@ -1,42 +1,22 @@
-import 'dart:convert';
-
-import '../bits/bit_array.dart';
 import '../helpers/bisect.dart';
 import '../helpers/code_unit_frequencies.dart';
+import '../trees/binary_tree/base_binary_node.dart';
 import 'base_unit_codec.dart';
 
-class ShannonFanoCodec extends Codec<String, BitArray> {
-  const ShannonFanoCodec(this.encoder, this.decoder);
+class ShannonFanoCodec extends BaseUnitCodec {
+  const ShannonFanoCodec(super.encoder, super.decoder);
 
-  ShannonFanoCodec.fromDictionary(UnitDictionary dictionary)
-      : assert(dictionary.isNotEmpty),
-        encoder = ShannonFanoEncoder(dictionary),
-        decoder = ShannonFanoDecoder.fromDictionary(dictionary);
+  ShannonFanoCodec.fromDictionary(super.dictionary) : super.fromDictionary();
 
   factory ShannonFanoCodec.from(String message) =>
       ShannonFanoCodec.fromDictionary(createDictionary(message));
 
   static UnitDictionary createDictionary(String message) =>
       _ShannonFanoNode.fromString(message).toDictionary();
-
-  @override
-  final ShannonFanoEncoder encoder;
-
-  @override
-  final ShannonFanoDecoder decoder;
 }
 
-class ShannonFanoEncoder extends BaseUnitEncoder {
-  ShannonFanoEncoder(super.dictionary);
-}
-
-class ShannonFanoDecoder extends BaseUnitDecoder<_ShannonFanoNode> {
-  ShannonFanoDecoder.fromDictionary(UnitDictionary dictionary)
-      : assert(dictionary.isNotEmpty),
-        super(_ShannonFanoNode.fromDictionary(dictionary));
-}
-
-class _ShannonFanoNode extends BaseUnitNode<Iterable<bool>, _ShannonFanoNode> {
+class _ShannonFanoNode
+    extends BaseBinaryNode<int, Iterable<bool>, _ShannonFanoNode> {
   _ShannonFanoNode(super.key, super.value);
 
   _ShannonFanoNode.utility([
@@ -68,9 +48,6 @@ class _ShannonFanoNode extends BaseUnitNode<Iterable<bool>, _ShannonFanoNode> {
       return _ShannonFanoNode.utility(const [], units, getMass);
     }
   }
-
-  factory _ShannonFanoNode.fromDictionary(UnitDictionary dictionary) =>
-      BaseUnitNode.fromDictionary(_ShannonFanoNode.utility, dictionary);
 
   static Iterable<MapEntry<int, Iterable<bool>>> _createDictionaryEntries(
     _ShannonFanoNode node,

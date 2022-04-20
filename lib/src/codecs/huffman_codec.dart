@@ -1,43 +1,22 @@
-import 'dart:convert';
-
-import '../bits/bit_array.dart';
 import '../collections/stack.dart';
 import '../helpers/code_unit_frequencies.dart';
 import '../trees/binary_heap.dart';
+import '../trees/binary_tree/base_binary_node.dart';
 import 'base_unit_codec.dart';
 
-class HuffmanCodec extends Codec<String, BitArray> {
-  const HuffmanCodec(this.encoder, this.decoder);
+class HuffmanCodec extends BaseUnitCodec {
+  const HuffmanCodec(super.encoder, super.decoder);
 
-  HuffmanCodec.fromDictionary(UnitDictionary dictionary)
-      : assert(dictionary.isNotEmpty),
-        encoder = HuffmanEncoder(dictionary),
-        decoder = HuffmanDecoder.fromDictionary(dictionary);
+  HuffmanCodec.fromDictionary(super.dictionary) : super.fromDictionary();
 
   factory HuffmanCodec.from(String message) =>
       HuffmanCodec.fromDictionary(createDictionary(message));
 
   static UnitDictionary createDictionary(String message) =>
       _HuffmanNode.fromString(message).toDictionary();
-
-  @override
-  final HuffmanEncoder encoder;
-
-  @override
-  final HuffmanDecoder decoder;
 }
 
-class HuffmanEncoder extends BaseUnitEncoder {
-  HuffmanEncoder(super.dictionary);
-}
-
-class HuffmanDecoder extends BaseUnitDecoder<_HuffmanNode> {
-  HuffmanDecoder.fromDictionary(UnitDictionary dictionary)
-      : assert(dictionary.isNotEmpty),
-        super(_HuffmanNode.fromDictionary(dictionary));
-}
-
-class _HuffmanNode extends BaseUnitNode<int, _HuffmanNode> {
+class _HuffmanNode extends BaseBinaryNode<int, int, _HuffmanNode> {
   _HuffmanNode.fromEntry(MapEntry<int, int> entry)
       : super(entry.key, entry.value);
 
@@ -59,9 +38,6 @@ class _HuffmanNode extends BaseUnitNode<int, _HuffmanNode> {
     }
     return unitNodes.extract();
   }
-
-  factory _HuffmanNode.fromDictionary(UnitDictionary dictionary) =>
-      BaseUnitNode.fromDictionary(_HuffmanNode.utility, dictionary);
 
   UnitDictionary toDictionary() {
     final path = Stack<bool>(hasNoChildren ? const [false] : const []);
