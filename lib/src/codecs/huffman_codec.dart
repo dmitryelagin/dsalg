@@ -4,12 +4,12 @@ import '../bits/bit_array.dart';
 import '../collections/stack.dart';
 import '../helpers/code_unit_frequencies.dart';
 import '../trees/binary_heap.dart';
-import '../trees/binary_tree/base_binary_node.dart';
+import 'base_unit_codec.dart';
 
 class HuffmanCodec extends Codec<String, BitArray> {
   const HuffmanCodec(this.encoder, this.decoder);
 
-  HuffmanCodec.fromDictionary(Map<int, Iterable<bool>> dictionary)
+  HuffmanCodec.fromDictionary(UnitDictionary dictionary)
       : assert(dictionary.isNotEmpty),
         encoder = HuffmanEncoder(dictionary),
         decoder = HuffmanDecoder.fromDictionary(dictionary);
@@ -17,8 +17,8 @@ class HuffmanCodec extends Codec<String, BitArray> {
   factory HuffmanCodec.from(String message) =>
       HuffmanCodec.fromDictionary(createDictionary(message));
 
-  static Map<int, Iterable<bool>> createDictionary(String message) =>
-      _UnitNode.fromString(message).toDictionary();
+  static UnitDictionary createDictionary(String message) =>
+      _HuffmanNode.fromString(message).toDictionary();
 
   @override
   final HuffmanEncoder encoder;
@@ -27,65 +27,32 @@ class HuffmanCodec extends Codec<String, BitArray> {
   final HuffmanDecoder decoder;
 }
 
-class HuffmanEncoder extends Converter<String, BitArray> {
-  HuffmanEncoder(this._dictionary) : assert(_dictionary.isNotEmpty);
-
-  final Map<int, Iterable<bool>> _dictionary;
-
-  @override
-  BitArray convert(String input) {
-    assert(input.isNotEmpty);
-    return BitArray.from(
-      input.codeUnits.expand((unit) {
-        return _dictionary[unit] ?? getMissedDictionaryValue(unit);
-      }),
-    );
-  }
-
-  Iterable<bool> getMissedDictionaryValue(int unit) {
-    final char = String.fromCharCode(unit);
-    throw StateError('Missing unit $unit ($char) in codec dictionary');
-  }
+class HuffmanEncoder extends BaseUnitEncoder {
+  HuffmanEncoder(super.dictionary);
 }
 
-class HuffmanDecoder extends Converter<BitArray, String> {
-  HuffmanDecoder.fromDictionary(Map<int, Iterable<bool>> dictionary)
+class HuffmanDecoder extends BaseUnitDecoder<_HuffmanNode> {
+  HuffmanDecoder.fromDictionary(UnitDictionary dictionary)
       : assert(dictionary.isNotEmpty),
-        _unitTree = _UnitNode.fromDictionary(dictionary);
-
-  final _UnitNode _unitTree;
-
-  @override
-  String convert(BitArray input) {
-    assert(input.isNotEmpty);
-    final buffer = StringBuffer();
-    var node = _unitTree;
-    for (var i = input.length - 1; i >= 0; i -= 1) {
-      node = input[i] ? node.right! : node.left!;
-      if (node.hasNoChildren) {
-        buffer.writeCharCode(node.value);
-        node = _unitTree;
-      }
-    }
-    return buffer.toString();
-  }
+        super(_HuffmanNode.fromDictionary(dictionary));
 }
 
-class _UnitNode extends BaseBinaryNode<int, int, _UnitNode> {
-  _UnitNode.fromEntry(MapEntry<int, int> entry) : super(entry.key, entry.value);
+class _HuffmanNode extends BaseUnitNode<int, _HuffmanNode> {
+  _HuffmanNode.fromEntry(MapEntry<int, int> entry)
+      : super(entry.key, entry.value);
 
-  _UnitNode.utility([int value = 0]) : super(-1, value);
+  _HuffmanNode.utility([int value = 0]) : super(-1, value);
 
-  factory _UnitNode.fromString(String message) {
+  factory _HuffmanNode.fromString(String message) {
     assert(message.isNotEmpty);
     final unitCounters = message.codeUnitFrequencies;
-    final unitNodes = BinaryHeap<_UnitNode>(
+    final unitNodes = BinaryHeap<_HuffmanNode>(
       (a, b) => b.value.compareTo(a.value),
-      unitCounters.entries.map(_UnitNode.fromEntry),
+      unitCounters.entries.map(_HuffmanNode.fromEntry),
     );
     while (unitNodes.length > 1) {
       final first = unitNodes.extract(), second = unitNodes.extract();
-      final node = _UnitNode.utility(first.value + second.value)
+      final node = _HuffmanNode.utility(first.value + second.value)
         ..left = first
         ..right = second;
       unitNodes.insert(node);
@@ -93,25 +60,13 @@ class _UnitNode extends BaseBinaryNode<int, int, _UnitNode> {
     return unitNodes.extract();
   }
 
-  factory _UnitNode.fromDictionary(Map<int, Iterable<bool>> dictionary) {
-    final root = _UnitNode.utility();
-    var node = root;
-    for (final unit in dictionary.keys) {
-      for (final isRight in dictionary[unit]!) {
-        node = isRight
-            ? node.right ??= _UnitNode.utility()
-            : node.left ??= _UnitNode.utility();
-      }
-      node.value = unit;
-      node = root;
-    }
-    return root;
-  }
+  factory _HuffmanNode.fromDictionary(UnitDictionary dictionary) =>
+      BaseUnitNode.fromDictionary(_HuffmanNode.utility, dictionary);
 
-  Map<int, Iterable<bool>> toDictionary() {
+  UnitDictionary toDictionary() {
     final path = Stack<bool>(hasNoChildren ? const [false] : const []);
-    Iterable<MapEntry<int, Iterable<bool>>> _createDictionaryEntries(
-      _UnitNode node,
+    Iterable<UnitDictionaryEntry> _createDictionaryEntries(
+      _HuffmanNode node,
     ) sync* {
       if (node.hasNoChildren) {
         yield MapEntry(node.key, path.items.toList().reversed);
