@@ -1,3 +1,4 @@
+export 'src/helpers/bisect.dart';
 export 'src/helpers/code_unit_frequencies.dart';
 export 'src/helpers/comparator.dart';
 export 'src/helpers/memoized_comparator.dart';

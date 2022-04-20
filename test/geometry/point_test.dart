@@ -4,6 +4,7 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/matchers.dart';
 
 void main() {
   group('PointUtils', () {
@@ -65,7 +66,7 @@ void main() {
       );
       expect(
         () => PointUtils.getCentroid(const <Point>[]),
-        throwsA(const TypeMatcher<AssertionError>()),
+        throwsAssertionError,
       );
     });
 

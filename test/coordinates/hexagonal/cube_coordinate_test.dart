@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../../utils/test_utils.dart';
+
 void main() {
   final random = Random();
 
@@ -167,19 +169,19 @@ void main() {
     });
 
     test('should add other coordinate values', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final a = CubeCoordinate.fromXZ(random.nextInt(10), random.nextInt(10));
         final b = CubeCoordinate.fromXZ(random.nextInt(10), random.nextInt(10));
         expect(a + b, CubeCoordinate(a.x + b.x, a.y + b.y, a.z + b.z));
-      }
+      });
     });
 
     test('should subtract other coordinate values', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final a = CubeCoordinate.fromXZ(random.nextInt(10), random.nextInt(10));
         final b = CubeCoordinate.fromXZ(random.nextInt(10), random.nextInt(10));
         expect(a - b, CubeCoordinate(a.x - b.x, a.y - b.y, a.z - b.z));
-      }
+      });
     });
 
     test('should reflect coordinate around other coordinate', () {
@@ -202,7 +204,7 @@ void main() {
     });
 
     test('should return all neighbor coordinates', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final start = CubeCoordinate.fromXZ(
           random.nextInt(10),
           random.nextInt(10),
@@ -218,7 +220,7 @@ void main() {
             start.shift(HexagonalDirection.flatToppedBottom),
           ]),
         );
-      }
+      });
     });
 
     test('should return all coordinates on specific distance', () {
@@ -297,7 +299,7 @@ void main() {
     });
 
     test('should return the same coordinates set on boundaries switch', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final start = CubeCoordinate.fromXZ(
           random.nextInt(10),
           random.nextInt(10),
@@ -310,37 +312,37 @@ void main() {
           Stream.fromIterable(start.getLineTo(end)),
           emitsInAnyOrder(end.getLineTo(start)),
         );
-      }
+      });
     });
 
     test('should create coordinate from two integers', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final coord = CubeCoordinate.fromXZ(
           random.nextInt(10),
           random.nextInt(10),
         );
         expect(coord.x + coord.y + coord.z, 0);
-      }
+      });
     });
 
     test('should create coordinate from two numbers', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final x = random.nextDouble() * random.nextInt(10);
         final z = random.nextDouble() * random.nextInt(10);
         final coord = CubeCoordinate.fromNumXZ(x, z);
         expect(coord.x, x.round());
         expect(coord.z, z.round());
         expect(coord.x + coord.y + coord.z, 0);
-      }
+      });
     });
 
     test('should create coordinate from axial coordinate', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final axial = AxialCoordinate(random.nextInt(10), random.nextInt(10));
         final cube = CubeCoordinate.fromAxial(axial);
         expect(axial.q, cube.x);
         expect(axial.r, cube.z);
-      }
+      });
     });
   });
 }

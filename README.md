@@ -25,6 +25,7 @@ A library with data structures and algorythms.
 - Point
 
 ### Helpers
+- Bisect
 - Code Unit Frequencies
 - Comparator
 - Memoized Comparator

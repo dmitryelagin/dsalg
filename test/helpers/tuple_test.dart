@@ -4,13 +4,14 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/test_utils.dart';
 
 void main() {
   final random = Random();
 
   group('Tuple', () {
     test('should stay with the provided values', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         var values = random.nextStringList(2, 5, 10);
         final pair = Pair(values[0], values[1]);
         expect(pair.first, values[0]);
@@ -20,7 +21,7 @@ void main() {
         expect(result.first, values[0]);
         expect(result.second, values[1]);
         expect(result.third, values[2]);
-      }
+      });
     });
 
     test('should be equal to other tuple with the same members', () {

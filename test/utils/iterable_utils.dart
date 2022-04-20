@@ -14,3 +14,9 @@ extension IterableUtils<T> on Iterable<T> {
     return value;
   }
 }
+
+extension IterableNumUtils<T extends num> on Iterable<T> {
+  num get sum => fold(0, _foldNums);
+
+  num _foldNums(num a, num b) => a + b;
+}

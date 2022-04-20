@@ -4,6 +4,7 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/test_utils.dart';
 
 void main() {
   final random = Random();
@@ -36,7 +37,7 @@ void main() {
 
   group('lerpRecursive', () {
     test('should apply lerp callback recursively', () {
-      for (var i = 0; i < 100; i += 1) {
+      repeat(times: 100, () {
         final items = random.nextIntList(4, 500, -500);
         final t = random.nextDouble() * 2 - 0.5;
         final a = lerp(items[0], items[1], t);
@@ -45,7 +46,7 @@ void main() {
         final d = lerp(a, b, t);
         final e = lerp(b, c, t);
         expect(lerpRecursive(lerp, items, t), lerp(d, e, t));
-      }
+      });
       expect(lerpRecursive(lerp, [1, 5, 9, 6, 9], 0.5), 6.75);
       expect(lerpRecursive(lerp, [2, 6, 8, 4, 7, 9], 0.5), 6.125);
     });

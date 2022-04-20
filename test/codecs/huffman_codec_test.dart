@@ -4,6 +4,8 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/matchers.dart';
+import '../utils/test_utils.dart';
 
 void main() {
   final random = Random();
@@ -74,14 +76,8 @@ void main() {
 
     test('should throw on empty message', () {
       final codec = HuffmanCodec.from(random.nextString(10, 20));
-      expect(
-        () => codec.encode(''),
-        throwsA(const TypeMatcher<AssertionError>()),
-      );
-      expect(
-        () => codec.decode(BitArray()),
-        throwsA(const TypeMatcher<AssertionError>()),
-      );
+      expect(() => codec.encode(''), throwsAssertionError);
+      expect(() => codec.decode(BitArray()), throwsAssertionError);
     });
 
     test('should handle message with one symbol', () {
@@ -108,12 +104,12 @@ void main() {
       const source = 'this is an example of a huffman tree';
       final dictionary = HuffmanCodec.createDictionary(source);
       final codec = HuffmanCodec.fromDictionary(dictionary);
-      for (var i = 0; i < 100; i += 1) {
+      repeat(times: 100, () {
         final invalidMessage = '_${random.nextString(20, 30)}_';
         final invalidEncodedMessage = BitArray.fromDataString(invalidMessage);
         expect(() => codec.encode(invalidMessage), throwsStateError);
         expect(() => codec.decode(invalidEncodedMessage), anything);
-      }
+      });
     });
   });
 }

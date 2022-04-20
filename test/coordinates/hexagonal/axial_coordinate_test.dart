@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../../utils/test_utils.dart';
+
 void main() {
   final random = Random();
 
@@ -119,7 +121,7 @@ void main() {
     });
 
     test('should return all neighbor coordinates', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final start = AxialCoordinate(random.nextInt(10), random.nextInt(10));
         expect(
           Stream.fromIterable(start.neighbors),
@@ -132,7 +134,7 @@ void main() {
             start.shift(HexagonalDirection.flatToppedBottom),
           ]),
         );
-      }
+      });
     });
 
     test('should return all coordinates on specific distance', () {
@@ -223,28 +225,28 @@ void main() {
     });
 
     test('should return the same coordinates set on boundaries switch', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final start = AxialCoordinate(random.nextInt(10), random.nextInt(10));
         final end = AxialCoordinate(random.nextInt(10), random.nextInt(10));
         expect(
           Stream.fromIterable(start.getLineTo(end)),
           emitsInAnyOrder(end.getLineTo(start)),
         );
-      }
+      });
     });
 
     test('should create coordinate from two numbers', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final q = random.nextDouble() * random.nextInt(10);
         final r = random.nextDouble() * random.nextInt(10);
         final coord = AxialCoordinate.fromNum(q, r);
         expect(coord.q, q.round());
         expect(coord.r, r.round());
-      }
+      });
     });
 
     test('should create coordinate from cube coordinate', () {
-      for (var i = 0; i < 10; i += 1) {
+      repeat(times: 10, () {
         final cube = CubeCoordinate.fromXZ(
           random.nextInt(10),
           random.nextInt(10),
@@ -252,7 +254,7 @@ void main() {
         final axial = AxialCoordinate.fromCube(cube);
         expect(cube.x, axial.q);
         expect(cube.z, axial.r);
-      }
+      });
     });
   });
 }
