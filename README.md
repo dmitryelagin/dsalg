@@ -9,6 +9,7 @@ A library with data structures and algorythms.
 ### Codecs
 - Huffman
 - LZW
+- Shannon-Fano
 
 ### Collections
 - Linked List
