@@ -14,15 +14,12 @@ void main() {
 
     setUp(() {
       array = BitArray();
-      bits = List.generate(100, (_) => random.nextInt(2));
+      bits = random.nextIntList(100, 2);
       for (var i = 0; i < bits.length; i += 1) {
         if (bits[i] == 0) array.unsetBit(i);
         if (bits[i] == 1) array.setBit(i);
       }
-      bitsToChange = List.generate(
-        bits.length ~/ 2,
-        (i) => random.nextInt(bits.length),
-      );
+      bitsToChange = random.nextIntList(bits.length ~/ 2, bits.length);
     });
 
     test('should return proper state of a bits', () {

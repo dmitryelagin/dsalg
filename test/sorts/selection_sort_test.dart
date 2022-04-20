@@ -4,6 +4,7 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
+import '../utils/data_utils.dart';
 
 void main() {
   final random = Random();
@@ -20,7 +21,7 @@ void main() {
     });
 
     test('should sort random lists', () {
-      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
       expect(items..selectionSort(compareInt), itemsCopy..sort(compareInt));
     });

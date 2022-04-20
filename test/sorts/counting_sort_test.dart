@@ -4,6 +4,7 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
+import '../utils/data_utils.dart';
 
 void main() {
   int getKey(int item) => item;
@@ -16,7 +17,7 @@ void main() {
     });
 
     test('should sort random lists', () {
-      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
       expect(items..countingSort(getKey), itemsCopy..sort(IntComparator()));
     });
@@ -24,7 +25,7 @@ void main() {
 
   group('CountingSort.execute', () {
     test('should return new list', () {
-      final items = List.generate(10, (_) => random.nextInt(1000));
+      final items = random.nextIntList(10, 1000);
       expect(CountingSort.execute(items, getKey), isNot(equals(items)));
     });
   });

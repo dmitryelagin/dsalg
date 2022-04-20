@@ -3,18 +3,18 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../utils/data_utils.dart';
+
 void main() {
   group('BitMask', () {
     const number = 850;
     final random = Random();
     final bits = [1, 1, 0, 1, 0, 1, 0, 0, 1, 0];
-    var bitsReversed = <int>[];
-    var bitsToChange = <int>[];
+    var bitsReversed = <int>[], bitsToChange = <int>[];
 
     setUp(() {
       bitsReversed = bits.reversed.toList();
-      bitsToChange =
-          List.generate(bits.length ~/ 2, (i) => random.nextInt(bits.length));
+      bitsToChange = random.nextIntList(bits.length ~/ 2, bits.length);
     });
 
     test('should return proper state of a bits', () {

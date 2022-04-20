@@ -10,10 +10,9 @@ void main() {
 
   group('Queue', () {
     test('should insert and extract items in correct order', () {
-      final firstItems = List.generate(500, (_) => random.nextInt(1000));
+      final firstItems = random.nextIntList(500, 1000);
       final queue = Queue(firstItems);
-      final secondItems = List.generate(500, (_) => random.nextInt(1000))
-        ..forEach(queue.insert);
+      final secondItems = random.nextIntList(500, 1000)..forEach(queue.insert);
       final items = [...firstItems, ...secondItems];
       final extractedItems = <int>[];
       while (queue.isNotEmpty) {

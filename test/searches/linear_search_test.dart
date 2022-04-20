@@ -3,11 +3,14 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../utils/data_utils.dart';
+
 void main() {
+  final random = Random();
+
   group('LinearSearch', () {
     test('should find index in random list', () {
-      final random = Random();
-      final items = List.generate(1000, (_) => random.nextInt(1000));
+      final items = random.nextIntList(1000, 1000);
       final target = items[random.nextInt(1000)];
       expect(
         items.linearSearch((item) => item == target),
