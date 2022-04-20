@@ -19,4 +19,8 @@ class Stack<T> {
   }
 
   T extract() => _items.removeFirst();
+
+  void clear() {
+    _items.clear();
+  }
 }

@@ -31,5 +31,14 @@ void main() {
       final items = random.nextIntList(100, 1000)..forEach(queue.insert);
       expect(queue.items, items);
     });
+
+    test('should become empty after clear', () {
+      final queue = Queue(random.nextIntList(50, 100))..clear();
+      expect(queue.isEmpty, isTrue);
+      expect(queue.isNotEmpty, isFalse);
+      expect(queue.length, 0);
+      expect(queue.items, isEmpty);
+      expect(queue.extract, throwsStateError);
+    });
   });
 }

@@ -86,5 +86,15 @@ void main() {
         items.removeAt(0);
       });
     });
+
+    test('should become empty after clear', () {
+      list.clear();
+      expect(list.isEmpty, isTrue);
+      expect(list.isNotEmpty, isFalse);
+      expect(list.length, 0);
+      expect(list.toIterable(), isEmpty);
+      expect(() => list.first, throwsStateError);
+      expect(() => list.last, throwsStateError);
+    });
   });
 }

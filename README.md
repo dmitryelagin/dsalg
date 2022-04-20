@@ -7,9 +7,10 @@ A library with data structures and algorythms.
 - Bit Mask
 
 ### Codecs
-- Huffman
+- Huffman dictionary
 - LZW
-- Shannon-Fano
+- Prefix
+- Shannon-Fano dictionary
 
 ### Collections
 - Linked List

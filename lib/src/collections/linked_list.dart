@@ -76,6 +76,12 @@ class LinkedList<T> {
     return current.value;
   }
 
+  void clear() {
+    _first = null;
+    _last = null;
+    _length = 0;
+  }
+
   void forEach(void Function(T) callback) {
     if (isEmpty) return;
     var entry = _first;
