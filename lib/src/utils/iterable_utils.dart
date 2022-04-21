@@ -16,6 +16,15 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return true;
   }
+
+  bool startsWith(Iterable<T> other) {
+    if (other.length > length) return false;
+    final first = iterator, second = other.iterator;
+    while (second.moveNext()) {
+      if (!first.moveNext() || first.current != second.current) return false;
+    }
+    return true;
+  }
 }
 
 extension IterableNullUtils<T> on Iterable<T?> {

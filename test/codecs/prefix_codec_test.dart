@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
 import '../utils/matchers.dart';
+import '../utils/test_utils.dart';
 
 void main() {
   final random = Random();
@@ -79,6 +80,23 @@ void main() {
       final invalidEncodedMessage = BitArray.fromDataString(invalidMessage);
       expect(() => codec.encode(invalidMessage), throwsStateError);
       expect(() => codec.decode(invalidEncodedMessage), anything);
+    });
+
+    test('should determine validity of a dictionary', () {
+      repeat(times: 10, () {
+        final dictionaryFactory =
+            dictionaryFactories[random.nextInt(dictionaryFactories.length)];
+        final dictionary = dictionaryFactory(random.nextString(100, 500));
+        expect(PrefixCodec.isValidDictionary(dictionary), isTrue);
+      });
+      final firstInvalidDictionary = const {
+        ...{'_': '00', 'D': '01', 'A': '11', 'E': '110', 'C': '1110'},
+      }.map((key, value) => MapEntry(key.runes.first, getBinaryPath(value)));
+      expect(PrefixCodec.isValidDictionary(firstInvalidDictionary), isFalse);
+      final secondInvalidDictionary = const {
+        ...{' ': '0', '_': '00', 'D': '01', 'A': '10', 'E': '110'},
+      }.map((key, value) => MapEntry(key.runes.first, getBinaryPath(value)));
+      expect(PrefixCodec.isValidDictionary(secondInvalidDictionary), isFalse);
     });
   });
 }

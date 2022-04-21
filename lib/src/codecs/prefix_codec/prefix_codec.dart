@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../../bits/bit_array.dart';
+import '../../utils/iterable_utils.dart';
 import 'prefix_unit_node.dart';
 
 typedef PrefixDictionary = Map<int, Iterable<bool>>;
@@ -14,11 +15,28 @@ class PrefixCodec extends Codec<String, BitArray> {
         encoder = PrefixEncoder(dictionary),
         decoder = PrefixDecoder(dictionary);
 
+  factory PrefixCodec.fromUncheckedDictionary(PrefixDictionary dictionary) {
+    assert(isValidDictionary(dictionary));
+    return PrefixCodec.fromDictionary(dictionary);
+  }
+
   @override
   final PrefixEncoder encoder;
 
   @override
   final PrefixDecoder decoder;
+
+  static bool isValidDictionary(PrefixDictionary dictionary) {
+    final paths = dictionary.values.toList()
+      ..sort((a, b) => a.length.compareTo(b.length));
+    for (var i = 0; i < paths.length - 1; i += 1) {
+      final first = paths[i], rest = paths.skip(i + 1);
+      for (final path in rest) {
+        if (path.startsWith(first)) return false;
+      }
+    }
+    return true;
+  }
 }
 
 class PrefixEncoder extends Converter<String, BitArray> {
