@@ -55,8 +55,10 @@ class PrefixEncoder extends Converter<String, BitArray> {
   }
 
   Iterable<bool> getMissedDictionaryValue(int unit) {
-    final char = String.fromCharCode(unit);
-    throw StateError('Missing unit $unit ($char) in encoder dictionary');
+    throw StateError(
+      'Unit $unit (${String.fromCharCode(unit)}) is missed '
+      'in encoder dictionary',
+    );
   }
 }
 
