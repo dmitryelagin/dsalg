@@ -13,6 +13,13 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return value;
   }
+
+  bool everyIsEqual() {
+    for (final item in skip(1)) {
+      if (item != first) return false;
+    }
+    return true;
+  }
 }
 
 extension IterableNumUtils<T extends num> on Iterable<T> {

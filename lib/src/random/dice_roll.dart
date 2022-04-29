@@ -30,6 +30,8 @@ class Die {
   Die._(this._chances, this._boundary)
       : hashCode = Object.hashAll([..._chances, _boundary]);
 
+  static const min = 1;
+
   static final standardDice = [...platonicSolidDice, d10];
   static final platonicSolidDice = [d4, d6, d8, d12, d20];
 
@@ -40,18 +42,20 @@ class Die {
   static final d12 = Die._([..._tenChances, ..._twoChances], 12);
   static final d20 = Die._([..._tenChances, ..._tenChances], 20);
 
-  static final _ndsPattern = RegExp(r'^(\d+)d(\d+)$');
-
   static const _baseChance = 1;
   static const _twoChances = [_baseChance, _baseChance];
   static const _fourChances = [..._twoChances, ..._twoChances];
   static const _tenChances = [..._fourChances, ..._fourChances, ..._twoChances];
+
+  static final _ndsPattern = RegExp(r'^(\d+)d(\d+)$');
 
   @override
   final int hashCode;
 
   final List<int> _chances;
   final int _boundary;
+
+  int get max => _chances.length;
 
   bool get isUniformFair => _chances.everyIsEqual();
 

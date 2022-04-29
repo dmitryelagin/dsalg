@@ -4,6 +4,8 @@ import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
 import '../utils/data_utils.dart';
+import '../utils/iterable_utils.dart';
+import '../utils/random_utils.dart';
 import '../utils/test_utils.dart';
 
 void main() {
@@ -50,43 +52,36 @@ void main() {
     });
 
     test('should roll fair die with correct chances', () {
-      repeat(times: 10, () {
-        const rollsAmount = 100000, delta = 1000;
-        final equalChanceDie = Die.d4;
-        final counters = {for (var i = 0; i < 4; i += 1) i + 1: 0};
-        for (var i = 0; i < rollsAmount; i += 1) {
-          final value = equalChanceDie.roll(random);
-          counters[value] = counters[value]! + 1;
-        }
-        expect((counters[1]! - counters[2]!).abs(), lessThan(delta));
-        expect((counters[2]! - counters[3]!).abs(), lessThan(delta));
-        expect((counters[3]! - counters[4]!).abs(), lessThan(delta));
-        expect((counters[1]! - counters[3]!).abs(), lessThan(delta));
-        expect((counters[1]! - counters[4]!).abs(), lessThan(delta));
-        expect((counters[2]! - counters[4]!).abs(), lessThan(delta));
-      });
+      final die = Die.d6;
+      final sideIndexes = List.generate(die.max, (i) => i);
+      final customRandom = LoopRandomMock(sideIndexes.toList()..shuffle());
+      final counters = {for (final index in sideIndexes) index + 1: 0};
+      for (var i = 0; i < die.max * 100; i += 1) {
+        final value = die.roll(customRandom);
+        counters[value] = counters[value]! + 1;
+      }
+      expect(counters.values.everyIsEqual(), isTrue);
     });
 
     test('should roll unfair die with correct chances', () {
-      repeat(times: 100, () {
-        const rollsAmount = 10000;
-        final chances = Map.fromIterables(
-          List.generate(4, (index) => index + 1),
-          random.nextIntSet(4, 10).map((value) => value * 100),
-        );
-        final unequalChanceDie = Die.fromChances(chances.values);
-        final counters = {for (var i = 0; i < 4; i += 1) i + 1: 0};
-        for (var i = 0; i < rollsAmount; i += 1) {
-          final value = unequalChanceDie.roll(random);
-          counters[value] = counters[value]! + 1;
-        }
-        expect(counters[1]! > counters[2]!, chances[1]! > chances[2]!);
-        expect(counters[2]! < counters[3]!, chances[2]! < chances[3]!);
-        expect(counters[3]! < counters[4]!, chances[3]! < chances[4]!);
-        expect(counters[1]! > counters[3]!, chances[1]! > chances[3]!);
-        expect(counters[1]! < counters[4]!, chances[1]! < chances[4]!);
-        expect(counters[2]! < counters[4]!, chances[2]! < chances[4]!);
+      final chances = random.nextIntSet(6, 100).toList();
+      final die = Die.fromChances(chances);
+      final sideIndexes = List.generate(die.max, (i) => i);
+      var boundary = 0;
+      final values = sideIndexes.map((i) => chances[i]).expand((chance) {
+        final parts = List.generate(chance, (_) {
+          return random.nextInt(chance) + boundary;
+        });
+        boundary += chance;
+        return parts;
       });
+      final customRandom = LoopRandomMock(values.toList()..shuffle());
+      final counters = {for (final index in sideIndexes) index + 1: 0};
+      for (var i = 0; i < values.length; i += 1) {
+        final value = die.roll(customRandom);
+        counters[value] = counters[value]! + 1;
+      }
+      expect(counters.values, chances);
     });
   });
 }
