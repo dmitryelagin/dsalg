@@ -21,7 +21,7 @@ extension RandomDataUtils on Random {
 
   Set<int> nextIntSet(int length, int to, [int from = 0]) {
     final result = <int>{};
-    while (result.length <= length) {
+    while (result.length < length) {
       result.add(nextInt(to) + from);
     }
     return result;
