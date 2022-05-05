@@ -10,6 +10,7 @@ A library with data structures and algorythms.
 - Huffman dictionary
 - LZW
 - Prefix
+- Run-length
 - Shannon-Fano dictionary
 
 ### Collections

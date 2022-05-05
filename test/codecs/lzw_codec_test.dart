@@ -35,7 +35,7 @@ void main() {
       }
     });
 
-    test('should handle empty message and return empty value', () {
+    test('should handle empty message and data', () {
       expect(lzwCodec.encode(''), isEmpty);
       expect(lzwCodec.decode([]), isEmpty);
     });
