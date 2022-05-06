@@ -4,7 +4,7 @@ import '../helpers/tuple.dart';
 
 const runLengthCodec = RunLengthCodec._();
 
-class RunLengthCodec extends Codec<String, List<Pair<int, int>>> {
+class RunLengthCodec extends Codec<String, List<MonoPair<int>>> {
   factory RunLengthCodec() => runLengthCodec;
 
   const RunLengthCodec._();
@@ -16,13 +16,13 @@ class RunLengthCodec extends Codec<String, List<Pair<int, int>>> {
   RunLengthDecoder get decoder => const RunLengthDecoder();
 }
 
-class RunLengthEncoder extends Converter<String, List<Pair<int, int>>> {
+class RunLengthEncoder extends Converter<String, List<MonoPair<int>>> {
   const RunLengthEncoder();
 
   @override
-  List<Pair<int, int>> convert(String input) {
+  List<MonoPair<int>> convert(String input) {
     if (input.isEmpty) return [];
-    final runes = input.runes, data = <Pair<int, int>>[];
+    final runes = input.runes, data = <MonoPair<int>>[];
     var last = runes.first, count = 1;
     for (final rune in runes.skip(1)) {
       if (rune == last) {
@@ -37,11 +37,11 @@ class RunLengthEncoder extends Converter<String, List<Pair<int, int>>> {
   }
 }
 
-class RunLengthDecoder extends Converter<List<Pair<int, int>>, String> {
+class RunLengthDecoder extends Converter<List<MonoPair<int>>, String> {
   const RunLengthDecoder();
 
   @override
-  String convert(List<Pair<int, int>> input) {
+  String convert(List<MonoPair<int>> input) {
     final buffer = StringBuffer();
     for (final item in input) {
       for (var i = 0; i < item.second; i += 1) {

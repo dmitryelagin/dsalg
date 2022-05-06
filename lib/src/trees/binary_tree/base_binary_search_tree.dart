@@ -104,7 +104,7 @@ abstract class _BaseBinarySearchTree<K, V, N extends BaseBinaryNode<K, V, N>>
     return child;
   }
 
-  Trio<N?, N?, N?> _removeItem(K key) {
+  MonoTrio<N?> _removeItem(K key) {
     if (isEmpty) return const Trio(null, null, null);
     if (_compare.areNotEqual(key, _root!.key)) {
       return _removeChild(key, _root!);
@@ -115,7 +115,7 @@ abstract class _BaseBinarySearchTree<K, V, N extends BaseBinaryNode<K, V, N>>
     return _removeChild(_root!.key, _root!);
   }
 
-  Trio<N?, N?, N?> _removeChild(K key, N parent) {
+  MonoTrio<N?> _removeChild(K key, N parent) {
     final ratio = _compare(key, parent.key);
     final node = parent.getChildByRatio(ratio);
     if (node == null) return const Trio(null, null, null);

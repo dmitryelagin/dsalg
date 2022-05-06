@@ -3,10 +3,12 @@
 A library with data structures and algorythms.
 
 ### Bits
+
 - Bit Array
 - Bit Mask
 
 ### Codecs
+
 - Huffman dictionary
 - LZW
 - Prefix
@@ -14,20 +16,24 @@ A library with data structures and algorythms.
 - Shannon-Fano dictionary
 
 ### Collections
+
 - Linked List
 - Queue
 - Stack
 
 ### Coordinates
+
 - Axial
 - Cube
 - Doubled
 - Offset
 
 ### Geometry
+
 - Point
 
 ### Helpers
+
 - Bisect
 - Code Unit Frequencies
 - Comparator
@@ -36,6 +42,7 @@ A library with data structures and algorythms.
 - Tuple
 
 ### Maths
+
 - Factorial
 - Fibonacci Series
 - Linear Interpolation
@@ -43,14 +50,21 @@ A library with data structures and algorythms.
 - Trivial Prime Check
 
 ### Pathfinders
+
 - Brute-force
 - Nearest Neighbor
 
+### Random
+
+- Dice roll
+
 ### Searches
+
 - Binary
 - Linear
 
 ### Sorts
+
 - Bubble
 - Counting
 - Heap
@@ -61,6 +75,7 @@ A library with data structures and algorythms.
 - Selection
 
 ### Trees
+
 - AVL Tree
 - Binary Heap
 - Binary Search Tree
