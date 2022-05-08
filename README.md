@@ -4,8 +4,8 @@ A library with data structures and algorythms.
 
 ### Bits
 
-- Bit Array
-- Bit Mask
+- Bit array
+- Bit mask
 
 ### Codecs
 
@@ -17,7 +17,7 @@ A library with data structures and algorythms.
 
 ### Collections
 
-- Linked List
+- Linked list
 - Queue
 - Stack
 
@@ -35,24 +35,25 @@ A library with data structures and algorythms.
 ### Helpers
 
 - Bisect
-- Code Unit Frequencies
+- Caching iterable
+- Code unit frequencies
 - Comparator
-- Memoized Comparator
+- Memoized comparator
 - Permutations
 - Tuple
 
 ### Maths
 
 - Factorial
-- Fibonacci Series
+- Fibonacci series
 - Interpolation
-- Sieve of Eratosthenes Prime Series
-- Trivial Prime Check
+- Sieve of Eratosthenes prime series
+- Trivial prime check
 
 ### Pathfinders
 
 - Brute-force
-- Nearest Neighbor
+- Nearest neighbor
 
 ### Random
 
@@ -76,9 +77,9 @@ A library with data structures and algorythms.
 
 ### Trees
 
-- AVL Tree
-- Binary Heap
-- Binary Search Tree
-- Splay Tree
+- AVL tree
+- Binary heap
+- Binary search tree
+- Splay tree
 - Treap
 - Trie
