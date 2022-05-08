@@ -16,14 +16,23 @@ void main() {
       expect(items[items.binarySearch(target.compareTo)], target);
     });
 
+    test('should find index in random list using previous neighbour', () {
+      final items = random.nextIntList(1000, 100)..sort(IntComparator());
+      final index = random.nextInt(900) + 100;
+      final target = items[index], previousTarget = items[index - 1];
+      final targetIndex = items.relativeBinarySearch((item, getPrevious) {
+        if (item == target && previousTarget == (getPrevious() ?? 0)) return 0;
+        return target.compareTo(item);
+      });
+      expect(items[targetIndex], target);
+    });
+
     test('should return negative when item is not found', () {
-      final items = <int>[0];
-      expect(items.binarySearch(1.compareTo), -1);
+      expect([0].binarySearch(1.compareTo), -1);
     });
 
     test('should return negative when empty', () {
-      final items = <int>[];
-      expect(items.binarySearch(1.compareTo), -1);
+      expect(<int>[].binarySearch(1.compareTo), -1);
     });
   });
 }
