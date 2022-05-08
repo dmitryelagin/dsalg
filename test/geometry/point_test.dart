@@ -34,7 +34,7 @@ void main() {
         final t = random.nextDouble() * 2 - 0.5;
         final a = Point(firstItems[i], firstItems[i + 1]);
         final b = Point(secondItems[i], secondItems[i + 1]);
-        final result = PointUtils.lerp(a, b, t);
+        final result = PointUtils.interpLinear(a, b, t);
         if (a.x != b.x) {
           final cX = (result.x - a.x) / (b.x - a.x);
           expect(cX.toStringAsPrecision(8), t.toStringAsPrecision(8));
@@ -54,8 +54,8 @@ void main() {
       final multiplier = random.nextInt(1 << 32);
       final a = random.nextDoublePoint() * multiplier;
       final b = random.nextDoublePoint() * multiplier;
-      expect(PointUtils.lerp(a, b, 0), a);
-      expect(PointUtils.lerp(a, b, 1), b);
+      expect(PointUtils.interpLinear(a, b, 0), a);
+      expect(PointUtils.interpLinear(a, b, 1), b);
     });
 
     test('should create valid centroid point', () {

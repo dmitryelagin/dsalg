@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../maths/lerp.dart' as math;
+import '../maths/interpolation.dart';
 import '../utils/iterable_utils.dart';
 
 extension PointUtils<T extends num> on Point<T> {
@@ -15,8 +15,8 @@ extension PointUtils<T extends num> on Point<T> {
     );
   }
 
-  static Point<double> lerp(Point a, Point b, double t) =>
-      Point(math.lerp(a.x, b.x, t), math.lerp(a.y, b.y, t));
+  static Point<double> interpLinear(Point a, Point b, double t) =>
+      Point(interp.linear(a.x, b.x, t), interp.linear(a.y, b.y, t));
 
   Point<double> operator /(num divider) => Point(x / divider, y / divider);
 

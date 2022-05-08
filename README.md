@@ -45,7 +45,7 @@ A library with data structures and algorythms.
 
 - Factorial
 - Fibonacci Series
-- Linear Interpolation
+- Interpolation
 - Sieve of Eratosthenes Prime Series
 - Trivial Prime Check
 
