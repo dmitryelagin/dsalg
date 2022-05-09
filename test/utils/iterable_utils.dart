@@ -25,5 +25,13 @@ extension IterableUtils<T> on Iterable<T> {
 extension IterableNumUtils<T extends num> on Iterable<T> {
   num get sum => fold(0, _foldNums);
 
+  Iterable<num> get cumulativeSums {
+    num previousItem = 0;
+    return map((item) => previousItem += item);
+  }
+
+  Iterable<int> toInts() => map(_toInt);
+
   num _foldNums(num a, num b) => a + b;
+  int _toInt(num item) => item.toInt();
 }

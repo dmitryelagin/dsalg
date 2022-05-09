@@ -27,12 +27,26 @@ void main() {
       expect(items[targetIndex], target);
     });
 
+    test('should provide correct previous item in the end of a search', () {
+      late int? previous;
+      const [0, 1, 2].relativeBinarySearch((item, getPrevious) {
+        previous = getPrevious();
+        return -1;
+      });
+      expect(previous, isNull);
+      const [0, 1, 2].relativeBinarySearch((item, getPrevious) {
+        previous = getPrevious();
+        return 1;
+      });
+      expect(previous, 1);
+    });
+
     test('should return negative when item is not found', () {
-      expect([0].binarySearch(1.compareTo), -1);
+      expect(const [0].binarySearch(1.compareTo), -1);
     });
 
     test('should return negative when empty', () {
-      expect(<int>[].binarySearch(1.compareTo), -1);
+      expect(const <int>[].binarySearch(1.compareTo), -1);
     });
   });
 }

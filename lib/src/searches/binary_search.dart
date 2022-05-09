@@ -16,6 +16,6 @@ extension BinarySearch<T> on List<T> {
         end = middle - 1;
       }
     }
-    return compare(this[start], getPrevious) == 0 ? start : -1;
+    return compare(this[middle = start], getPrevious) == 0 ? start : -1;
   }
 }

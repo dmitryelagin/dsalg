@@ -58,6 +58,7 @@ A library with data structures and algorythms.
 ### Random
 
 - Dice roll
+- Nonuniform
 
 ### Searches
 
