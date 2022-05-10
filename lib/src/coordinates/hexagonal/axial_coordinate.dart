@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../../maths/interpolation.dart';
+import '../../maths/interpolation/interpolate.dart';
 import '../../utils/iterable_utils.dart';
 import 'coordinate.dart';
 import 'cube_coordinate.dart';
@@ -72,8 +72,8 @@ class AxialCoordinate
     for (var i = 1; i <= distance; i += 1) {
       final ratio = i / distance;
       yield AxialCoordinate.fromNum(
-        interp.linear(q + epsilonQ, other.q + epsilonQ, ratio),
-        interp.linear(r + epsilonR, other.r + epsilonR, ratio),
+        interpLinear(q + epsilonQ, other.q + epsilonQ, ratio),
+        interpLinear(r + epsilonR, other.r + epsilonR, ratio),
       );
     }
   }

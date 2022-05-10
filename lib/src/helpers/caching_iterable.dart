@@ -17,6 +17,12 @@ class CachingIterable<T> extends IterableBase<T> {
   @override
   T elementAt(int index) =>
       index < _cache.length ? _cache[index] : super.elementAt(index);
+
+  @override
+  T get first => elementAt(0);
+
+  @override
+  T get last => elementAt(length - 1);
 }
 
 class CachingIterator<T> implements Iterator<T> {

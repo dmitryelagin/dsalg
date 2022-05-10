@@ -51,6 +51,12 @@ extension IterableUtils<T> on Iterable<T> {
     }
     return true;
   }
+
+  T elementAtSafe(int index) {
+    if (index.isNegative) return first;
+    if (index >= length) return last;
+    return elementAt(index);
+  }
 }
 
 extension IterableNullUtils<T> on Iterable<T?> {

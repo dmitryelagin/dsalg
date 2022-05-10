@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../../maths/interpolation.dart';
+import '../../maths/interpolation/interpolate.dart';
 import '../../utils/iterable_utils.dart';
 import 'axial_coordinate.dart';
 import 'coordinate.dart';
@@ -105,8 +105,8 @@ class CubeCoordinate
     for (var i = 1; i <= distance; i += 1) {
       final ratio = i / distance;
       yield CubeCoordinate.fromNumXZ(
-        interp.linear(x + epsilonX, other.x + epsilonX, ratio),
-        interp.linear(z + epsilonZ, other.z + epsilonZ, ratio),
+        interpLinear(x + epsilonX, other.x + epsilonX, ratio),
+        interpLinear(z + epsilonZ, other.z + epsilonZ, ratio),
       );
     }
   }

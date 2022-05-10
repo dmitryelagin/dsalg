@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import '../maths/interpolation.dart';
+import '../maths/interpolation/interpolate.dart' as lib;
 import '../utils/iterable_utils.dart';
 
 extension PointUtils<T extends num> on Point<T> {
@@ -16,7 +16,7 @@ extension PointUtils<T extends num> on Point<T> {
   }
 
   static Point<double> interpLinear(Point a, Point b, double t) =>
-      Point(interp.linear(a.x, b.x, t), interp.linear(a.y, b.y, t));
+      Point(lib.interpLinear(a.x, b.x, t), lib.interpLinear(a.y, b.y, t));
 
   Point<double> operator /(num divider) => Point(x / divider, y / divider);
 
