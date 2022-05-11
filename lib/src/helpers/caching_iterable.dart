@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 class CachingIterable<T> extends IterableBase<T> {
-  CachingIterable(this.length, this._generate);
+  CachingIterable(this.length, this._generate) : assert(!length.isNegative);
 
   @override
   final int length;

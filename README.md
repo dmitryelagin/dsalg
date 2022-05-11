@@ -58,6 +58,7 @@ A library with data structures and algorythms.
 
 ### Random
 
+- Coherent value noise
 - Dice roll
 - Nonuniform
 
