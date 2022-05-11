@@ -7,7 +7,7 @@ analyzer:
     strict-raw-types: true
 
 linter:
-  rules: # Dart 2.16.1, lints 1.0.1
+  rules: # Dart 2.17.0, lints 2.0.0
     - always_declare_return_types
     # - always_put_control_body_on_new_line custom_change
     - always_put_required_named_parameters_first
@@ -67,7 +67,7 @@ linter:
     # - constant_identifier_names lints/recommended
     # - control_flow_in_finally lints/recommended
     # - curly_braces_in_flow_control_structures lints/core
-    - depend_on_referenced_packages
+    # - depend_on_referenced_packages lints/core
     - deprecated_consistency
     - diagnostic_describe_all_properties
     - directives_ordering
@@ -87,7 +87,7 @@ linter:
     - leading_newlines_in_multiline_strings
     # - library_names lints/recommended
     # - library_prefixes lints/recommended
-    - library_private_types_in_public_api
+    # - library_private_types_in_public_api lints/recommended
     - lines_longer_than_80_chars
     # - list_remove_unrelated_type lints/core
     - literal_only_boolean_expressions
@@ -95,13 +95,13 @@ linter:
     - no_adjacent_strings_in_list
     - no_default_cases
     # - no_duplicate_case_values lints/core
-    - no_leading_underscores_for_library_prefixes
-    - no_leading_underscores_for_local_identifiers
+    # - no_leading_underscores_for_library_prefixes lints/recommended
+    # - no_leading_underscores_for_local_identifiers lints/recommended
     - no_logic_in_create_state
     - no_runtimeType_toString
     # - non_constant_identifier_names lints/core
     - noop_primitive_operations
-    - null_check_on_nullable_type_parameter
+    # - null_check_on_nullable_type_parameter lints/core
     # - null_closures lints/recommended
     - omit_local_variable_types
     # - one_member_abstracts custom_change
@@ -138,7 +138,7 @@ linter:
     # - prefer_initializing_formals lints/recommended
     # - prefer_inlined_adds lints/recommended
     - prefer_int_literals
-    - prefer_interpolation_to_compose_strings
+    # - prefer_interpolation_to_compose_strings lints/recommended
     # - prefer_is_empty lints/core
     # - prefer_is_not_empty lints/core
     # - prefer_is_not_operator lints/recommended
@@ -172,16 +172,16 @@ linter:
     - unnecessary_await_in_return
     # - unnecessary_brace_in_string_interps lints/recommended
     # - unnecessary_const lints/recommended
-    - unnecessary_constructor_name
+    # - unnecessary_constructor_name lints/recommended
     # - unnecessary_final custom_change
     # - unnecessary_getters_setters lints/recommended
     - unnecessary_lambdas
-    - unnecessary_late
+    # - unnecessary_late lints/recommended
     # - unnecessary_new lints/recommended
-    - unnecessary_null_aware_assignments
+    # - unnecessary_null_aware_assignments lints/recommended
     - unnecessary_null_checks
     # - unnecessary_null_in_if_null_operators lints/recommended
-    - unnecessary_nullable_for_final_variable_declarations
+    # - unnecessary_nullable_for_final_variable_declarations lints/recommended
     # - unnecessary_overrides lints/core
     - unnecessary_parenthesis
     - unnecessary_raw_strings
@@ -192,7 +192,9 @@ linter:
     # - unrelated_type_equality_checks lints/core
     - unsafe_html
     - use_build_context_synchronously
+    - use_colored_box
     - use_decorated_box
+    - use_enums
     - use_full_hex_values_for_flutter_colors
     # - use_function_type_syntax_for_parameters lints/recommended
     - use_if_null_to_convert_nulls_to_bools
@@ -204,12 +206,8 @@ linter:
     # - use_rethrow_when_possible lints/recommended
     - use_setters_to_change_properties
     - use_string_buffers
+    - use_super_parameters
     - use_test_throws_matchers
     - use_to_and_as_if_applicable
     # - valid_regexps lints/core
     # - void_checks lints/core
-
-    # Dart 2.17.0-212.0.dev
-    - use_colored_box
-    - use_enums
-    - use_super_parameters
