@@ -1,3 +1,5 @@
+import 'dart:math';
+
 extension IterableUtils<T> on Iterable<T> {
   Map<T, T> toMap() => Map.fromIterable(this);
 
@@ -23,6 +25,9 @@ extension IterableUtils<T> on Iterable<T> {
 }
 
 extension IterableNumUtils<T extends num> on Iterable<T> {
+  T get minValue => reduce(min);
+  T get maxValue => reduce(max);
+
   num get sum => fold(0, _foldNums);
 
   Iterable<num> get cumulativeSums {

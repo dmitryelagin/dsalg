@@ -36,6 +36,9 @@ extension RandomDataUtils on Random {
   Point<int> nextIntPoint(int to, [int from = 0]) =>
       Point(nextInt(to - from) + from, nextInt(to - from) + from);
 
+  List<double> nextDoubleList(int length) =>
+      List.generate(length, (_) => nextDouble());
+
   Point<double> nextDoublePoint() => Point(nextDouble(), nextDouble());
 
   T nextItemFrom<T>(List<T> values) => values[nextInt(values.length)];

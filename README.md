@@ -38,6 +38,7 @@ A library with data structures and algorythms.
 - Caching iterable
 - Code unit frequencies
 - Comparator
+- Map dynamic range
 - Memoized comparator
 - Permutations
 - Tuple

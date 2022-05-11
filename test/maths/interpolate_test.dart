@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 import 'package:test/test.dart';
 
+import '../utils/compare_utils.dart';
 import '../utils/data_utils.dart';
+import '../utils/matchers.dart';
 import '../utils/test_utils.dart';
 
 void main() {
@@ -12,8 +14,6 @@ void main() {
   late int multiplier;
   late double a, b, c, d;
 
-  double roundDouble5(double value) => double.parse(value.toStringAsFixed(5));
-  double roundDouble10(double value) => double.parse(value.toStringAsFixed(10));
   double nextValue() => random.nextDouble() * multiplier;
 
   setUp(() {
@@ -26,12 +26,12 @@ void main() {
 
   group('interpLinear', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpLinear(1, 2, 0.3)), 1.3);
-      expect(roundDouble5(interpLinear(17, 12, 0.6)), 14.0);
-      expect(roundDouble5(interpLinear(1.7, -12, 0.6)), -6.52);
-      expect(roundDouble5(interpLinear(-7.4, 1.2, 0.82)), -0.348);
-      expect(roundDouble5(interpLinear(-7.4, 1.2, -0.4)), -10.84);
-      expect(roundDouble5(interpLinear(-7.4, 1.2, 2)), 9.8);
+      expect(interpLinear(1, 2, 0.3).roundTo(5), 1.3);
+      expect(interpLinear(17, 12, 0.6).roundTo(5), 14.0);
+      expect(interpLinear(1.7, -12, 0.6).roundTo(5), -6.52);
+      expect(interpLinear(-7.4, 1.2, 0.82).roundTo(5), -0.348);
+      expect(interpLinear(-7.4, 1.2, -0.4).roundTo(5), -10.84);
+      expect(interpLinear(-7.4, 1.2, 2).roundTo(5), 9.8);
     });
 
     test('should return accurate numbers when case is edge case', () {
@@ -42,14 +42,14 @@ void main() {
 
   group('interpBiLinear', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpBiLinear(1, 2, 3, 4, 0.3, 0.6)), 2.5);
-      expect(roundDouble5(interpBiLinear(1, 2, 3, 4, 0.6, 0.7)), 3.0);
-      expect(roundDouble5(interpBiLinear(11, 2, 34, 47, 0.6, 0.75)), 32.75);
-      expect(roundDouble5(interpBiLinear(-11, 2, 34, -47, 0.6, 0.75)), -11.75);
-      expect(roundDouble5(interpBiLinear(-11, 2, 34, -47, 0.1, 0.75)), 17);
-      expect(roundDouble5(interpBiLinear(-8, 2.3, 3.5, -4.7, 0.1, 0.4)), -3.11);
-      expect(roundDouble5(interpBiLinear(-8, 2, 5, -4.5, 0.8, -0.4)), 1.04);
-      expect(roundDouble5(interpBiLinear(-8, 2, 5, -4.5, 3, 0.4)), 3.8);
+      expect(interpBiLinear(1, 2, 3, 4, 0.3, 0.6).roundTo(5), 2.5);
+      expect(interpBiLinear(1, 2, 3, 4, 0.6, 0.7).roundTo(5), 3.0);
+      expect(interpBiLinear(11, 2, 34, 47, 0.6, 0.75).roundTo(5), 32.75);
+      expect(interpBiLinear(-11, 2, 34, -47, 0.1, 0.75).roundTo(5), 17);
+      expect(interpBiLinear(-8, 2, 5, -4.5, 0.8, -0.4).roundTo(5), 1.04);
+      expect(interpBiLinear(-8, 2, 5, -4.5, 3, 0.4).roundTo(5), 3.8);
+      expect(interpBiLinear(-11, 2, 34, -47, 0.6, 0.75).roundTo(5), -11.75);
+      expect(interpBiLinear(-8, 2.3, 3.5, -4.7, 0.1, 0.4).roundTo(5), -3.11);
     });
 
     test('should return accurate numbers when case is edge case', () {
@@ -63,17 +63,22 @@ void main() {
   group('interpCubic', () {
     test('should return interpolated value between numbers', () {
       const firstData = [-3, 4, 8, 0];
-      expect(roundDouble5(interpCubic(firstData, 0.2)), 5.184);
-      expect(roundDouble5(interpCubic(firstData, 0.8)), 8.016);
+      expect(interpCubic(firstData, 0.2).roundTo(5), 5.184);
+      expect(interpCubic(firstData, 0.8).roundTo(5), 8.016);
       const secondData = [1, 32, 9.75, -24];
-      expect(roundDouble5(interpCubic(secondData, 0.2)), 31.142);
-      expect(roundDouble5(interpCubic(secondData, 0.8)), 15.788);
+      expect(interpCubic(secondData, 0.2).roundTo(5), 31.142);
+      expect(interpCubic(secondData, 0.8).roundTo(5), 15.788);
     });
 
     test('should return accurate numbers when case is edge case', () {
       final data = [a, b, c, d];
-      expect(roundDouble10(interpCubic(data, 0)), roundDouble10(b));
-      expect(roundDouble10(interpCubic(data, 1)), roundDouble10(c));
+      expect(interpCubic(data, 0).roundTo(10), b.roundTo(10));
+      expect(interpCubic(data, 1).roundTo(10), c.roundTo(10));
+    });
+
+    test('should throw when there was not enough data provided', () {
+      expect(() => interpCubic([1, 2, 3], 0), throwsAssertionError);
+      expect(() => interpCubic([], 0), throwsAssertionError);
     });
   });
 
@@ -85,10 +90,10 @@ void main() {
         [4.5, -4.5, 0, -6],
         [1, 32, 9.75, -24],
       ];
-      expect(roundDouble5(interpBiCubic(data, 0.2, 0.2)), 3.07024);
-      expect(roundDouble5(interpBiCubic(data, 0.8, 0.2)), -5.14256);
-      expect(roundDouble5(interpBiCubic(data, 0.2, 0.8)), 5.14432);
-      expect(roundDouble5(interpBiCubic(data, 0.8, 0.8)), -0.4412);
+      expect(interpBiCubic(data, 0.2, 0.2).roundTo(5), 3.07024);
+      expect(interpBiCubic(data, 0.8, 0.2).roundTo(5), -5.14256);
+      expect(interpBiCubic(data, 0.2, 0.8).roundTo(5), 5.14432);
+      expect(interpBiCubic(data, 0.8, 0.8).roundTo(5), -0.4412);
     });
 
     test('should return accurate numbers when case is edge case', () {
@@ -98,17 +103,28 @@ void main() {
         [nextValue(), b, d, nextValue()],
         [nextValue(), nextValue(), nextValue(), nextValue()],
       ];
-      expect(roundDouble10(interpBiCubic(data, 0, 0)), roundDouble10(a));
-      expect(roundDouble10(interpBiCubic(data, 1, 0)), roundDouble10(b));
-      expect(roundDouble10(interpBiCubic(data, 0, 1)), roundDouble10(c));
-      expect(roundDouble10(interpBiCubic(data, 1, 1)), roundDouble10(d));
+      expect(interpBiCubic(data, 0, 0).roundTo(10), a.roundTo(10));
+      expect(interpBiCubic(data, 1, 0).roundTo(10), b.roundTo(10));
+      expect(interpBiCubic(data, 0, 1).roundTo(10), c.roundTo(10));
+      expect(interpBiCubic(data, 1, 1).roundTo(10), d.roundTo(10));
+    });
+
+    test('should throw when there was not enough data provided', () {
+      const invalidData = [
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3]
+      ];
+      expect(() => interpBiCubic(invalidData, 0, 1), throwsAssertionError);
+      expect(() => interpBiCubic([], 0, 1), throwsAssertionError);
     });
   });
 
   group('interpCosineS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpCosineS(1, 2, 0.25)), 1.14645);
-      expect(roundDouble5(interpCosineS(1, 2, 0.75)), 1.85355);
+      expect(interpCosineS(1, 2, 0.25).roundTo(5), 1.14645);
+      expect(interpCosineS(1, 2, 0.75).roundTo(5), 1.85355);
     });
 
     test('should return correct value relative to other S-curves', () {
@@ -123,18 +139,18 @@ void main() {
       expect(interpCosineS(a, b, 0), a);
       expect(interpCosineS(a, b, 1), b);
       expect(
-        roundDouble5(interpCosineS(a, b, 0.5)),
-        roundDouble5(interpLinear(a, b, 0.5)),
+        interpCosineS(a, b, 0.5).roundTo(5),
+        interpLinear(a, b, 0.5).roundTo(5),
       );
     });
   });
 
   group('interpBiCosineS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpBiCosineS(1, 2, 3, 4, 0.25, 0.25)), 1.43934);
-      expect(roundDouble5(interpBiCosineS(1, 2, 3, 4, 0.75, 0.25)), 2.14645);
-      expect(roundDouble5(interpBiCosineS(1, 2, 3, 4, 0.25, 0.75)), 2.85355);
-      expect(roundDouble5(interpBiCosineS(1, 2, 3, 4, 0.75, 0.75)), 3.56066);
+      expect(interpBiCosineS(1, 2, 3, 4, 0.25, 0.25).roundTo(5), 1.43934);
+      expect(interpBiCosineS(1, 2, 3, 4, 0.75, 0.25).roundTo(5), 2.14645);
+      expect(interpBiCosineS(1, 2, 3, 4, 0.25, 0.75).roundTo(5), 2.85355);
+      expect(interpBiCosineS(1, 2, 3, 4, 0.75, 0.75).roundTo(5), 3.56066);
     });
 
     test('should return accurate numbers when case is edge or middle case', () {
@@ -143,16 +159,16 @@ void main() {
       expect(interpBiCosineS(a, b, c, d, 0, 1), c);
       expect(interpBiCosineS(a, b, c, d, 1, 1), d);
       expect(
-        roundDouble5(interpBiCosineS(a, b, c, d, 0.5, 0.5)),
-        roundDouble5(interpBiLinear(a, b, c, d, 0.5, 0.5)),
+        interpBiCosineS(a, b, c, d, 0.5, 0.5).roundTo(5),
+        interpBiLinear(a, b, c, d, 0.5, 0.5).roundTo(5),
       );
     });
   });
 
   group('interpCubicS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpCubicS(1, 2, 0.25)), 1.15625);
-      expect(roundDouble5(interpCubicS(1, 2, 0.75)), 1.84375);
+      expect(interpCubicS(1, 2, 0.25).roundTo(5), 1.15625);
+      expect(interpCubicS(1, 2, 0.75).roundTo(5), 1.84375);
     });
 
     test('should return correct value relative to other S-curves', () {
@@ -167,18 +183,18 @@ void main() {
       expect(interpCubicS(a, b, 0), a);
       expect(interpCubicS(a, b, 1), b);
       expect(
-        roundDouble5(interpCubicS(a, b, 0.5)),
-        roundDouble5(interpLinear(a, b, 0.5)),
+        interpCubicS(a, b, 0.5).roundTo(5),
+        interpLinear(a, b, 0.5).roundTo(5),
       );
     });
   });
 
   group('interpBiCubicS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpBiCubicS(1, 2, 3, 4, 0.25, 0.25)), 1.46875);
-      expect(roundDouble5(interpBiCubicS(1, 2, 3, 4, 0.75, 0.25)), 2.15625);
-      expect(roundDouble5(interpBiCubicS(1, 2, 3, 4, 0.25, 0.75)), 2.84375);
-      expect(roundDouble5(interpBiCubicS(1, 2, 3, 4, 0.75, 0.75)), 3.53125);
+      expect(interpBiCubicS(1, 2, 3, 4, 0.25, 0.25).roundTo(5), 1.46875);
+      expect(interpBiCubicS(1, 2, 3, 4, 0.75, 0.25).roundTo(5), 2.15625);
+      expect(interpBiCubicS(1, 2, 3, 4, 0.25, 0.75).roundTo(5), 2.84375);
+      expect(interpBiCubicS(1, 2, 3, 4, 0.75, 0.75).roundTo(5), 3.53125);
     });
 
     test('should return accurate numbers when case is edge or middle case', () {
@@ -187,16 +203,16 @@ void main() {
       expect(interpBiCubicS(a, b, c, d, 0, 1), c);
       expect(interpBiCubicS(a, b, c, d, 1, 1), d);
       expect(
-        roundDouble5(interpBiCubicS(a, b, c, d, 0.5, 0.5)),
-        roundDouble5(interpBiLinear(a, b, c, d, 0.5, 0.5)),
+        interpBiCubicS(a, b, c, d, 0.5, 0.5).roundTo(5),
+        interpBiLinear(a, b, c, d, 0.5, 0.5).roundTo(5),
       );
     });
   });
 
   group('interpQuinticS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpQuinticS(1, 2, 0.25)), 1.10352);
-      expect(roundDouble5(interpQuinticS(1, 2, 0.75)), 1.89648);
+      expect(interpQuinticS(1, 2, 0.25).roundTo(5), 1.10352);
+      expect(interpQuinticS(1, 2, 0.75).roundTo(5), 1.89648);
     });
 
     test('should return correct value relative to other S-curves', () {
@@ -211,18 +227,18 @@ void main() {
       expect(interpQuinticS(a, b, 0), a);
       expect(interpQuinticS(a, b, 1), b);
       expect(
-        roundDouble5(interpQuinticS(a, b, 0.5)),
-        roundDouble5(interpLinear(a, b, 0.5)),
+        interpQuinticS(a, b, 0.5).roundTo(5),
+        interpLinear(a, b, 0.5).roundTo(5),
       );
     });
   });
 
   group('interpBiQuinticS', () {
     test('should return interpolated value between numbers', () {
-      expect(roundDouble5(interpBiQuinticS(1, 2, 3, 4, 0.25, 0.25)), 1.31055);
-      expect(roundDouble5(interpBiQuinticS(1, 2, 3, 4, 0.75, 0.25)), 2.10352);
-      expect(roundDouble5(interpBiQuinticS(1, 2, 3, 4, 0.25, 0.75)), 2.89648);
-      expect(roundDouble5(interpBiQuinticS(1, 2, 3, 4, 0.75, 0.75)), 3.68945);
+      expect(interpBiQuinticS(1, 2, 3, 4, 0.25, 0.25).roundTo(5), 1.31055);
+      expect(interpBiQuinticS(1, 2, 3, 4, 0.75, 0.25).roundTo(5), 2.10352);
+      expect(interpBiQuinticS(1, 2, 3, 4, 0.25, 0.75).roundTo(5), 2.89648);
+      expect(interpBiQuinticS(1, 2, 3, 4, 0.75, 0.75).roundTo(5), 3.68945);
     });
 
     test('should return accurate numbers when case is edge or middle case', () {
@@ -231,8 +247,8 @@ void main() {
       expect(interpBiQuinticS(a, b, c, d, 0, 1), c);
       expect(interpBiQuinticS(a, b, c, d, 1, 1), d);
       expect(
-        roundDouble5(interpBiQuinticS(a, b, c, d, 0.5, 0.5)),
-        roundDouble5(interpBiLinear(a, b, c, d, 0.5, 0.5)),
+        interpBiQuinticS(a, b, c, d, 0.5, 0.5).roundTo(5),
+        interpBiLinear(a, b, c, d, 0.5, 0.5).roundTo(5),
       );
     });
   });
