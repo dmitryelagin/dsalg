@@ -14,7 +14,7 @@ extension MapDynamicRange<T extends num> on Iterable<T> {
     final result = Uint8List(length);
     var i = -1;
     for (final item in mapDynamicRange(0, _lessThan256)) {
-      result[i += 1] = item.floor();
+      result[i += 1] = item.toInt();
     }
     return result;
   }
@@ -37,7 +37,7 @@ extension MapNestedDynamicRange<T extends num> on Iterable<Iterable<T>> {
     var i = -1;
     for (final list in mapDynamicRange(0, _lessThan256)) {
       for (final item in list) {
-        result[i += 1] = item.floor();
+        result[i += 1] = item.toInt();
       }
     }
     return result;
