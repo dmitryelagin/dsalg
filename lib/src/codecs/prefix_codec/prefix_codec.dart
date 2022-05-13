@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import '../../bits/bit_array.dart';
+import '../../trees/trie/trie.dart';
 import '../../utils/iterable_utils.dart';
-import 'prefix_unit_node.dart';
+import '../../utils/map_utils.dart';
 
 typedef PrefixDictionary = Map<int, Iterable<bool>>;
 typedef PrefixDictionaryEntry = MapEntry<int, Iterable<bool>>;
@@ -65,22 +66,17 @@ class PrefixEncoder extends Converter<String, BitArray> {
 class PrefixDecoder extends Converter<BitArray, String> {
   PrefixDecoder(PrefixDictionary dictionary)
       : assert(dictionary.isNotEmpty),
-        _root = PrefixUnitNode.fromDictionary(dictionary);
+        _prefixTree = Trie(Trie.getStandardIterator, dictionary.opposite);
 
-  final PrefixUnitNode<void> _root;
+  final Trie<Iterable<bool>, int> _prefixTree;
 
   @override
   String convert(BitArray input) {
     assert(input.isNotEmpty);
     final buffer = StringBuffer();
-    var node = _root;
-    for (var i = input.length - 1; i >= 0; i -= 1) {
-      node = input[i] ? node.right! : node.left!;
-      if (node.hasNoChildren) {
-        buffer.writeCharCode(node.key);
-        node = _root;
-      }
-    }
+    _prefixTree
+        .getCyclically(input.bitsReversed.iterator)
+        .forEach(buffer.writeCharCode);
     return buffer.toString();
   }
 }

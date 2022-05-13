@@ -13,6 +13,12 @@ void main() {
     var tree = Trie<String, int>((key) => key.runes.iterator);
     var firstData = <String, int>{}, secondData = <String, int>{};
 
+    final cyclicalTraversalHierarchy = {
+      for (var i = 0; i < 4; i += 1)
+        for (var j = 0; j < 4; j += 1)
+          for (var k = 0; k < 4; k += 1) [i, j, k]: '$i$j$k',
+    };
+
     setUp(() {
       firstData = Map.fromIterables(
         random.nextStringList(itemsAmount, 10, 20),
@@ -67,6 +73,32 @@ void main() {
       expect(() => tree['first_next'], throwsStateError);
       expect(tree.containsKey('second'), isFalse);
       expect(() => tree['second'], throwsStateError);
+    });
+
+    test('should allow cyclical traversal through the hierarchy', () {
+      final tree = Trie<Iterable<int>, Object>((key) => key.iterator)
+        ..addAll(cyclicalTraversalHierarchy);
+      final values = random.nextIntList(35, 4);
+      expect(
+        tree.getCyclically(values.iterator).join(),
+        values.take(33).map((value) => value.toString()).join(),
+      );
+      expect(
+        tree.getCyclically(values.take(33).iterator).join(),
+        values.take(33).map((value) => value.toString()).join(),
+      );
+    });
+
+    test('should fail cyclical traversal if next symbol is not a child', () {
+      final tree = Trie<Iterable<int>, Object>((key) => key.iterator)
+        ..addAll(cyclicalTraversalHierarchy);
+      final values = random.nextIntList(22, 4)
+        ..add(4)
+        ..addAll(random.nextIntList(22, 4));
+      expect(
+        () => tree.getCyclically(values.iterator),
+        throwsStateError,
+      );
     });
   });
 }

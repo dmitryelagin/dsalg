@@ -91,7 +91,7 @@ void main() {
       final values = random.nextIntList(100, 1 << 32);
       for (final value in values) {
         for (final bit in value.bits) {
-          array[index += 1] = bit == 1;
+          array[index += 1] = bit;
         }
       }
       final data = array.toDataString();
@@ -127,6 +127,17 @@ void main() {
       array.reset();
       expect(array.isEmpty, isTrue);
       expect(array.isNotEmpty, isFalse);
+    });
+
+    test('should return bits collection in correct order', () {
+      final bits = array.bits.toList();
+      final bitsReversed = array.bitsReversed.toList();
+      expect(bits.length, array.length);
+      expect(bitsReversed.length, array.length);
+      for (var i = 0; i < array.length; i += 1) {
+        expect(bits[i], array[i]);
+        expect(bitsReversed[array.length - i - 1], array[i]);
+      }
     });
   });
 }

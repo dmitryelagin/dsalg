@@ -6,54 +6,60 @@ import 'package:test/test.dart';
 import '../utils/data_utils.dart';
 
 void main() {
+  final random = Random();
+
   group('BitMask', () {
-    const number = 850;
-    final random = Random();
-    final bits = [1, 1, 0, 1, 0, 1, 0, 0, 1, 0];
-    var bitsReversed = <int>[], bitsToChange = <int>[];
+    const value = 850, valueNumericBits = [1, 1, 0, 1, 0, 1, 0, 0, 1, 0];
+    final valueBits = valueNumericBits.map((bit) => bit == 1).toList();
+    var valueBitsOrdered = <bool>[], bitsToChange = <int>[];
 
     setUp(() {
-      bitsReversed = bits.reversed.toList();
-      bitsToChange = random.nextIntList(bits.length ~/ 2, bits.length);
+      valueBitsOrdered = valueBits.reversed.toList();
+      bitsToChange =
+          random.nextIntList(valueBits.length ~/ 2, valueBits.length);
     });
 
     test('should return proper state of a bits', () {
-      expect(number.setBitsAmount, bits.where((i) => i == 1).length);
-      expect(number.unsetBitsAmount, bits.where((i) => i == 0).length);
-      for (var i = bits.length - 1; i >= 0; i -= 1) {
-        expect(number.isSetBit(i), bitsReversed[i] == 1);
-        expect(number.isUnsetBit(i), bitsReversed[i] == 0);
-        expect(number[i], bitsReversed[i] == 1);
+      expect(value.setBitsAmount, valueBits.where((bit) => bit).length);
+      expect(value.unsetBitsAmount, valueBits.where((bit) => !bit).length);
+      for (var i = 0; i < valueBits.length; i += 1) {
+        expect(value.isSetBit(i), valueBitsOrdered[i]);
+        expect(value.isUnsetBit(i), !valueBitsOrdered[i]);
+        expect(value[i], valueBitsOrdered[i]);
       }
     });
 
     test('should return integer with set bits', () {
-      for (var i = 0; i < bits.length; i += 1) {
-        if (bitsToChange.contains(i)) bitsReversed[i] = 1;
+      for (final i in bitsToChange) {
+        valueBitsOrdered[i] = true;
       }
-      expect(number.setBits(bitsToChange).bits, bitsReversed);
+      expect(value.setBits(bitsToChange).bits, valueBitsOrdered);
     });
 
     test('should return integer with unset bits', () {
-      for (var i = 0; i < bits.length; i += 1) {
-        if (bitsToChange.contains(i)) bitsReversed[i] = 0;
+      for (final i in bitsToChange) {
+        valueBitsOrdered[i] = false;
       }
       expect(
-        number.unsetBits(bitsToChange).bits,
-        bitsReversed.take(bitsReversed.lastIndexOf(1) + 1),
+        value.unsetBits(bitsToChange).bits,
+        valueBitsOrdered.take(valueBitsOrdered.lastIndexOf(true) + 1),
       );
     });
 
     test('should return integer with inverted bits', () {
       bitsToChange = bitsToChange.toSet().toList();
-      for (var i = 0; i < bits.length; i += 1) {
-        if (!bitsToChange.contains(i)) continue;
-        bitsReversed[i] = bitsReversed[i] == 0 ? 1 : 0;
+      for (final i in bitsToChange) {
+        valueBitsOrdered[i] = !valueBitsOrdered[i];
       }
       expect(
-        number.invertBits(bitsToChange).bits,
-        bitsReversed.take(bitsReversed.lastIndexOf(1) + 1),
+        value.invertBits(bitsToChange).bits,
+        valueBitsOrdered.take(valueBitsOrdered.lastIndexOf(true) + 1),
       );
+    });
+
+    test('should return bits collection in correct order', () {
+      expect(value.bits, valueBitsOrdered);
+      expect(value.bitsReversed, valueBits);
     });
   });
 }

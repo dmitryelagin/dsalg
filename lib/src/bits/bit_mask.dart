@@ -1,7 +1,13 @@
 extension BitMask on int {
-  Iterable<int> get bits sync* {
+  Iterable<bool> get bits sync* {
     for (var i = 0; i < bitLength; i += 1) {
-      yield this[i] ? 1 : 0;
+      yield this[i];
+    }
+  }
+
+  Iterable<bool> get bitsReversed sync* {
+    for (var i = bitLength - 1; i >= 0; i -= 1) {
+      yield this[i];
     }
   }
 

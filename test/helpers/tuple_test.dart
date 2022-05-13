@@ -33,15 +33,15 @@ void main() {
     test('should be equal to other tuple with the same members', () {
       final a = Object(), b = Object(), c = Object();
       final d = Object(), e = Object();
-      expect(Pair(0, 1) == Pair(0, 1), isTrue);
+      expect(const Pair(0, 1) == const Pair(0, 1), isTrue);
       expect(Pair(a, b) == Pair(a, b), isTrue);
       expect(Pair(a, b) == Pair(a, c), isFalse);
       expect(Pair(a, b) == Pair(b, a), isFalse);
-      expect(Trio(0, 1, 2) == Trio(0, 1, 2), isTrue);
+      expect(const Trio(0, 1, 2) == const Trio(0, 1, 2), isTrue);
       expect(Trio(a, b, c) == Trio(a, b, c), isTrue);
       expect(Trio(a, b, c) == Trio(a, b, d), isFalse);
       expect(Trio(a, b, c) == Trio(c, b, a), isFalse);
-      expect(Quartet(0, 1, 2, 3) == Quartet(0, 1, 2, 3), isTrue);
+      expect(const Quartet(0, 1, 2, 3) == const Quartet(0, 1, 2, 3), isTrue);
       expect(Quartet(a, b, c, d) == Quartet(a, b, c, d), isTrue);
       expect(Quartet(a, b, c, d) == Quartet(a, b, e, d), isFalse);
       expect(Quartet(a, b, c, d) == Quartet(d, c, b, a), isFalse);

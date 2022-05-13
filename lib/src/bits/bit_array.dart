@@ -44,11 +44,23 @@ class BitArray {
 
   int get length => _length;
 
+  set length(int value) {
+    _tryGrowFor(value - 1);
+  }
+
   bool get isEmpty => _length == 0;
   bool get isNotEmpty => !isEmpty;
 
-  set length(int value) {
-    _tryGrowFor(value - 1);
+  Iterable<bool> get bits sync* {
+    for (var i = 0; i < length; i += 1) {
+      yield this[i];
+    }
+  }
+
+  Iterable<bool> get bitsReversed sync* {
+    for (var i = length - 1; i >= 0; i -= 1) {
+      yield this[i];
+    }
   }
 
   static int _getChunkIndex(int i) => i >> _chunkIndexSize;

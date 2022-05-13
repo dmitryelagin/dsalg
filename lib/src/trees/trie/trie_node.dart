@@ -8,23 +8,24 @@ class TrieNode<T> {
 
   T? _value;
 
-  bool _isUnset = true;
+  bool _isSet = false;
 
-  bool get isUnset => _isUnset;
+  bool get isSet => _isSet;
+  bool get isUnset => !_isSet;
 
   bool get isEmpty {
-    if (!_isUnset) return false;
+    if (_isSet) return false;
     for (final key in children.keys) {
       if (!children[key]!.isEmpty) return false;
     }
     return true;
   }
 
-  T get value => _isUnset ? throwSearchError() : _value as T;
+  T get value => _isSet ? _value as T : throwSearchError();
 
   set value(T value) {
     _value = value;
-    _isUnset = false;
+    _isSet = true;
   }
 
   static Never throwSearchError() {
@@ -33,6 +34,6 @@ class TrieNode<T> {
 
   void clear() {
     _value = null;
-    _isUnset = true;
+    _isSet = false;
   }
 }

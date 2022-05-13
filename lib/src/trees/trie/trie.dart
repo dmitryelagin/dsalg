@@ -4,7 +4,9 @@ import 'absent_trie_node.dart';
 import 'trie_node.dart';
 
 class Trie<K, V> {
-  Trie(this._getIterator);
+  Trie(this._getIterator, [Map<K, V> entries = const {}]) {
+    addAll(entries);
+  }
 
   final Iterator<Object> Function(K) _getIterator;
 
@@ -13,24 +15,33 @@ class Trie<K, V> {
   bool get isEmpty => _root.isEmpty;
   bool get isNotEmpty => !_root.isEmpty;
 
+  static Iterator<T> getStandardIterator<T>(Iterable<T> iterable) =>
+      iterable.iterator;
+
   static Never _throwSearchError([Object? _, Object? __]) {
     TrieNode.throwSearchError();
   }
 
   V operator [](K key) =>
-      _getSearchPath(key, orElse: _throwSearchError).last.value;
+      _getSearchPath(_getIterator(key), orElse: _throwSearchError).last.value;
 
   void operator []=(K key, V value) {
     add(key, value);
   }
 
-  bool containsKey(K key) {
-    final path = _getSearchPath(key, orElse: AbsentTrieNode.child);
-    return path.nothingIs<AbsentTrieNode<V>>() && !path.last.isUnset;
-  }
+  Iterable<V> getCyclically(Iterator<Object> iterator) =>
+      _getSearchPath(iterator, orElse: _getRootChild)
+          .where((node) => node.isSet)
+          .map((node) => node.value);
+
+  bool containsKey(K key) =>
+      _getSearchPath(_getIterator(key), orElse: AbsentTrieNode.child)
+          .last
+          .isSet;
 
   void add(K key, V value) {
-    _getSearchPath(key, orElse: TrieNode.child).last.value = value;
+    _getSearchPath(_getIterator(key), orElse: TrieNode.child).last.value =
+        value;
   }
 
   void addAll(Map<K, V> entries) {
@@ -39,7 +50,10 @@ class Trie<K, V> {
 
   V? remove(K key) {
     final nodes = Stack<TrieNode<V>>();
-    for (final node in _getSearchPath(key, orElse: AbsentTrieNode.child)) {
+    for (final node in _getSearchPath(
+      _getIterator(key),
+      orElse: AbsentTrieNode.child,
+    )) {
       if (node is AbsentTrieNode<V>) return null;
       nodes.insert(node);
     }
@@ -71,15 +85,16 @@ class Trie<K, V> {
   }
 
   Iterable<TrieNode<V>> _getSearchPath(
-    K key, {
+    Iterator<Object> iterator, {
     required TrieNode<V> Function(TrieNode<V>, Object) orElse,
   }) sync* {
-    final iterator = _getIterator(key);
     var node = _root;
-    yield node;
     while (iterator.moveNext()) {
       final childKey = iterator.current;
       yield node = node.children[childKey] ?? orElse(node, childKey);
     }
   }
+
+  TrieNode<V> _getRootChild(Object _, Object childKey) =>
+      _root.children[childKey] ?? _throwSearchError();
 }

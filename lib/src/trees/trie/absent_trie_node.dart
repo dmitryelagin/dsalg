@@ -16,6 +16,9 @@ class AbsentTrieNode<T> implements TrieNode<T> {
   set value(T value) {}
 
   @override
+  bool get isSet => false;
+
+  @override
   bool get isUnset => true;
 
   @override
