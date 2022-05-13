@@ -7,6 +7,4 @@ class PrefixUnitNode<T> extends BaseBinaryNode<int, T, PrefixUnitNode<T>> {
 
   PrefixUnitNode.fromEntry(MapEntry<int, T> entry)
       : super(entry.key, entry.value);
-
-  static PrefixUnitNode<void> blank() => PrefixUnitNode.utility(null);
 }
