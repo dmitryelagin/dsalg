@@ -30,7 +30,9 @@ A library with data structures and algorythms.
 
 ### Geometry
 
+- Line
 - Point
+- Segment
 
 ### Helpers
 

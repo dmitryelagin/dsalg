@@ -16,6 +16,15 @@ extension IterableUtils<T> on Iterable<T> {
     return value;
   }
 
+  bool nothingIsEqual() => !anyIsEqual();
+
+  bool anyIsEqual() {
+    for (final item in skip(1)) {
+      if (item == first) return true;
+    }
+    return false;
+  }
+
   bool everyIsEqual() {
     for (final item in skip(1)) {
       if (item != first) return false;
