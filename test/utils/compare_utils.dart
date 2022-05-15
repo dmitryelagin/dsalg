@@ -4,16 +4,16 @@ class IntComparator extends MemoizedComparator<int> {
   IntComparator() : super((a, b) => a - b);
 }
 
-extension RoundDoubleUtils on double {
+extension RoundNumUtils on num {
   double roundTo(int precision) => double.parse(toStringAsFixed(precision));
 }
 
-extension RoundIterableDoubleUtils on Iterable<double> {
+extension RoundIterableNumUtils on Iterable<num> {
   Iterable<double> roundTo(int precision) =>
       map((item) => item.roundTo(precision));
 }
 
-extension RoundIterableIterableDoubleUtils on Iterable<Iterable<double>> {
+extension RoundIterableIterableNumUtils on Iterable<Iterable<num>> {
   Iterable<Iterable<double>> roundTo(int precision) =>
       map((list) => list.roundTo(precision));
 }

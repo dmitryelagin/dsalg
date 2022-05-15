@@ -47,12 +47,12 @@ void main() {
 
     test(
         'should return points with magnitudes less than or '
-        'equal to the specified one', () {
+        'equal to specified one', () {
       final magnitude = random.nextDouble() * random.nextInt(10) + 0.1;
       final points = line.getPointsByMagnitude(magnitude).toList();
       final distances = [
         for (var i = 1; i < points.length; i += 1)
-          points[i - 1].distanceTo(points[i]),
+          points[i - 1].distanceToSafe(points[i]),
       ];
       expect(distances.every((distance) => distance <= magnitude), isTrue);
     });
@@ -62,7 +62,7 @@ void main() {
       final points = line.getPointsByAmount(amount).toList();
       final distances = [
         for (var i = 1; i < points.length; i += 1)
-          points[i - 1].distanceTo(points[i]),
+          points[i - 1].distanceToSafe(points[i]),
       ].map((distance) => distance.roundTo(10));
       expect(distances.everyIsEqual(), isTrue);
     });

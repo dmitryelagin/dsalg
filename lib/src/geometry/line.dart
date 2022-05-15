@@ -4,10 +4,14 @@ import 'point.dart';
 import 'segment.dart';
 
 class Line with Segment {
-  const Line(this._a, this._b);
-
-  final Point _a, _b;
+  const Line(this.a, this.b);
 
   @override
-  Point getPoint(double t) => PointUtils.interpLinear(_a, _b, t);
+  final Point a;
+
+  @override
+  final Point b;
+
+  @override
+  Point getPoint(double t) => PointUtils.interpLinear(a, b, t);
 }

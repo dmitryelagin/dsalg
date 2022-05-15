@@ -37,19 +37,19 @@ void testSegment(Segment Function(Point, Point) createSegment) {
   test('should return correct points amount from maximum magnitude', () {
     final magnitude = random.nextDouble() * random.nextInt(10) + 0.1;
     final points = segment.getPointsByMagnitude(magnitude).toList();
-    final a = segment.getPoint(0), b = segment.getPoint(1);
+    final a = segment.a, b = segment.b;
     final targetAmount = (a.distanceTo(b) / magnitude).ceil() + 1;
     expect(points.length, targetAmount);
-    expect(points.first, segment.getPoint(0));
-    expect(points.last, segment.getPoint(1));
+    expect(points.first, segment.a);
+    expect(points.last, segment.b);
   });
 
   test('should return proper amount of correct points', () {
     final amount = random.nextInt(50) + 2;
     final points = segment.getPointsByAmount(amount).toList();
     expect(points.length, amount);
-    expect(points.first, segment.getPoint(0));
-    expect(points.last, segment.getPoint(1));
+    expect(points.first, segment.a);
+    expect(points.last, segment.b);
   });
 
   test('should fail on invalid arguments', () {

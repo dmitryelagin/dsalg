@@ -2,41 +2,46 @@ import 'dart:math';
 
 import '../../collections/queue.dart';
 
-double interpLinear(num a, num b, double t) => a * (1 - t) + b * t;
+num interpLinear(num a, num b, double t) {
+  if (t == 0) return a;
+  if (t == 1) return b;
+  return a * (1 - t) + b * t;
+}
 
-double interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
+num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
     interpLinear(interpLinear(a, b, tx), interpLinear(c, d, tx), ty);
 
-double interpCubic(List<num> values, double t) {
+num interpCubic(List<num> values, double t) {
   assert(values.length >= 4);
+  if (t == 0) return values[1];
+  if (t == 1) return values[2];
   final a = values[0], b = values[1], c = values[2], d = values[3];
   final m = 2 * a - 5 * b + 4 * c - d + t * (3 * (b - c) + d - a);
   return b + t * (c - a + t * m) / 2;
 }
 
-double interpBiCubic(List<List<num>> values, double tx, double ty) {
+num interpBiCubic(List<List<num>> values, double tx, double ty) {
   assert(values.length >= 4);
   final a = interpCubic(values[0], ty), b = interpCubic(values[1], ty);
   final c = interpCubic(values[2], ty), d = interpCubic(values[3], ty);
   return interpCubic([a, b, c, d], tx);
 }
 
-double interpCosineS(num a, num b, double t) =>
+num interpCosineS(num a, num b, double t) =>
     interpLinear(a, b, _cosineSCurve(t));
 
-double interpBiCosineS(num a, num b, num c, num d, double tx, double ty) =>
+num interpBiCosineS(num a, num b, num c, num d, double tx, double ty) =>
     interpBiLinear(a, b, c, d, _cosineSCurve(tx), _cosineSCurve(ty));
 
-double interpCubicS(num a, num b, double t) =>
-    interpLinear(a, b, _cubicSCurve(t));
+num interpCubicS(num a, num b, double t) => interpLinear(a, b, _cubicSCurve(t));
 
-double interpBiCubicS(num a, num b, num c, num d, double tx, double ty) =>
+num interpBiCubicS(num a, num b, num c, num d, double tx, double ty) =>
     interpBiLinear(a, b, c, d, _cubicSCurve(tx), _cubicSCurve(ty));
 
-double interpQuinticS(num a, num b, double t) =>
+num interpQuinticS(num a, num b, double t) =>
     interpLinear(a, b, _quinticSCurve(t));
 
-double interpBiQuinticS(num a, num b, num c, num d, double tx, double ty) =>
+num interpBiQuinticS(num a, num b, num c, num d, double tx, double ty) =>
     interpBiLinear(a, b, c, d, _quinticSCurve(tx), _quinticSCurve(ty));
 
 T interpRecursive<T>(

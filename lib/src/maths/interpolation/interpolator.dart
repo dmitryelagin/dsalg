@@ -14,7 +14,7 @@ abstract class Interpolator1D {
   static const cosineS = BaseInterpolator1D(interpCosineS);
   static const quinticS = BaseInterpolator1D(interpQuinticS);
 
-  double interpolate(Iterable<num> data, double t);
+  num interpolate(Iterable<num> data, double t);
 }
 
 abstract class Interpolator2D {
@@ -28,32 +28,31 @@ abstract class Interpolator2D {
   static const biCosineS = BaseInterpolator2D(interpBiCosineS);
   static const biQuinticS = BaseInterpolator2D(interpBiQuinticS);
 
-  double interpolate(Iterable<Iterable<num>> data, double tx, double ty);
+  num interpolate(Iterable<Iterable<num>> data, double tx, double ty);
 }
 
 class IntegerInterpolator1D implements Interpolator1D {
   const IntegerInterpolator1D();
 
   @override
-  double interpolate(Iterable<num> data, double t) =>
-      data.elementAt(t.round()).toDouble();
+  num interpolate(Iterable<num> data, double t) => data.elementAt(t.round());
 }
 
 class IntegerInterpolator2D implements Interpolator2D {
   const IntegerInterpolator2D();
 
   @override
-  double interpolate(Iterable<Iterable<num>> data, double tx, double ty) =>
-      data.elementAt(tx.round()).elementAt(ty.round()).toDouble();
+  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) =>
+      data.elementAt(tx.round()).elementAt(ty.round());
 }
 
 class BaseInterpolator1D implements Interpolator1D {
   const BaseInterpolator1D(this._interp);
 
-  final double Function(num, num, double) _interp;
+  final num Function(num, num, double) _interp;
 
   @override
-  double interpolate(Iterable<num> data, double t) {
+  num interpolate(Iterable<num> data, double t) {
     final i = t.toInt();
     return _interp(data.elementAt(i), data.elementAt(i + 1), t - i);
   }
@@ -62,10 +61,10 @@ class BaseInterpolator1D implements Interpolator1D {
 class BaseInterpolator2D implements Interpolator2D {
   const BaseInterpolator2D(this._interp);
 
-  final double Function(num, num, num, num, double, double) _interp;
+  final num Function(num, num, num, num, double, double) _interp;
 
   @override
-  double interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
     return _interp(
       data.elementAt(x).elementAt(y),
@@ -81,10 +80,10 @@ class BaseInterpolator2D implements Interpolator2D {
 class ExtendedInterpolator1D implements Interpolator1D {
   const ExtendedInterpolator1D(this._interp);
 
-  final double Function(List<num>, double) _interp;
+  final num Function(List<num>, double) _interp;
 
   @override
-  double interpolate(Iterable<num> data, double t) {
+  num interpolate(Iterable<num> data, double t) {
     final i = t.toInt();
     final values = [
       for (var j = 0; j < 4; j += 1) data.elementAtSafe(i + j - 1),
@@ -96,10 +95,10 @@ class ExtendedInterpolator1D implements Interpolator1D {
 class ExtendedInterpolator2D implements Interpolator2D {
   const ExtendedInterpolator2D(this._interp);
 
-  final double Function(List<List<num>>, double, double) _interp;
+  final num Function(List<List<num>>, double, double) _interp;
 
   @override
-  double interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
     final values = [
       for (var i = 0; i < 4; i += 1)
@@ -126,7 +125,7 @@ class ExtendedCachedInterpolator1D extends ExtendedInterpolator1D {
   var _prevI = 0;
 
   @override
-  double interpolate(Iterable<num> data, double t) {
+  num interpolate(Iterable<num> data, double t) {
     final i = t.toInt();
     if (!identical(data, _prevData) || i != _prevI) {
       _prevData = data;
@@ -158,7 +157,7 @@ class ExtendedCachedInterpolator2D extends ExtendedInterpolator2D {
   var _prevX = 0, _prevY = 0;
 
   @override
-  double interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
     if (!identical(data, _prevData) || x != _prevX || y != _prevY) {
       _prevData = data;

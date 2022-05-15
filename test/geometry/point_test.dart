@@ -157,5 +157,24 @@ void main() {
       expect(point.toDouble().x, point.x.toDouble());
       expect(point.toDouble().y, point.y.toDouble());
     });
+
+    test('should return the same point if type matches', () {
+      const intPoint = Point(1, 1), doublePoint = Point(1.1, 1.1);
+      expect(identical(intPoint, intPoint.toInt()), isTrue);
+      expect(identical(doublePoint, doublePoint.toDouble()), isTrue);
+    });
+
+    test('should accept all point types to measure distance', () {
+      final intPoint = random.nextIntPoint(10);
+      final doublePoint = random.nextDoublePoint();
+      expect(
+        intPoint.distanceToSafe(doublePoint),
+        intPoint.toDouble().distanceTo(doublePoint),
+      );
+      expect(
+        doublePoint.distanceToSafe(intPoint),
+        doublePoint.distanceTo(intPoint.toDouble()),
+      );
+    });
   });
 }

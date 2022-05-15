@@ -19,13 +19,13 @@ extension MapDynamicRange<T extends num> on Iterable<T> {
     return result;
   }
 
-  Iterable<double> mapDynamicRange(num min, num max) {
+  Iterable<num> mapDynamicRange(num min, num max) {
     if (isEmpty) return const Iterable.empty();
-    double toMinDouble([Object? _]) => min.toDouble();
-    if (min == max) return map(toMinDouble);
+    num flatten([Object? _]) => min;
+    if (min == max) return map(flatten);
     assert(min < max);
     final currentMin = minValue, currentMax = maxValue;
-    if (currentMin == currentMax) return map(toMinDouble);
+    if (currentMin == currentMax) return map(flatten);
     final divider = currentMax - currentMin;
     return map((item) => interpLinear(min, max, (item - currentMin) / divider));
   }
@@ -43,11 +43,10 @@ extension MapNestedDynamicRange<T extends num> on Iterable<Iterable<T>> {
     return result;
   }
 
-  Iterable<Iterable<double>> mapDynamicRange(num min, num max) {
+  Iterable<Iterable<num>> mapDynamicRange(num min, num max) {
     if (isEmpty) return const Iterable.empty();
-    Iterable<double> toMinDouble(Iterable<T> list) =>
-        list.mapDynamicRange(min, max);
-    if (min == max) return map(toMinDouble);
+    Iterable<num> flatten(Iterable<T> list) => list.mapDynamicRange(min, max);
+    if (min == max) return map(flatten);
     assert(min < max);
     num currentMin = double.infinity, currentMax = -double.infinity;
     for (final list in this) {
@@ -57,10 +56,9 @@ extension MapNestedDynamicRange<T extends num> on Iterable<Iterable<T>> {
         if (item > currentMax) currentMax = item;
       }
     }
-    if (currentMin == currentMax) return map(toMinDouble);
+    if (currentMin == currentMax) return map(flatten);
     final divider = currentMax - currentMin;
-    double mapItem(T item) =>
-        interpLinear(min, max, (item - currentMin) / divider);
-    return map((list) => list.map(mapItem));
+    num interp(T item) => interpLinear(min, max, (item - currentMin) / divider);
+    return map((list) => list.map(interp));
   }
 }

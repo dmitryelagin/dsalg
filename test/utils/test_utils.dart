@@ -3,3 +3,10 @@ void repeat(void Function() callback, {required int times}) {
     callback();
   }
 }
+
+int measuredRepeat(void Function() callback, {required int times}) {
+  final start = DateTime.now().millisecondsSinceEpoch;
+  repeat(callback, times: times);
+  final finish = DateTime.now().millisecondsSinceEpoch;
+  return finish - start;
+}

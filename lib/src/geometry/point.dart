@@ -15,10 +15,18 @@ extension PointUtils<T extends num> on Point<T> {
     );
   }
 
-  static Point<double> interpLinear(Point a, Point b, double t) =>
-      Point(lib.interpLinear(a.x, b.x, t), lib.interpLinear(a.y, b.y, t));
+  static Point interpLinear(Point a, Point b, double t) {
+    if (t == 0) return a;
+    if (t == 1) return b;
+    return Point(lib.interpLinear(a.x, b.x, t), lib.interpLinear(a.y, b.y, t));
+  }
 
   Point<double> operator /(num divider) => Point(x / divider, y / divider);
+
+  double distanceToSafe(Point other) {
+    final dx = x - other.x, dy = y - other.y;
+    return sqrt(dx * dx + dy * dy);
+  }
 
   Point<double> merge(Point other) =>
       Point((x + other.x) / 2, (y + other.y) / 2);
@@ -36,6 +44,9 @@ extension PointUtils<T extends num> on Point<T> {
   Point<int> ceil() => Point(x.ceil(), y.ceil());
   Point<int> truncate() => Point(x.truncate(), y.truncate());
 
-  Point<int> toInt() => truncate();
-  Point<double> toDouble() => Point(x.toDouble(), y.toDouble());
+  Point<int> toInt() => this is Point<int> ? this as Point<int> : truncate();
+
+  Point<double> toDouble() => this is Point<double>
+      ? this as Point<double>
+      : Point(x.toDouble(), y.toDouble());
 }
