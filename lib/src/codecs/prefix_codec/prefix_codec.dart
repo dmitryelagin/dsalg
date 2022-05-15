@@ -30,8 +30,8 @@ class PrefixCodec extends Codec<String, BitArray> {
   static bool isValidDictionary(PrefixDictionary dictionary) {
     final paths = dictionary.values.toList()
       ..sort((a, b) => a.length.compareTo(b.length));
-    for (var i = 0; i < paths.length - 1; i += 1) {
-      final first = paths[i], rest = paths.skip(i + 1);
+    for (var i = 1; i < paths.length; i += 1) {
+      final first = paths[i - 1], rest = paths.skip(i);
       for (final path in rest) {
         if (path.startsWith(first)) return false;
       }

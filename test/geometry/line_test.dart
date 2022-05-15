@@ -51,8 +51,8 @@ void main() {
       final magnitude = random.nextDouble() * random.nextInt(10) + 0.1;
       final points = line.getPointsByMagnitude(magnitude).toList();
       final distances = [
-        for (var i = 0; i < points.length - 1; i += 1)
-          points[i].distanceTo(points[i + 1]),
+        for (var i = 1; i < points.length; i += 1)
+          points[i - 1].distanceTo(points[i]),
       ];
       expect(distances.every((distance) => distance <= magnitude), isTrue);
     });
@@ -61,8 +61,8 @@ void main() {
       final amount = random.nextInt(50) + 2;
       final points = line.getPointsByAmount(amount).toList();
       final distances = [
-        for (var i = 0; i < points.length - 1; i += 1)
-          points[i].distanceTo(points[i + 1]),
+        for (var i = 1; i < points.length; i += 1)
+          points[i - 1].distanceTo(points[i]),
       ].map((distance) => distance.roundTo(10));
       expect(distances.everyIsEqual(), isTrue);
     });
