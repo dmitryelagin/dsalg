@@ -13,5 +13,8 @@ class Line with Segment {
   final Point b;
 
   @override
+  bool isValidCoefficient(double t) => true;
+
+  @override
   Point getPoint(double t) => PointUtils.interpLinear(a, b, t);
 }

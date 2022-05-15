@@ -66,5 +66,15 @@ void main() {
       ].map((distance) => distance.roundTo(10));
       expect(distances.everyIsEqual(), isTrue);
     });
+
+    test('should accept any coefficent', () {
+      expect(line.isValidCoefficient(0), isTrue);
+      expect(line.isValidCoefficient(1), isTrue);
+      expect(line.isValidCoefficient(0.123456789), isTrue);
+      expect(line.isValidCoefficient(1000), isTrue);
+      expect(line.isValidCoefficient(1000.1), isTrue);
+      expect(line.isValidCoefficient(-1000), isTrue);
+      expect(line.isValidCoefficient(-1000.1), isTrue);
+    });
   });
 }

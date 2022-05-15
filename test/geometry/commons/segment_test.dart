@@ -8,20 +8,6 @@ import '../../utils/matchers.dart';
 
 void main() {
   // testSegment(Line.new);
-
-  final random = Random();
-
-  group('Segment', () {
-    test('should properly check allowed coefficient', () {
-      expect(Segment.isSegmentCoefficient(0), isTrue);
-      expect(Segment.isSegmentCoefficient(1), isTrue);
-      expect(Segment.isSegmentCoefficient(random.nextDouble()), isTrue);
-      expect(Segment.isSegmentCoefficient(-1), isFalse);
-      expect(Segment.isSegmentCoefficient(2), isFalse);
-      expect(Segment.isSegmentCoefficient(random.nextInt(1000) + 2), isFalse);
-      expect(Segment.isSegmentCoefficient(-random.nextInt(1000) + 1), isFalse);
-    });
-  });
 }
 
 void testSegment(Segment Function(Point, Point) createSegment) {

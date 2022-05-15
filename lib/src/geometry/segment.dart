@@ -4,7 +4,7 @@ mixin Segment {
   Point get a => getPoint(0);
   Point get b => getPoint(1);
 
-  static bool isSegmentCoefficient(double t) => t >= 0 && t <= 1;
+  bool isValidCoefficient(double t) => t >= 0 && t <= 1;
 
   Point getPoint(double t);
 
