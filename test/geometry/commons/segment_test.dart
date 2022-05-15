@@ -7,7 +7,9 @@ import '../../utils/data_utils.dart';
 import '../../utils/matchers.dart';
 
 void main() {
-  // testSegment(Line.new);
+  // group('Segment', () {
+  //   testSegment(Line.new);
+  // });
 }
 
 void testSegment(Segment Function(Point, Point) createSegment) {

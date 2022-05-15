@@ -9,8 +9,10 @@ import '../../utils/int_utils.dart';
 import '../../utils/iterable_utils.dart';
 
 void main() {
-  // testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-  //   return BinarySearchTree<K, V>(compare, entries ?? const {});
+  // group('BaseBinarySearchTree', () {
+  //   testBaseBinarySearchTree(<K, V>(compare, [entries]) {
+  //     return BinarySearchTree<K, V>(compare, entries ?? const {});
+  //   });
   // });
 }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dsalg/dsalg.dart';
 
 class IntComparator extends MemoizedComparator<int> {
@@ -16,4 +18,9 @@ extension RoundIterableNumUtils on Iterable<num> {
 extension RoundIterableIterableNumUtils on Iterable<Iterable<num>> {
   Iterable<Iterable<double>> roundTo(int precision) =>
       map((list) => list.roundTo(precision));
+}
+
+extension RoundPointNumUtils on Point<num> {
+  Point<double> roundTo(int precision) =>
+      Point(x.roundTo(precision), y.roundTo(precision));
 }
