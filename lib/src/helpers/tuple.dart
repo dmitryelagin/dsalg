@@ -11,6 +11,10 @@ abstract class Tuple<A> {
 class Pair<A, B> extends Tuple<A> {
   const Pair(super.first, this.second);
 
+  Pair.fromEntry(MapEntry<A, B> entry)
+      : second = entry.value,
+        super(entry.key);
+
   final B second;
 
   @override
