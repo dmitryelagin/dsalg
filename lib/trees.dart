@@ -6,6 +6,7 @@ export 'src/trees/binary_tree/binary_tree.dart'
         BaseBinarySearchTree,
         BaseBinaryTree,
         BinarySearchTree,
+        RedBlackTree,
         SplayTree,
         Treap;
 export 'src/trees/trie/trie.dart';

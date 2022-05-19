@@ -13,6 +13,7 @@ part 'avl_tree.dart';
 part 'binary_search_tree.dart';
 part 'base_binary_tree.dart';
 part 'base_binary_search_tree.dart';
+part 'red_black_tree.dart';
 part 'splay_tree.dart';
 part 'treap.dart';
 
