@@ -14,19 +14,18 @@ void main() {
 
   group('Treap', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-      return Treap<K, V>(compare, entries ?? const {});
+      return Treap(compare, entries ?? const {});
     });
   });
 
   group('Treap', () {
-    var compareInt = IntComparator();
-    final emptyTree = Treap<int, int>(compareInt);
-    var items = <int>[], otherItems = <int>[];
-    var tree = Treap<int, int>(compareInt);
-    var worstTree = Treap<int, int>(compareInt);
+    late IntComparator compareInt;
+    late List<int> items, otherItems;
+    late Treap<int, int> tree, worstTree, emptyTree;
 
     setUp(() {
       compareInt = IntComparator();
+      emptyTree = Treap(compareInt);
       final firstItems = random.nextIntMap(500, absentItem);
       tree = Treap(compareInt, firstItems);
       final secondItems = random.nextIntMap(500, absentItem);

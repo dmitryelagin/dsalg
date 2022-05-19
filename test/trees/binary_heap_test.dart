@@ -11,9 +11,9 @@ void main() {
   final random = Random();
 
   group('BinaryHeap', () {
-    var compareInt = IntComparator();
-    var heap = BinaryHeap<int>(compareInt);
-    var firstItems = <int>[], secondItems = <int>[];
+    late IntComparator compareInt;
+    late List<int> firstItems, secondItems;
+    late BinaryHeap<int> heap;
 
     setUp(() {
       compareInt = IntComparator();

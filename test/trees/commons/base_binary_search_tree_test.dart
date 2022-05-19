@@ -11,7 +11,7 @@ import '../../utils/iterable_utils.dart';
 void main() {
   // group('BaseBinarySearchTree', () {
   //   testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-  //     return BinarySearchTree<K, V>(compare, entries ?? const {});
+  //     return BinarySearchTree(compare, entries ?? const {});
   //   });
   // });
 }

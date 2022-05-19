@@ -14,16 +14,14 @@ void main() {
 
   group('BinarySearchTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-      return BinarySearchTree<K, V>(compare, entries ?? const {});
+      return BinarySearchTree(compare, entries ?? const {});
     });
   });
 
   group('BinarySearchTree', () {
-    var compareInt = IntComparator();
-    var tree = BinarySearchTree<int, int>(compareInt);
-    var items = <int>[];
-    var worstTree = BinarySearchTree<int, int>(compareInt);
-    var worstItems = <int>[];
+    late IntComparator compareInt;
+    late List<int> items, worstItems;
+    late BinarySearchTree<int, int> tree, worstTree;
 
     setUp(() {
       compareInt = IntComparator();
