@@ -19,7 +19,7 @@ void main() {
     });
 
     test('should return negative when item is not found', () {
-      final items = <int>[0];
+      final items = [0];
       expect(items.linearSearch((item) => item == 1), -1);
     });
 

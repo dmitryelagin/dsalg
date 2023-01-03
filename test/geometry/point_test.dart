@@ -65,13 +65,13 @@ void main() {
         PointUtils.getCentroid(points),
       );
       expect(
-        () => PointUtils.getCentroid(const <Point>[]),
+        () => PointUtils.getCentroid(const []),
         throwsAssertionError,
       );
     });
 
     test('should allow point coordinate division', () {
-      final point = random.nextIntPoint(100);
+      final point = random.nextIntPoint(100, 1);
       final divider = random.nextInt(100);
       var result = point / divider;
       expect(result.x, point.x / divider);

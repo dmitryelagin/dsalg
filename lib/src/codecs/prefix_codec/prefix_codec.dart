@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../bits/bit_array.dart';
 import '../../trees/trie/trie.dart';
 import '../../utils/iterable_utils.dart';
+import '../../utils/list_utils.dart';
 import '../../utils/map_utils.dart';
 
 typedef PrefixDictionary = Map<int, Iterable<bool>>;
@@ -28,8 +29,7 @@ class PrefixCodec extends Codec<String, BitArray> {
   final PrefixDecoder decoder;
 
   static bool isValidDictionary(PrefixDictionary dictionary) {
-    final paths = dictionary.values.toList()
-      ..sort((a, b) => a.length.compareTo(b.length));
+    final paths = dictionary.values.toList()..sortAsc((item) => item.length);
     for (var i = 1; i < paths.length; i += 1) {
       final first = paths[i - 1], rest = paths.skip(i);
       for (final path in rest) {

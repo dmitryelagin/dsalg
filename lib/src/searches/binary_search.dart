@@ -10,11 +10,8 @@ extension BinarySearch<T> on List<T> {
       middle = (start + end) ~/ 2;
       final ratio = compare(this[middle], getPrevious);
       if (ratio == 0) return middle;
-      if (ratio > 0) {
-        start = middle + 1;
-      } else {
-        end = middle - 1;
-      }
+      if (ratio > 0) start = middle + 1;
+      if (ratio < 0) end = middle - 1;
     }
     return compare(this[middle = start], getPrevious) == 0 ? start : -1;
   }
