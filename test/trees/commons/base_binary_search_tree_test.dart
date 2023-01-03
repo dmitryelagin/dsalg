@@ -41,14 +41,14 @@ void testBaseBinarySearchTree(
   test('should be able to traverse depth first in order', () {
     expect(
       tree.entries.toString(),
-      items.copySort(compareInt).toMapEntries().toString(),
+      items.copySort(compareInt.call).toMapEntries().toString(),
     );
   });
 
   test('should remove nodes and preserve search structure', () {
     tree.removeAll(otherItems);
     items
-      ..sort(compareInt)
+      ..sort(compareInt.call)
       ..removeWhere(otherItems.contains);
     expect(
       tree.entries.toString(),

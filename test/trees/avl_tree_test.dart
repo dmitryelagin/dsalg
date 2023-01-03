@@ -31,7 +31,7 @@ void main() {
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
       otherItems = random.nextIntList(200, absentItem)..add(absentItem);
-      final worstItems = items.copySort(compareInt).reversed;
+      final worstItems = items.copySort(compareInt.call).reversed;
       worstTree = AvlTree(compareInt, worstItems.toMap());
     });
 

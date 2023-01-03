@@ -17,20 +17,23 @@ void main() {
   group('MergeSort', () {
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..mergeSort(compareInt), emptyList);
+      expect(emptyList..mergeSort(compareInt.call), emptyList);
     });
 
     test('should sort random lists', () {
       final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
-      expect(items..mergeSort(compareInt), itemsCopy..sort(compareInt));
+      expect(
+        items..mergeSort(compareInt.call),
+        itemsCopy..sort(compareInt.call),
+      );
     });
   });
 
   group('MergeSort.execute', () {
     test('should return new list', () {
       final items = random.nextIntList(10, 1000);
-      expect(MergeSort.execute(items, compareInt), isNot(equals(items)));
+      expect(MergeSort.execute(items, compareInt.call), isNot(equals(items)));
     });
   });
 }

@@ -32,7 +32,7 @@ void main() {
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
       otherItems = random.nextIntList(200, absentItem)..add(absentItem);
-      final worstItems = items.copySort(compareInt);
+      final worstItems = items.copySort(compareInt.call);
       worstTree = Treap(compareInt, worstItems.toMap());
     });
 
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('should be properly splitted by existing item', () {
-      items.sort(compareInt);
+      items.sort(compareInt.call);
       final index = random.nextInt(items.length), item = items[index];
       final first = items.sublist(0, index), second = items.sublist(index + 1);
       final other = tree.split(item);
@@ -71,7 +71,7 @@ void main() {
     });
 
     test('should be properly splitted by non-existing item', () {
-      items.sort(compareInt);
+      items.sort(compareInt.call);
       final index = random.nextInt(items.length), item = items[index];
       items.removeAt(index);
       final first = items.sublist(0, index), second = items.sublist(index);
@@ -100,7 +100,7 @@ void main() {
     });
 
     test('should be properly merged after split', () {
-      items.sort(compareInt);
+      items.sort(compareInt.call);
       final index = random.nextInt(items.length), item = items[index];
       final other = tree.split(item);
       tree.union(other);
@@ -120,7 +120,7 @@ void main() {
       final tree = Treap<int, int>(compareInt, firstItems.toMap());
       final unionTree = Treap<int, int>(compareInt, secondItems.toMap())
         ..union(tree);
-      items.sort(compareInt);
+      items.sort(compareInt.call);
       expect(
         unionTree.depthFirstInOrderTraversalEntries.toList().toString(),
         items.toMapEntries().toList().toString(),
@@ -141,7 +141,7 @@ void main() {
       unionTree = tree..union(emptyTree);
       expect(
         unionTree.depthFirstInOrderTraversalEntries.toList().toString(),
-        items.copySort(compareInt).toMapEntries().toList().toString(),
+        items.copySort(compareInt.call).toMapEntries().toList().toString(),
       );
     });
   });

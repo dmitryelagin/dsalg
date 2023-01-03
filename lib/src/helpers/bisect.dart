@@ -1,3 +1,5 @@
+import '../utils/functions.dart';
+
 extension Bisect<T> on List<T> {
   (Iterable<T>, Iterable<T>) bisectByMass(num Function(T) getItemMass) {
     assert(length > 1);
@@ -26,7 +28,5 @@ extension Bisect<T> on List<T> {
 
 extension BisectNum<T extends num> on List<T> {
   (Iterable<T>, Iterable<T>) bisectByMass([num Function(T)? getItemMass]) =>
-      Bisect(this).bisectByMass(getItemMass ?? _getNum);
-
-  num _getNum(num item) => item;
+      Bisect(this).bisectByMass(getItemMass ?? identity);
 }

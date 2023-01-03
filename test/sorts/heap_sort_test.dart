@@ -17,13 +17,16 @@ void main() {
   group('HeapSort', () {
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..heapSort(compareInt), emptyList);
+      expect(emptyList..heapSort(compareInt.call), emptyList);
     });
 
     test('should sort random lists', () {
       final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
-      expect(items..heapSort(compareInt), itemsCopy..sort(compareInt));
+      expect(
+        items..heapSort(compareInt.call),
+        itemsCopy..sort(compareInt.call),
+      );
     });
   });
 }

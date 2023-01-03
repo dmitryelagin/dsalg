@@ -1,5 +1,7 @@
 import '../../helpers/bisect.dart';
 import '../../helpers/code_unit_frequencies.dart';
+import '../../utils/list_utils.dart';
+import '../../utils/map_utils.dart';
 import 'prefix_codec.dart';
 import 'prefix_unit_node.dart';
 
@@ -16,11 +18,10 @@ class ShannonFanoDictionaryFactory {
   PrefixUnitNode<Iterable<bool>> _createUnitTree(String input) {
     final unitCounters = input.codeUnitFrequencies;
     if (unitCounters.length == 1) {
-      return PrefixUnitNode(unitCounters.keys.first, const <bool>[]);
+      return PrefixUnitNode(unitCounters.keys.first, const []);
     } else {
-      final units = unitCounters.keys.toList()
-        ..sort((a, b) => unitCounters[b]!.compareTo(unitCounters[a]!));
-      return _createUnitNodes(const [], units, (unit) => unitCounters[unit]!);
+      final units = unitCounters.keys.toList()..sortDesc(unitCounters.get);
+      return _createUnitNodes(const [], units, unitCounters.get);
     }
   }
 

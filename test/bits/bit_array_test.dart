@@ -9,8 +9,7 @@ void main() {
   group('BitArray', () {
     final random = Random();
     var array = BitArray();
-    var bits = <int>[];
-    var bitsToChange = <int>[];
+    var bits = <int>[], bitsToChange = <int>[];
 
     setUp(() {
       array = BitArray();

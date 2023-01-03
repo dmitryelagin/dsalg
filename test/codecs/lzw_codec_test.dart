@@ -86,7 +86,7 @@ void main() {
       final controller = StreamController<int>();
       final actual = controller.stream
           .transform(LzwDecoder.decodeTransformer())
-          .fold<String>('', (value, chunk) => value + chunk);
+          .fold('', (value, chunk) => value + chunk);
       controller
         ..addAll(items)
         ..close();
@@ -99,7 +99,7 @@ void main() {
       final controller = StreamController<int>();
       final actual = controller.stream
           .transform(LzwDecoder.decodeTransformer(allowMalformed: true))
-          .fold<String>('', (value, chunk) => value + chunk);
+          .fold('', (value, chunk) => value + chunk);
       controller
         ..addAll(items)
         ..close();

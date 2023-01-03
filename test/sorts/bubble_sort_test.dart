@@ -17,13 +17,16 @@ void main() {
   group('BubbleSort', () {
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..bubbleSort(compareInt), emptyList);
+      expect(emptyList..bubbleSort(compareInt.call), emptyList);
     });
 
     test('should sort random lists', () {
       final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
-      expect(items..bubbleSort(compareInt), itemsCopy..sort(compareInt));
+      expect(
+        items..bubbleSort(compareInt.call),
+        itemsCopy..sort(compareInt.call),
+      );
     });
   });
 }

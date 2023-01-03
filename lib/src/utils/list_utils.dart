@@ -4,4 +4,12 @@ extension ListUtils<T> on List<T> {
     this[i] = this[j];
     this[j] = temp;
   }
+
+  void sortAsc(Comparable<Object> Function(T) getItem) {
+    sort((a, b) => getItem(a).compareTo(getItem(b)));
+  }
+
+  void sortDesc(Comparable<Object> Function(T) getItem) {
+    sort((a, b) => getItem(b).compareTo(getItem(a)));
+  }
 }

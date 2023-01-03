@@ -17,13 +17,16 @@ void main() {
   group('SelectionSort', () {
     test('should not fail on empty lists', () {
       final emptyList = <int>[];
-      expect(emptyList..selectionSort(compareInt), emptyList);
+      expect(emptyList..selectionSort(compareInt.call), emptyList);
     });
 
     test('should sort random lists', () {
       final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
-      expect(items..selectionSort(compareInt), itemsCopy..sort(compareInt));
+      expect(
+        items..selectionSort(compareInt.call),
+        itemsCopy..sort(compareInt.call),
+      );
     });
   });
 }
