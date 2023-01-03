@@ -19,7 +19,10 @@ void main() {
     test('should sort random lists', () {
       final items = random.nextIntList(1000, 1000);
       final itemsCopy = items.toList();
-      expect(items..countingSort(getKey), itemsCopy..sort(IntComparator()));
+      expect(
+        items..countingSort(getKey),
+        itemsCopy..sort(IntComparator().call),
+      );
     });
   });
 

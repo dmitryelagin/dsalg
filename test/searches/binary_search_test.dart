@@ -11,13 +11,13 @@ void main() {
 
   group('BinarySearch', () {
     test('should find index in random list', () {
-      final items = random.nextIntList(1000, 1000)..sort(IntComparator());
+      final items = random.nextIntList(1000, 1000)..sort(IntComparator().call);
       final target = items[random.nextInt(1000)];
       expect(items[items.binarySearch(target.compareTo)], target);
     });
 
     test('should find index in random list using previous neighbour', () {
-      final items = random.nextIntList(1000, 100)..sort(IntComparator());
+      final items = random.nextIntList(1000, 100)..sort(IntComparator().call);
       final index = random.nextInt(900) + 100;
       final target = items[index], previousTarget = items[index - 1];
       final targetIndex = items.relativeBinarySearch((item, getPrevious) {

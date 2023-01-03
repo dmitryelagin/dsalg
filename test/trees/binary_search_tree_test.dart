@@ -30,7 +30,7 @@ void main() {
       final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
-      worstItems = items.copySort(compareInt);
+      worstItems = items.copySort(compareInt.call);
       worstTree = BinarySearchTree(compareInt, worstItems.toMap());
     });
 

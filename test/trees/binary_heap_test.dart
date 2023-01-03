@@ -19,18 +19,18 @@ void main() {
       compareInt = IntComparator();
       firstItems = random.nextIntList(itemsAmount, absentItem);
       secondItems = random.nextIntList(itemsAmount, absentItem);
-      heap = BinaryHeap(compareInt, firstItems);
+      heap = BinaryHeap(compareInt.call, firstItems);
     });
 
     test('should insert and extract items in correct order', () {
       heap.insertAll(secondItems);
       final extractedItems = heap.extractAll();
-      final items = [...firstItems, ...secondItems]..sort(compareInt);
+      final items = [...firstItems, ...secondItems]..sort(compareInt.call);
       expect(extractedItems, items.reversed);
     });
 
     test('should throw when nothing to extract', () {
-      final heap = BinaryHeap<int>(compareInt);
+      final heap = BinaryHeap<int>(compareInt.call);
       expect(heap.extract, throwsStateError);
     });
   });

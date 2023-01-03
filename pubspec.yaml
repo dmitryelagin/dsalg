@@ -3,7 +3,7 @@ version: 0.1.0
 description: >-
   A library with popular data structures and algorythms.
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 dev_dependencies:
   lints: ^2.0.0
-  test: ^1.21.0
+  test: ^1.22.0

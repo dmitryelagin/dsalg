@@ -31,7 +31,7 @@ void main() {
       final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
-      worstItems = items.copySort(compareInt);
+      worstItems = items.copySort(compareInt.call);
       worstTree = SplayTree(compareInt, worstItems.toMap());
     });
 
@@ -43,7 +43,7 @@ void main() {
         tree.breadthFirstTraversalEntries.toString(),
         [17, 9, 20, 8, 15, 3, 10, 6].toMapEntries().toString(),
       );
-      worstItems.sort(compareIntReversed);
+      worstItems.sort(compareIntReversed.call);
       expect(
         worstTree.breadthFirstTraversalEntries.toString(),
         worstItems.toMapEntries().toString(),
@@ -58,7 +58,7 @@ void main() {
         tree.depthFirstPreOrderTraversalEntries.toString(),
         [17, 9, 8, 3, 6, 15, 10, 20].toMapEntries().toString(),
       );
-      worstItems.sort(compareIntReversed);
+      worstItems.sort(compareIntReversed.call);
       expect(
         worstTree.depthFirstPreOrderTraversalEntries.toString(),
         worstItems.toMapEntries().toString(),
