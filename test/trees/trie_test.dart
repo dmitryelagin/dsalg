@@ -10,8 +10,8 @@ void main() {
   final random = Random();
 
   group('Trie', () {
-    var tree = Trie<String, int>((key) => key.runes.iterator);
-    var firstData = <String, int>{}, secondData = <String, int>{};
+    late Map<String, int> firstData, secondData;
+    late Trie<String, int> tree;
 
     final cyclicalTraversalHierarchy = {
       for (var i = 0; i < 4; i += 1)

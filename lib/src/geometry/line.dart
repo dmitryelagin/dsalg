@@ -7,10 +7,7 @@ class Line with Segment {
   const Line(this.a, this.b);
 
   @override
-  final Point a;
-
-  @override
-  final Point b;
+  final Point a, b;
 
   @override
   bool isValidCoefficient(double t) => true;

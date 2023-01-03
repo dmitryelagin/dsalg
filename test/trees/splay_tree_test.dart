@@ -14,16 +14,14 @@ void main() {
 
   group('SplayTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-      return SplayTree<K, V>(compare, entries ?? const {});
+      return SplayTree(compare, entries ?? const {});
     });
   });
 
   group('SplayTree', () {
-    var compareInt = IntComparator();
-    var compareIntReversed = IntComparator();
-    var items = <int>[], worstItems = <int>[];
-    var tree = SplayTree<int, int>(compareInt);
-    var worstTree = SplayTree<int, int>(compareInt);
+    late IntComparator compareInt, compareIntReversed;
+    late List<int> items, worstItems;
+    late SplayTree<int, int> tree, worstTree;
 
     setUp(() {
       compareInt = IntComparator();
@@ -33,7 +31,7 @@ void main() {
       final secondItems = random.nextIntMap(500, absentItem);
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
-      worstItems = items.copySort(compareInt);
+      worstItems = items.copySort(compareInt.call);
       worstTree = SplayTree(compareInt, worstItems.toMap());
     });
 
@@ -45,7 +43,7 @@ void main() {
         tree.breadthFirstTraversalEntries.toString(),
         [17, 9, 20, 8, 15, 3, 10, 6].toMapEntries().toString(),
       );
-      worstItems.sort(compareIntReversed);
+      worstItems.sort(compareIntReversed.call);
       expect(
         worstTree.breadthFirstTraversalEntries.toString(),
         worstItems.toMapEntries().toString(),
@@ -60,7 +58,7 @@ void main() {
         tree.depthFirstPreOrderTraversalEntries.toString(),
         [17, 9, 8, 3, 6, 15, 10, 20].toMapEntries().toString(),
       );
-      worstItems.sort(compareIntReversed);
+      worstItems.sort(compareIntReversed.call);
       expect(
         worstTree.depthFirstPreOrderTraversalEntries.toString(),
         worstItems.toMapEntries().toString(),

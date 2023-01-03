@@ -14,15 +14,14 @@ void main() {
 
   group('AvlTree', () {
     testBaseBinarySearchTree(<K, V>(compare, [entries]) {
-      return AvlTree<K, V>(compare, entries ?? const {});
+      return AvlTree(compare, entries ?? const {});
     });
   });
 
   group('AvlTree', () {
-    var compareInt = IntComparator();
-    var tree = AvlTree<int, int>(compareInt);
-    var items = <int>[], otherItems = <int>[];
-    var worstTree = AvlTree<int, int>(compareInt);
+    late IntComparator compareInt;
+    late List<int> items, otherItems;
+    late AvlTree<int, int> tree, worstTree;
 
     setUp(() {
       compareInt = IntComparator();
@@ -32,7 +31,7 @@ void main() {
       tree.addAll(secondItems);
       items = {...firstItems.keys, ...secondItems.keys}.toList();
       otherItems = random.nextIntList(200, absentItem)..add(absentItem);
-      final worstItems = items.copySort(compareInt).reversed;
+      final worstItems = items.copySort(compareInt.call).reversed;
       worstTree = AvlTree(compareInt, worstItems.toMap());
     });
 

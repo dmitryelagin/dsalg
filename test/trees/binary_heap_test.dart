@@ -11,26 +11,26 @@ void main() {
   final random = Random();
 
   group('BinaryHeap', () {
-    var compareInt = IntComparator();
-    var heap = BinaryHeap<int>(compareInt);
-    var firstItems = <int>[], secondItems = <int>[];
+    late IntComparator compareInt;
+    late List<int> firstItems, secondItems;
+    late BinaryHeap<int> heap;
 
     setUp(() {
       compareInt = IntComparator();
       firstItems = random.nextIntList(itemsAmount, absentItem);
       secondItems = random.nextIntList(itemsAmount, absentItem);
-      heap = BinaryHeap(compareInt, firstItems);
+      heap = BinaryHeap(compareInt.call, firstItems);
     });
 
     test('should insert and extract items in correct order', () {
       heap.insertAll(secondItems);
       final extractedItems = heap.extractAll();
-      final items = [...firstItems, ...secondItems]..sort(compareInt);
+      final items = [...firstItems, ...secondItems]..sort(compareInt.call);
       expect(extractedItems, items.reversed);
     });
 
     test('should throw when nothing to extract', () {
-      final heap = BinaryHeap<int>(compareInt);
+      final heap = BinaryHeap<int>(compareInt.call);
       expect(heap.extract, throwsStateError);
     });
   });
