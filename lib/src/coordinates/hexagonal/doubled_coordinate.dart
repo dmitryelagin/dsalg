@@ -43,22 +43,21 @@ class DoubleHeightDoubledCoordinate extends DoubledCoordinate<
   DoubleHeightDoubledCoordinate move(
     FlatToppedHexagonalDirection direction,
     int distance,
-  ) {
+  ) =>
     switch (direction) {
-      case FlatToppedHexagonalDirection.top:
-        return DoubleHeightDoubledCoordinate(q, r - distance * 2);
-      case FlatToppedHexagonalDirection.topRight:
-        return DoubleHeightDoubledCoordinate(q + distance, r - distance);
-      case FlatToppedHexagonalDirection.bottomRight:
-        return DoubleHeightDoubledCoordinate(q + distance, r + distance);
-      case FlatToppedHexagonalDirection.bottom:
-        return DoubleHeightDoubledCoordinate(q, r + distance * 2);
-      case FlatToppedHexagonalDirection.bottomLeft:
-        return DoubleHeightDoubledCoordinate(q - distance, r + distance);
-      case FlatToppedHexagonalDirection.topLeft:
-        return DoubleHeightDoubledCoordinate(q - distance, r - distance);
-    }
-  }
+      FlatToppedHexagonalDirection.top =>
+        DoubleHeightDoubledCoordinate(q, r - distance * 2),
+      FlatToppedHexagonalDirection.topRight =>
+        DoubleHeightDoubledCoordinate(q + distance, r - distance),
+      FlatToppedHexagonalDirection.bottomRight =>
+        DoubleHeightDoubledCoordinate(q + distance, r + distance),
+      FlatToppedHexagonalDirection.bottom =>
+        DoubleHeightDoubledCoordinate(q, r + distance * 2),
+      FlatToppedHexagonalDirection.bottomLeft =>
+        DoubleHeightDoubledCoordinate(q - distance, r + distance),
+      FlatToppedHexagonalDirection.topLeft =>
+        DoubleHeightDoubledCoordinate(q - distance, r - distance),
+    };
 
   @override
   CubeCoordinate toCube() => CubeCoordinate.fromXZ(q, ((r - q) / 2).round());
@@ -83,22 +82,21 @@ class DoubleWidthDoubledCoordinate extends DoubledCoordinate<
   DoubleWidthDoubledCoordinate move(
     PointyToppedHexagonalDirection direction,
     int distance,
-  ) {
+  ) =>
     switch (direction) {
-      case PointyToppedHexagonalDirection.topLeft:
-        return DoubleWidthDoubledCoordinate(q - distance, r - distance);
-      case PointyToppedHexagonalDirection.topRight:
-        return DoubleWidthDoubledCoordinate(q + distance, r - distance);
-      case PointyToppedHexagonalDirection.right:
-        return DoubleWidthDoubledCoordinate(q + distance * 2, r);
-      case PointyToppedHexagonalDirection.bottomRight:
-        return DoubleWidthDoubledCoordinate(q + distance, r + distance);
-      case PointyToppedHexagonalDirection.bottomLeft:
-        return DoubleWidthDoubledCoordinate(q - distance, r + distance);
-      case PointyToppedHexagonalDirection.left:
-        return DoubleWidthDoubledCoordinate(q - distance * 2, r);
-    }
-  }
+      PointyToppedHexagonalDirection.topLeft =>
+        DoubleWidthDoubledCoordinate(q - distance, r - distance),
+      PointyToppedHexagonalDirection.topRight =>
+        DoubleWidthDoubledCoordinate(q + distance, r - distance),
+      PointyToppedHexagonalDirection.right =>
+        DoubleWidthDoubledCoordinate(q + distance * 2, r),
+      PointyToppedHexagonalDirection.bottomRight =>
+        DoubleWidthDoubledCoordinate(q + distance, r + distance),
+      PointyToppedHexagonalDirection.bottomLeft =>
+        DoubleWidthDoubledCoordinate(q - distance, r + distance),
+      PointyToppedHexagonalDirection.left =>
+        DoubleWidthDoubledCoordinate(q - distance * 2, r),
+    };
 
   @override
   CubeCoordinate toCube() => CubeCoordinate.fromXZ(((q - r) / 2).round(), r);

@@ -2,11 +2,12 @@ import 'dart:math';
 
 import '../../collections/queue.dart';
 
-num interpLinear(num a, num b, double t) {
-  if (t == 0) return a;
-  if (t == 1) return b;
-  return a * (1 - t) + b * t;
-}
+num interpLinear(num a, num b, double t) =>
+  switch (t) {
+    0 => a,
+    1 => b,
+    _ => a * (1 - t) + b * t,
+  };
 
 num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
     interpLinear(interpLinear(a, b, tx), interpLinear(c, d, tx), ty);
@@ -15,16 +16,15 @@ num interpCubic(List<num> values, double t) {
   assert(values.length >= 4);
   if (t == 0) return values[1];
   if (t == 1) return values[2];
-  final a = values[0], b = values[1], c = values[2], d = values[3];
+  final [a, b, c, d] = values;
   final m = 2 * a - 5 * b + 4 * c - d + t * (3 * (b - c) + d - a);
   return b + t * (c - a + t * m) / 2;
 }
 
 num interpBiCubic(List<List<num>> values, double tx, double ty) {
   assert(values.length >= 4);
-  final a = interpCubic(values[0], ty), b = interpCubic(values[1], ty);
-  final c = interpCubic(values[2], ty), d = interpCubic(values[3], ty);
-  return interpCubic([a, b, c, d], tx);
+  final tyValues = values.take(4).map((item) => interpCubic(item, ty)).toList();
+  return interpCubic(tyValues, tx);
 }
 
 num interpCosineS(num a, num b, double t) =>

@@ -29,16 +29,16 @@ class ShannonFanoDictionaryFactory {
     List<int> units,
     int Function(int) getMass,
   ) {
-    final parts = units.bisectByMass(getMass);
+    final (left, right) = units.bisectByMass(getMass);
     final leftPath = path.followedBy(const [false]);
     final rightPath = path.followedBy(const [true]);
     return PrefixUnitNode.utility(path)
-      ..left = parts.first.length == 1
-          ? PrefixUnitNode(parts.first.first, leftPath)
-          : _createUnitNodes(leftPath, parts.first.toList(), getMass)
-      ..right = parts.second.length == 1
-          ? PrefixUnitNode(parts.second.first, rightPath)
-          : _createUnitNodes(rightPath, parts.second.toList(), getMass);
+      ..left = left.length == 1
+          ? PrefixUnitNode(left.first, leftPath)
+          : _createUnitNodes(leftPath, left.toList(), getMass)
+      ..right = right.length == 1
+          ? PrefixUnitNode(right.first, rightPath)
+          : _createUnitNodes(rightPath, right.toList(), getMass);
   }
 
   PrefixDictionary _createDictionary(PrefixUnitNode<Iterable<bool>> root) =>

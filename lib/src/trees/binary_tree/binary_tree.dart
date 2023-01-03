@@ -2,7 +2,6 @@ import 'dart:math';
 
 import '../../collections/queue.dart';
 import '../../helpers/comparator.dart';
-import '../../helpers/tuple.dart';
 import '../../utils/iterable_utils.dart';
 import 'balance_binary_node.dart';
 import 'base_binary_node.dart';

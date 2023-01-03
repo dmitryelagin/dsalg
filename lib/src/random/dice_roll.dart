@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import '../helpers/tuple.dart';
 import '../utils/iterable_utils.dart';
 
 extension DiceRoll on Random {
@@ -8,8 +7,8 @@ extension DiceRoll on Random {
       [for (var i = 0; i < amount; i += 1) die.roll(this)];
 
   List<int> nextNdsRoll(String nds) {
-    final parts = Die.parseNds(nds);
-    return nextRoll(parts.second, amount: parts.first);
+    final (amount, die) = Die.parseNds(nds);
+    return nextRoll(die, amount: amount);
   }
 }
 
@@ -59,13 +58,13 @@ class Die {
 
   bool get isUniformFair => _chances.everyIsEqual();
 
-  static Pair<int, Die> parseNds(String nds) =>
+  static (int, Die) parseNds(String nds) =>
       tryParseNds(nds) ?? (throw FormatException(nds));
 
-  static Pair<int, Die>? tryParseNds(String nds) {
+  static (int, Die)? tryParseNds(String nds) {
     final match = _ndsPattern.matchAsPrefix(nds);
     return match != null
-        ? Pair(int.parse(match[1]!), Die(int.parse(match[2]!)))
+        ? (int.parse(match[1]!), Die(int.parse(match[2]!)))
         : null;
   }
 

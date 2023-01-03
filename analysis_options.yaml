@@ -1,6 +1,9 @@
 include: package:lints/recommended.yaml
 
 analyzer:
+  enable-experiment:
+    - records
+    - patterns
   language:
     strict-casts: true
     strict-inference: true
@@ -81,7 +84,6 @@ linter:
     - flutter_style_todos
     # - hash_and_equals lints/core
     # - implementation_imports lints/recommended
-    - invariant_booleans
     # - iterable_contains_unrelated_type lints/core
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings

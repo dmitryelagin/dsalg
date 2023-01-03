@@ -18,13 +18,13 @@ class AvlTree<K, V> extends _BaseBinarySearchTree<K, V, _AvlNode<K, V>> {
 
   @override
   V? remove(K key) {
-    final change = _removeItem(key);
-    var node = change.second ?? change.third;
+    final (target, child, parent) = _removeItem(key);
+    var node = child ?? parent;
     while (node != null) {
       _rebalance(node);
       node = node.parent;
     }
-    return change.first?.value;
+    return target?.value;
   }
 
   void _rebalance(_AvlNode<K, V>? z) {

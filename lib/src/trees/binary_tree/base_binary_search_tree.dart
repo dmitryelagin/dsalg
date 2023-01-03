@@ -45,7 +45,10 @@ abstract class _BaseBinarySearchTree<K, V, N extends BaseBinaryNode<K, V, N>>
   }
 
   @override
-  V? remove(K key) => _removeItem(key).first?.value;
+  V? remove(K key) {
+    final (target, _, _) = _removeItem(key);
+    return target?.value;
+  }
 
   @override
   Iterable<V> removeAll(Iterable<K> keys) =>
@@ -104,31 +107,31 @@ abstract class _BaseBinarySearchTree<K, V, N extends BaseBinaryNode<K, V, N>>
     return child;
   }
 
-  MonoTrio<N?> _removeItem(K key) {
-    if (isEmpty) return const Trio(null, null, null);
+  (N?, N?, N?) _removeItem(K key) {
+    if (isEmpty) return const (null, null, null);
     if (_compare.areNotEqual(key, _root!.key)) {
       return _removeChild(key, _root!);
     }
-    if (_root!.hasNoChildren) return Trio(_root, _root = null, null);
-    if (_root!.hasSingleChild) return Trio(_root, _root = _root!.child, null);
+    if (_root!.hasNoChildren) return (_root, _root = null, null);
+    if (_root!.hasSingleChild) return (_root, _root = _root!.child, null);
     _root!.setEntryFrom(_root!.right!.leftmost);
     return _removeChild(_root!.key, _root!);
   }
 
-  MonoTrio<N?> _removeChild(K key, N parent) {
+  (N?, N?, N?) _removeChild(K key, N parent) {
     final ratio = _compare(key, parent.key);
     final node = parent.getChildByRatio(ratio);
-    if (node == null) return const Trio(null, null, null);
+    if (node == null) return const (null, null, null);
     if (_compare.areNotEqual(key, node.key)) {
       return _removeChild(key, node);
     }
     if (node.hasNoChildren) {
       parent.removeChildByRatio(ratio);
-      return Trio(node, null, parent);
+      return (node, null, parent);
     }
     if (node.hasSingleChild) {
       parent.setChildByRatio(ratio, node.child);
-      return Trio(node, node.child, parent);
+      return (node, node.child, parent);
     }
     node.setEntryFrom(node.right!.leftmost);
     return _removeChild(node.key, node);
