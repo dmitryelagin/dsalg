@@ -14,7 +14,7 @@ void main() {
       .map((item) => item * random.nextInt(100))
       .toList();
 
-  group('Interpolator1D', () {
+  group('Interpolator', () {
     var values = <num>[], targets = <double>[];
 
     setUp(() {
@@ -22,11 +22,11 @@ void main() {
       targets = getDoubleList(10);
     });
 
-    group('as IntegerInterpolator1D', () {
+    group('as IntegerInterpolator', () {
       test('should return correct value from rounded target', () {
         for (final target in targets) {
           expect(
-            const IntegerInterpolator1D().interpolate(values, target),
+            const IntegerInterpolator().interpolate(values, target),
             values[target.round()],
           );
         }
@@ -34,20 +34,20 @@ void main() {
 
       test('should throw when target is out of data range', () {
         expect(
-          () => const IntegerInterpolator1D().interpolate(values, 200.5),
+          () => const IntegerInterpolator().interpolate(values, 200.5),
           throwsRangeError,
         );
         expect(
-          () => const IntegerInterpolator1D().interpolate(values, -2),
+          () => const IntegerInterpolator().interpolate(values, -2),
           throwsRangeError,
         );
       });
     });
 
-    group('as BaseInterpolator1D', () {
+    group('as BaseInterpolator', () {
       test('should pass correct arguments to callback', () {
         num sa = 0, sb = 0, st = 0;
-        final interpolator = BaseInterpolator1D((a, b, t) {
+        final interpolator = BaseInterpolator((a, b, t) {
           sa = a;
           sb = b;
           st = t;
@@ -63,7 +63,7 @@ void main() {
       });
 
       test('should throw when target is out of data range', () {
-        final interpolator = BaseInterpolator1D((_, __, ___) => 0);
+        final interpolator = BaseInterpolator((_, __, ___) => 0);
         expect(
           () => interpolator.interpolate(values, 200.5),
           throwsRangeError,
@@ -84,8 +84,8 @@ void main() {
       }
 
       for (final entry in {
-        'ExtendedInterpolator1D': ExtendedInterpolator1D(interp),
-        'ExtendedCachedInterpolator1D': ExtendedCachedInterpolator1D(interp),
+        'ExtendedInterpolator': ExtendedInterpolator(interp),
+        'ExtendedCachedInterpolator': ExtendedCachedInterpolator(interp),
       }.entries) {
         final name = entry.key, interpolator = entry.value;
 
@@ -115,9 +115,9 @@ void main() {
       }
     });
 
-    group('as ExtendedCachedInterpolator1D', () {
+    group('as ExtendedCachedInterpolator', () {
       test('should provide unmodifiable list as argument', () {
-        final interpolator = ExtendedCachedInterpolator1D((data, _) {
+        final interpolator = ExtendedCachedInterpolator((data, _) {
           data.add(0);
           return 0;
         });

@@ -3,16 +3,15 @@ import 'dart:collection';
 import '../../utils/iterable_utils.dart';
 import 'interpolate.dart';
 
-abstract class Interpolator1D {
-  factory Interpolator1D.cubicCached() =>
-      ExtendedCachedInterpolator1D(interpCubic);
+abstract class Interpolator {
+  factory Interpolator.cubicCached() => ExtendedCachedInterpolator(interpCubic);
 
-  static const integer = IntegerInterpolator1D();
-  static const linear = BaseInterpolator1D(interpLinear);
-  static const cubic = ExtendedInterpolator1D(interpCubic);
-  static const cubicS = BaseInterpolator1D(interpCubicS);
-  static const cosineS = BaseInterpolator1D(interpCosineS);
-  static const quinticS = BaseInterpolator1D(interpQuinticS);
+  static const integer = IntegerInterpolator();
+  static const linear = BaseInterpolator(interpLinear);
+  static const cubic = ExtendedInterpolator(interpCubic);
+  static const cubicS = BaseInterpolator(interpCubicS);
+  static const cosineS = BaseInterpolator(interpCosineS);
+  static const quinticS = BaseInterpolator(interpQuinticS);
 
   num interpolate(Iterable<num> data, double t);
 }
@@ -31,8 +30,8 @@ abstract class Interpolator2D {
   num interpolate(Iterable<Iterable<num>> data, double tx, double ty);
 }
 
-class IntegerInterpolator1D implements Interpolator1D {
-  const IntegerInterpolator1D();
+class IntegerInterpolator implements Interpolator {
+  const IntegerInterpolator();
 
   @override
   num interpolate(Iterable<num> data, double t) => data.elementAt(t.round());
@@ -46,8 +45,8 @@ class IntegerInterpolator2D implements Interpolator2D {
       data.elementAt(tx.round()).elementAt(ty.round());
 }
 
-class BaseInterpolator1D implements Interpolator1D {
-  const BaseInterpolator1D(this._interp);
+class BaseInterpolator implements Interpolator {
+  const BaseInterpolator(this._interp);
 
   final num Function(num, num, double) _interp;
 
@@ -77,8 +76,8 @@ class BaseInterpolator2D implements Interpolator2D {
   }
 }
 
-class ExtendedInterpolator1D implements Interpolator1D {
-  const ExtendedInterpolator1D(this._interp);
+class ExtendedInterpolator implements Interpolator {
+  const ExtendedInterpolator(this._interp);
 
   final num Function(List<num>, double) _interp;
 
@@ -111,8 +110,8 @@ class ExtendedInterpolator2D implements Interpolator2D {
   }
 }
 
-class ExtendedCachedInterpolator1D extends ExtendedInterpolator1D {
-  ExtendedCachedInterpolator1D(super.interp) {
+class ExtendedCachedInterpolator extends ExtendedInterpolator {
+  ExtendedCachedInterpolator(super.interp) {
     _cacheView = UnmodifiableListView(_cache);
   }
 

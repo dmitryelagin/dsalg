@@ -8,7 +8,7 @@ import '../utils/data_utils.dart';
 void main() {
   final random = Random();
 
-  group('Convert1DNumIterable', () {
+  group('ConvertNumIterable', () {
     test('should convert small numbers without changes', () {
       final numbers = random.nextIntList(100, 256);
       expect(numbers.toUint8List(), numbers);

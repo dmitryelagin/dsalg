@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-extension Convert1DNumIterable on Iterable<num> {
+extension ConvertNumIterable on Iterable<num> {
   Uint8List toUint8List() => _toList(Uint8List.new);
   Uint8ClampedList toUint8ClampedList() => _toList(Uint8ClampedList.new);
 
