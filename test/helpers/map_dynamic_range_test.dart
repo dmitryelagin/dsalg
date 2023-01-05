@@ -14,7 +14,7 @@ void main() {
   int Function(Iterable<num>) itemsAmount(num item) =>
       (list) => list.where((target) => target == item).length;
 
-  group('MapDynamicRange', () {
+  group('Map1DDynamicRange', () {
     test('should handle standard cases', () {
       expect(
         const [1, 2, 3, 4].mapDynamicRange(-4, -1).roundTo(5),
@@ -101,7 +101,7 @@ void main() {
     });
   });
 
-  group('MapNestedDynamicRange', () {
+  group('Map2DDynamicRange', () {
     test('should handle standard cases', () {
       expect(
         const [
