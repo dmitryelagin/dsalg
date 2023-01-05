@@ -1,4 +1,4 @@
-import 'dart:math';
+import '../helpers/tuple.dart';
 
 extension IterableUtils<T> on Iterable<T> {
   bool isDeepEqualTo(Iterable<T> other) {
@@ -66,8 +66,17 @@ extension IterableNullUtils<T> on Iterable<T?> {
 }
 
 extension IterableNumUtils<T extends num> on Iterable<T> {
-  T get minValue => reduce(min);
-  T get maxValue => reduce(max);
+  T get minValue => minMaxValue.first;
+  T get maxValue => minMaxValue.second;
+
+  MonoPair<T> get minMaxValue {
+    num actualMin = double.infinity, actualMax = -double.infinity;
+    for (final item in this) {
+      if (item < actualMin) actualMin = item;
+      if (item > actualMax) actualMax = item;
+    }
+    return Pair(actualMin as T, actualMax as T);
+  }
 
   num get sum => fold(0, _foldNums);
 
@@ -80,4 +89,20 @@ extension IterableNumUtils<T extends num> on Iterable<T> {
 
   num _foldNums(num a, num b) => a + b;
   int _toInt(num item) => item.toInt();
+}
+
+extension Iterable2DNumUtils<T extends num> on Iterable<Iterable<num>> {
+  T get minValue => minMaxValue.first;
+  T get maxValue => minMaxValue.second;
+
+  MonoPair<T> get minMaxValue {
+    num actualMin = double.infinity, actualMax = -double.infinity;
+    for (final list in this) {
+      for (final item in list) {
+        if (item < actualMin) actualMin = item;
+        if (item > actualMax) actualMax = item;
+      }
+    }
+    return Pair(actualMin as T, actualMax as T);
+  }
 }

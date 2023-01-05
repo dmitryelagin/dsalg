@@ -10,7 +10,7 @@ const _doubleFractionBitsAmount = 53;
 final _epsilon256 = pow(2, 8 - _doubleFractionBitsAmount);
 final _lessThan256 = pow(2, 8) - _epsilon256;
 
-extension Map1DDynamicRange<T extends num> on Iterable<T> {
+extension MapDynamicRange<T extends num> on Iterable<T> {
   Uint8List mapDynamicRangeToUint8List() =>
       mapDynamicRange(0, _lessThan256).toUint8List();
 
@@ -19,7 +19,8 @@ extension Map1DDynamicRange<T extends num> on Iterable<T> {
     num flatten([Object? _]) => min;
     if (min == max) return map(flatten);
     assert(min < max);
-    final actualMin = minValue, actualMax = maxValue;
+    final actualMinMax = minMaxValue;
+    final actualMin = actualMinMax.first, actualMax = actualMinMax.second;
     if (actualMin == actualMax) return map(flatten);
     final divider = actualMax - actualMin;
     return map((item) => interpLinear(min, max, (item - actualMin) / divider));
@@ -35,14 +36,8 @@ extension Map2DDynamicRange<T extends num> on Iterable<Iterable<T>> {
     Iterable<num> flatten(Iterable<T> list) => list.mapDynamicRange(min, max);
     if (min == max) return map(flatten);
     assert(min < max);
-    num actualMin = double.infinity, actualMax = -double.infinity;
-    for (final list in this) {
-      assert(list.isNotEmpty);
-      for (final item in list) {
-        if (item < actualMin) actualMin = item;
-        if (item > actualMax) actualMax = item;
-      }
-    }
+    final actualMinMax = minMaxValue;
+    final actualMin = actualMinMax.first, actualMax = actualMinMax.second;
     if (actualMin == actualMax) return map(flatten);
     final divider = actualMax - actualMin;
     num interp(T item) => interpLinear(min, max, (item - actualMin) / divider);
