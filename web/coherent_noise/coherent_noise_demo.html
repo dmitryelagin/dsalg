@@ -13,73 +13,62 @@
 
 <body>
   <div class="demo">
-    <div class="demo-view">
-      <div class="demo-container">
-        <canvas id="target-1d" width="480" height="160"></canvas>
+    <div class="demo-noise-grid">
+      <div class="demo-noise-horizontal">
+        <canvas id="target-horizontal" width="500" height="100"></canvas>
       </div>
-      <div class="demo-container">
-        <canvas id="target-2d" width="480" height="480"></canvas>
+      <div class="demo-noise-vertical">
+        <canvas id="target-vertical" width="100" height="500"></canvas>
       </div>
-    </div>
-    <div class="demo-settings">
-      <div class="demo-container">
+      <div class="demo-noise-2d">
+        <canvas id="target-2d" width="500" height="500"></canvas>
+      </div>
+      <div class="demo-noise-info">
         <p>Randomizer: <b><span id="random-type-value"></span></b></p>
         <p>
-          Interpolation, 1D:
-          <b><span id="interp-1d-type-value"></span></b>
+          Interpolation:
+          <b><span id="interp-type-value"></span></b>
         </p>
         <p>
-          Interpolation, 2D:
-          <b><span id="interp-2d-type-value"></span></b>
+          Computation speed:
+          <b><span id="speed-value">0</span></b> ms
         </p>
-        <p>
-          Computation speed, 1D:
-          <b><span id="speed-1d-value"></span></b> ms
-        </p>
-        <p>
-          Computation speed, 2D:
-          <b><span id="speed-2d-value"></span></b> ms
-        </p>
-      </div>
-      <hr>
-      <div class="demo-container">
+        <hr>
         <label>
           Noise size:
           <input id="noise-size-input" type="number" value="20" min="1">
         </label>
-      </div>
-      <hr>
-      <div class="demo-container">
+        <hr>
         <label class="demo-checkbox">
           <input type="checkbox" id="correct-dynamic-range">
           &nbsp;Correct dynamic range
         </label>
-      </div>
-      <hr>
-      <div class="demo-container">
-        <button id="use-standard-random">Use standard random</button>
-      </div>
-      <div class="demo-container">
-        <button id="use-limited-random">Use limited-shade random</button>
-      </div>
-      <hr>
-      <div class="demo-container">
-        <button id="apply-integer-interp">Apply integer</button>
-      </div>
-      <div class="demo-container">
-        <button id="apply-linear-interp">Apply linear</button>
-      </div>
-      <div class="demo-container">
-        <button id="apply-cubic-interp">Apply cubic</button>
-      </div>
-      <div class="demo-container">
-        <button id="apply-cubic-s-interp">Apply cubic S-curve</button>
-      </div>
-      <div class="demo-container">
-        <button id="apply-cosine-s-interp">Apply cosine S-curve</button>
-      </div>
-      <div class="demo-container">
-        <button id="apply-quintic-s-interp">Apply quintic S-curve</button>
+        <hr>
+        <div class="demo-button-container">
+          <button id="use-standard-random">Use standard random</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="use-limited-random">Use limited-shade random</button>
+        </div>
+        <hr>
+        <div class="demo-button-container">
+          <button id="apply-integer-interp">Apply integer</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="apply-linear-interp">Apply linear</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="apply-cubic-interp">Apply cubic</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="apply-cubic-s-interp">Apply cubic S-curve</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="apply-cosine-s-interp">Apply cosine S-curve</button>
+        </div>
+        <div class="demo-button-container">
+          <button id="apply-quintic-s-interp">Apply quintic S-curve</button>
+        </div>
       </div>
     </div>
   </div>

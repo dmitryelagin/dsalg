@@ -23,22 +23,41 @@ input {
 hr {
   border: none;
   border-top: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.demo {
-  display: flex;
-  margin: 20px;
-}
-
-.demo-view {
-  margin-right: 20px;
-}
-
-.demo-container {
+.demo-button-container {
   margin-bottom: 10px;
 }
 
 .demo-checkbox {
   display: flex;
   align-items: center;
+}
+
+.demo-noise-horizontal {
+  grid-area: noiseHorizontal;
+}
+
+.demo-noise-vertical {
+  grid-area: noiseVertical;
+}
+
+.demo-noise-2d {
+  grid-area: noise2d;
+}
+
+.demo-noise-info {
+  grid-area: noiseInfo;
+  margin-left: 20px;
+}
+
+.demo-noise-grid {
+  display: grid;
+  grid-template-columns: 100px 500px 350px;
+  grid-template-rows: 100px 500px;
+  grid-template-areas:
+    '............. noiseHorizontal noiseInfo'
+    'noiseVertical noise2d         noiseInfo';
 }
