@@ -1,22 +1,18 @@
 import 'dart:async';
 
 abstract class BaseCubit<S> {
-  BaseCubit(S initialState) {
-    _onChange = StreamController.broadcast(
-      onListen: () => onChange.listen((state) => _state = state),
-    );
-    add(initialState);
-  }
+  BaseCubit(this._state);
 
-  late S _state;
+  S _state;
 
-  late StreamController<S> _onChange;
+  final _onChange = StreamController<S>.broadcast();
 
   S get state => _state;
 
   Stream<S> get onChange => _onChange.stream;
 
-  void add(S state) {
+  void change(S state) {
+    _state = state;
     _onChange.add(state);
   }
 

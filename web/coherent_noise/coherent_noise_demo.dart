@@ -7,41 +7,43 @@ import 'coherent_horizontal_noise_renderer.dart';
 import 'coherent_noise_cubit.dart';
 import 'coherent_noise_interpolation_type.dart';
 import 'coherent_noise_random_type.dart';
+import 'coherent_noise_state.dart';
 import 'coherent_vertical_noise_renderer.dart';
 
-final _canvasHorizontal = select<CanvasElement>('#target-horizontal');
-final _canvasVertical = select<CanvasElement>('#target-vertical');
-final _canvas2D = select<CanvasElement>('#target-2d');
 final _noiseSizeInput = select<InputElement>('#noise-size-input');
 final _correctRangeInput = select<InputElement>('#correct-dynamic-range');
-final _randomTypeText = select<SpanElement>('#random-type-value');
-final _interpTypeText = select<SpanElement>('#interp-type-value');
-final _speedText = select<SpanElement>('#speed-value');
 
-final _renderer2D = Renderer(_canvas2D);
+final _randomTypeText = select('#random-type-value');
+final _interpTypeText = select('#interp-type-value');
+final _speedText = select('#speed-value');
 
-final _noiseHorizontalController =
-    CoherentHorizontalNoiseRenderer(Renderer(_canvasHorizontal));
-final _noiseVerticalController =
-    CoherentVerticalNoiseRenderer(Renderer(_canvasVertical));
-final _noise2DController = Coherent2DNoiseRenderer(_renderer2D);
+final _renderer2D = Renderer(select('#target-2d'));
+
+final _noiseHorizontalRenderer =
+    CoherentHorizontalNoiseRenderer(Renderer(select('#target-horizontal')));
+final _noiseVerticalRenderer =
+    CoherentVerticalNoiseRenderer(Renderer(select('#target-vertical')));
+final _noise2DRenderer = Coherent2DNoiseRenderer(_renderer2D);
+
+void _draw(CoherentNoiseState state) {
+  _noiseSizeInput.value = state.noiseSize.toString();
+  _randomTypeText.text = state.randomType.name;
+  _interpTypeText.text = state.interpolationType.name;
+  _correctRangeInput.checked = state.shouldCorrectDynamicRange;
+  _noiseHorizontalRenderer.draw(state);
+  _noiseVerticalRenderer.draw(state);
+  _noise2DRenderer.draw(state);
+}
 
 void main() {
   final cubit = CoherentNoiseCubit(
     outputWidth: _renderer2D.width,
     outputHeight: _renderer2D.height,
     noiseSize: _noiseSizeInput.value!,
-  )..onChange.listen((state) {
-      _noiseSizeInput.value = state.noiseSize.toString();
-      _randomTypeText.text = state.randomType.name;
-      _interpTypeText.text = state.interpolationType.name;
-      _correctRangeInput.checked = state.shouldCorrectDynamicRange;
-      _noiseHorizontalController.draw(state);
-      _noiseVerticalController.draw(state);
-      _noise2DController.draw(state);
-    });
+  )..onChange.listen(_draw);
+  _draw(cubit.state);
 
-  _noise2DController.onDrawFinish.listen((speed) {
+  _noise2DRenderer.onDrawFinish.listen((speed) {
     _speedText.text = speed.toString();
   });
 
@@ -56,28 +58,28 @@ void main() {
 
   _renderer2D.onClick.listen(cubit.updateTarget);
 
-  onButtonClick('#use-standard-random', () {
+  select('#use-standard-random').addEventListener('click', (_) {
     cubit.updateRandomType(CoherentNoiseRandomType.standard);
   });
-  onButtonClick('#use-limited-random', () {
+  select('#use-limited-random').addEventListener('click', (_) {
     cubit.updateRandomType(CoherentNoiseRandomType.limitedDouble);
   });
-  onButtonClick('#apply-integer-interp', () {
+  select('#apply-integer-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.integer);
   });
-  onButtonClick('#apply-linear-interp', () {
+  select('#apply-linear-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.linear);
   });
-  onButtonClick('#apply-cubic-interp', () {
+  select('#apply-cubic-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubic);
   });
-  onButtonClick('#apply-cubic-s-interp', () {
+  select('#apply-cubic-s-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubicS);
   });
-  onButtonClick('#apply-cosine-s-interp', () {
+  select('#apply-cosine-s-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.cosineS);
   });
-  onButtonClick('#apply-quintic-s-interp', () {
+  select('#apply-quintic-s-interp').addEventListener('click', (_) {
     cubit.updateInterpolationType(CoherentNoiseInterpolationType.quinticS);
   });
 }

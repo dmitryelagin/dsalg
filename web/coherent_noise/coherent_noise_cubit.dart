@@ -14,7 +14,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     required int outputHeight,
     required String noiseSize,
   }) : super(CoherentNoiseState.initial(outputWidth, outputHeight)) {
-    onChange.first.then((_) => updateSize(noiseSize));
+    updateSize(noiseSize);
   }
 
   void updateSize(String value) {
@@ -29,7 +29,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     final noiseInterpolated =
         _interpolateNoise(noise: noise, noiseSize: noiseSize);
     final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
-    add(
+    change(
       CoherentNoiseState.from(
         state,
         noise: noise,
@@ -47,7 +47,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     final noise = _generateNoise(random: random);
     final noiseInterpolated = _interpolateNoise(noise: noise);
     final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
-    add(
+    change(
       CoherentNoiseState.from(
         state,
         random: random,
@@ -64,7 +64,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     final interpolator = _getInterpolator(type);
     final noiseInterpolated = _interpolateNoise(interpolator: interpolator);
     final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
-    add(
+    change(
       CoherentNoiseState.from(
         state,
         interpolator: interpolator,
@@ -80,7 +80,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
         shouldCorrectDynamicRange ?? !state.shouldCorrectDynamicRange;
     final noiseRendered =
         _renderNoise(shouldCorrectDynamicRange: shouldCorrect);
-    add(
+    change(
       CoherentNoiseState.from(
         state,
         noiseRendered: noiseRendered,
@@ -91,7 +91,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
 
   void updateTarget(Point<num> target) {
     if (target == state.target) return;
-    add(CoherentNoiseState.from(state, target: target.toInt()));
+    change(CoherentNoiseState.from(state, target: target.toInt()));
   }
 
   List<List<num>> _generateNoise({
