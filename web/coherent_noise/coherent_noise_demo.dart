@@ -4,7 +4,7 @@ import '../utils/element_utils.dart';
 import '../utils/renderer.dart';
 import 'coherent_2d_noise_renderer.dart';
 import 'coherent_horizontal_noise_renderer.dart';
-import 'coherent_noise_bloc.dart';
+import 'coherent_noise_cubit.dart';
 import 'coherent_noise_interpolation_type.dart';
 import 'coherent_noise_random_type.dart';
 import 'coherent_vertical_noise_renderer.dart';
@@ -27,7 +27,7 @@ final _noiseVerticalController =
 final _noise2DController = Coherent2DNoiseRenderer(_renderer2D);
 
 void main() {
-  final bloc = CoherentNoiseBloc(
+  final cubit = CoherentNoiseCubit(
     outputWidth: _renderer2D.width,
     outputHeight: _renderer2D.height,
     noiseSize: _noiseSizeInput.value!,
@@ -46,38 +46,38 @@ void main() {
   });
 
   _noiseSizeInput.addEventListener('input', (_) {
-    bloc.updateSize(_noiseSizeInput.value!);
+    cubit.updateSize(_noiseSizeInput.value!);
   });
   _correctRangeInput.addEventListener('input', (_) {
-    bloc.updateDynamicRangeCorrection(
+    cubit.updateDynamicRangeCorrection(
       shouldCorrectDynamicRange: _correctRangeInput.checked,
     );
   });
 
-  _renderer2D.onClick.listen(bloc.updateTarget);
+  _renderer2D.onClick.listen(cubit.updateTarget);
 
   onButtonClick('#use-standard-random', () {
-    bloc.updateRandomType(CoherentNoiseRandomType.standard);
+    cubit.updateRandomType(CoherentNoiseRandomType.standard);
   });
   onButtonClick('#use-limited-random', () {
-    bloc.updateRandomType(CoherentNoiseRandomType.limitedDouble);
+    cubit.updateRandomType(CoherentNoiseRandomType.limitedDouble);
   });
   onButtonClick('#apply-integer-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.integer);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.integer);
   });
   onButtonClick('#apply-linear-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.linear);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.linear);
   });
   onButtonClick('#apply-cubic-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.cubic);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubic);
   });
   onButtonClick('#apply-cubic-s-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.cubicS);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubicS);
   });
   onButtonClick('#apply-cosine-s-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.cosineS);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cosineS);
   });
   onButtonClick('#apply-quintic-s-interp', () {
-    bloc.updateInterpolationType(CoherentNoiseInterpolationType.quinticS);
+    cubit.updateInterpolationType(CoherentNoiseInterpolationType.quinticS);
   });
 }
