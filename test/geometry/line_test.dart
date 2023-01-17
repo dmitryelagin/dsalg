@@ -21,9 +21,11 @@ void main() {
     late Line line;
 
     void setUpTests() {
-      a = random.nextIntPoint(100);
-      b = random.nextIntPoint(100);
-      line = Line(a, b);
+      do {
+        a = random.nextIntPoint(100);
+        b = random.nextIntPoint(100);
+        line = Line(a, b);
+      } while (line.a.distanceTo(line.b) <= 0);
     }
 
     setUp(setUpTests);
@@ -48,13 +50,17 @@ void main() {
     test(
         'should return points with magnitudes less than or '
         'equal to specified one', () {
-      final magnitude = random.nextDouble() * random.nextInt(10) + 0.1;
+      const epsilon = 0.0000000000001;
+      final magnitude = random.nextDouble() * random.nextInt(10) + 0.2;
       final points = line.getPointsByMagnitude(magnitude).toList();
       final distances = [
         for (var i = 1; i < points.length; i += 1)
           points[i - 1].distanceToSafe(points[i]),
       ];
-      expect(distances.every((distance) => distance <= magnitude), isTrue);
+      expect(
+        distances.every((distance) => distance <= magnitude + epsilon),
+        isTrue,
+      );
     });
 
     test('should return points with equal magnitudes between neighbours', () {

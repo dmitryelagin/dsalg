@@ -2,6 +2,8 @@
 
 A library with data structures and algorythms.
 
+Run `webdev serve` to start demo.
+
 ### Bits
 
 - Bit array
@@ -40,6 +42,7 @@ A library with data structures and algorythms.
 - Caching iterable
 - Code unit frequencies
 - Comparator
+- Convert iterable
 - Map dynamic range
 - Memoized comparator
 - Permutations

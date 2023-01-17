@@ -101,7 +101,7 @@ void main() {
     });
   });
 
-  group('MapNestedDynamicRange', () {
+  group('Map2DDynamicRange', () {
     test('should handle standard cases', () {
       expect(
         const [
