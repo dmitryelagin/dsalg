@@ -23,8 +23,7 @@ class CanvasRenderHelper {
       });
   }
 
-  static const radiusLarge = 3, radiusSmall = 1;
-  static const blackColor = '#000', grayColor = '#ccc', redColor = '#f00';
+  static const defaultRadius = 1, defaultColor = '#000';
 
   final CanvasElement _canvas;
   final CanvasRenderingContext2D _context;
@@ -40,8 +39,8 @@ class CanvasRenderHelper {
 
   void drawCircle(
     Point center, [
-    num radius = radiusSmall,
-    String style = blackColor,
+    num radius = defaultRadius,
+    String style = defaultColor,
   ]) {
     _context
       ..fillStyle = style
@@ -50,21 +49,9 @@ class CanvasRenderHelper {
       ..fill();
   }
 
-  void drawLargeGrayPoint(Point point) {
-    drawCircle(point, radiusLarge, grayColor);
-  }
-
-  void drawRedSegment(Segment segment) {
-    drawSegment(segment, redColor);
-  }
-
-  void drawGraySegment(Segment segment) {
-    drawSegment(segment, grayColor);
-  }
-
   void drawSegment(
     Segment segment, [
-    String style = blackColor,
+    String style = defaultColor,
   ]) {
     final controlPoints = segment.getPointsByMagnitude(10);
     _context

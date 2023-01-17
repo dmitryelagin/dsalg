@@ -2,6 +2,8 @@
 
 A library with data structures and algorythms.
 
+Run `webdev serve` to start demo.
+
 ### Bits
 
 - Bit array

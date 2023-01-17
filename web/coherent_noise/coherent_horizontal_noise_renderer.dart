@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dsalg/dsalg.dart';
 
 import '../utils/canvas_render_helper.dart';
+import 'coherent_noise_render_helper.dart';
 import 'coherent_noise_state.dart';
 
 // TODO: refactor, it is nearly the same as vertical one
@@ -14,17 +15,17 @@ class CoherentHorizontalNoiseRenderer {
   final CanvasRenderHelper _renderHelper;
 
   void draw(CoherentNoiseState state) {
-    final amplitude = CoherentNoiseState.baseAmplitude /
-        (_renderHelper.height - _padding * 2);
+    final amplitude = _renderHelper.horizontalAmplitude;
     final coords = state.noiseHorizontal;
     final noise = state.shouldCorrectDynamicRange
         ? state.noiseRenderedHorizontal
         : state.noiseInterpolatedHorizontal;
-    _renderHelper.reset();
-    _drawTopRuler();
-    _drawBottomRuler();
+    _renderHelper
+      ..reset()
+      ..drawTopRuler()
+      ..drawBottomRuler();
     for (var i = 0; i < coords.length; i += 1) {
-      _renderHelper.drawLargeGrayPoint(
+      _renderHelper.drawControlPoint(
         Point(i * state.noiseSize, coords[i] / amplitude + _padding),
       );
     }
@@ -34,21 +35,5 @@ class CoherentHorizontalNoiseRenderer {
           Point(i, noise[i] / amplitude + _padding),
       ]),
     );
-  }
-
-  void _drawTopRuler() {
-    final topRuler = Line(
-      const Point(0, _padding),
-      Point(_renderHelper.width, _padding),
-    );
-    _renderHelper.drawGraySegment(topRuler);
-  }
-
-  void _drawBottomRuler() {
-    final bottomRuler = Line(
-      Point(0, _renderHelper.height - _padding),
-      Point(_renderHelper.width, _renderHelper.height - _padding),
-    );
-    _renderHelper.drawGraySegment(bottomRuler);
   }
 }

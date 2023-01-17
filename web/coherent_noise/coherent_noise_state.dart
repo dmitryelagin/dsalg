@@ -76,8 +76,6 @@ class CoherentNoiseState {
         target: const Point(0, 0),
       );
 
-  static const baseAmplitude = 256;
-
   final Random random;
 
   final CoherentNoiseRandomType randomType;

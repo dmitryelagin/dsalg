@@ -7,6 +7,7 @@ import '../utils/limited_double_random.dart';
 import 'coherent_noise_bloc_events.dart';
 import 'coherent_noise_interpolation_type.dart';
 import 'coherent_noise_random_type.dart';
+import 'coherent_noise_render_helper.dart';
 import 'coherent_noise_state.dart';
 
 class CoherentNoiseBloc
@@ -124,7 +125,7 @@ class CoherentNoiseBloc
           )
           .map(
             (list) => list
-                .map((item) => item * CoherentNoiseState.baseAmplitude)
+                .map((item) => item * CoherentNoiseRenderHelper.baseAmplitude)
                 .toList(),
           )
           .toList();
@@ -138,13 +139,13 @@ class CoherentNoiseBloc
   }) {
     final actualInterpolator = interpolator ?? state.interpolator;
     final actualNoise = noise ?? state.noise;
-    final actualSize = noiseSize ?? state.noiseSize;
+    final actualNoiseSize = noiseSize ?? state.noiseSize;
     return List.generate(outputWidth ?? state.outputWidth, (x) {
       return List.generate(outputHeight ?? state.outputHeight, (y) {
         return actualInterpolator.interpolate(
           actualNoise,
-          x / actualSize,
-          y / actualSize,
+          x / actualNoiseSize,
+          y / actualNoiseSize,
         );
       });
     });
