@@ -1,13 +1,11 @@
 import 'dart:html';
 
-import '../utils/base_bloc.dart';
 import '../utils/element_utils.dart';
 import '../utils/renderer.dart';
 import 'coherent_2d_noise_renderer.dart';
 import 'coherent_horizontal_noise_renderer.dart';
 import 'coherent_noise_bloc.dart';
 import 'coherent_noise_bloc_events.dart';
-import 'coherent_noise_state.dart';
 import 'coherent_vertical_noise_renderer.dart';
 
 final _noiseSizeInput = select<InputElement>('#noise-size-input');
@@ -25,20 +23,18 @@ final _noiseVerticalRenderer =
     CoherentVerticalNoiseRenderer(Renderer(select('#target-vertical')));
 final _noise2DRenderer = Coherent2DNoiseRenderer(_renderer2D);
 
-void _draw(StateChanged<CoherentNoiseState> event) {
-  _noiseSizeInput.value = event.state.noiseSize.toString();
-  _randomTypeText.text = event.state.randomType.name;
-  _interpTypeText.text = event.state.interpolationType.name;
-  _speedText.text = event.processDuration.toString();
-  _correctRangeInput.checked = event.state.shouldCorrectDynamicRange;
-  _noiseHorizontalRenderer.draw(event.state);
-  _noiseVerticalRenderer.draw(event.state);
-  _noise2DRenderer.draw(event.state);
-}
-
 void main() {
   final bloc = CoherentNoiseBloc(_renderer2D.width, _renderer2D.height)
-    ..onChange.listen(_draw)
+    ..onChange.listen((event) {
+      _noiseSizeInput.value = event.state.noiseSize.toString();
+      _randomTypeText.text = event.state.randomType.name;
+      _interpTypeText.text = event.state.interpolationType.name;
+      _speedText.text = event.processDuration.toString();
+      _correctRangeInput.checked = event.state.shouldCorrectDynamicRange;
+      _noiseHorizontalRenderer.draw(event.state);
+      _noiseVerticalRenderer.draw(event.state);
+      _noise2DRenderer.draw(event.state);
+    })
     ..add(UpdateSize(_noiseSizeInput.value!));
 
   _noiseSizeInput.addEventListener('input', (_) {
