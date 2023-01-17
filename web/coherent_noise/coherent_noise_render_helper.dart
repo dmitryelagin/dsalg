@@ -30,14 +30,6 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
     );
   }
 
-  void drawTopRuler() {
-    drawRuler(Line(const Point(0, padding), Point(width, padding)));
-  }
-
-  void drawBottomRuler() {
-    drawRuler(Line(Point(0, height - padding), Point(width, height - padding)));
-  }
-
   void drawVerticalNoise(CoherentNoiseState state) {
     final amplitude = baseAmplitude / (width - padding * 2);
     final coords = state.noiseVertical;
@@ -60,17 +52,25 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
     );
   }
 
+  void draw2DNoise(CoherentNoiseState state) {
+    drawShades(state.noiseRendered);
+    drawTargetCross(state.target);
+  }
+
+  void drawTopRuler() {
+    drawRuler(Line(const Point(0, padding), Point(width, padding)));
+  }
+
+  void drawBottomRuler() {
+    drawRuler(Line(Point(0, height - padding), Point(width, height - padding)));
+  }
+
   void drawLeftRuler() {
     drawRuler(Line(const Point(padding, 0), Point(padding, height)));
   }
 
   void drawRightRuler() {
     drawRuler(Line(Point(width - padding, 0), Point(width - padding, height)));
-  }
-
-  void draw2DNoise(CoherentNoiseState state) {
-    drawShades(state.noiseRendered);
-    drawTargetCross(state.target);
   }
 
   void drawTargetCross(Point<int> target) {
