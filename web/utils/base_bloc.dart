@@ -1,6 +1,7 @@
 import 'dart:async';
 
-typedef BlocTransformer<S, T> = void Function(void Function(S), T);
+typedef BlocStateChange<S> = void Function([S?]);
+typedef BlocTransformer<S, T> = void Function(BlocStateChange<S>, T);
 
 class StateChanged<S> {
   const StateChanged(this.state, [this.processDuration = 0]);
@@ -38,7 +39,11 @@ abstract class BaseBloc<S, E> {
     _onChange.close();
   }
 
-  void _change(S state) {
+  void _change([S? state]) {
+    if (state == null || _state == state) {
+      _start = null;
+      return;
+    }
     _state = state;
     if (_start != null) {
       _onChange.add(StateChanged(state, _now() - _start!));

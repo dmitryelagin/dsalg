@@ -5,8 +5,8 @@ import 'coherent_noise_random_type.dart';
 
 abstract class CoherentNoiseBlocEvent {}
 
-class UpdateSize implements CoherentNoiseBlocEvent {
-  const UpdateSize(this.value);
+class UpdateAmount implements CoherentNoiseBlocEvent {
+  const UpdateAmount(this.value);
 
   final String value;
 }

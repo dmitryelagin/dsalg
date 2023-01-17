@@ -12,9 +12,7 @@ class CoherentNoiseState {
     required this.noise,
     required this.noiseInterpolated,
     required this.noiseRendered,
-    required this.noiseWidth,
-    required this.noiseHeight,
-    required this.noiseSize,
+    required this.noiseAmount,
     required this.outputWidth,
     required this.outputHeight,
     required this.interpolator,
@@ -30,9 +28,7 @@ class CoherentNoiseState {
     List<List<num>>? noise,
     List<List<num>>? noiseInterpolated,
     List<int>? noiseRendered,
-    int? noiseWidth,
-    int? noiseHeight,
-    int? noiseSize,
+    int? noiseAmount,
     int? outputWidth,
     int? outputHeight,
     Interpolator2D? interpolator,
@@ -46,9 +42,7 @@ class CoherentNoiseState {
         noise: noise ?? state.noise,
         noiseInterpolated: noiseInterpolated ?? state.noiseInterpolated,
         noiseRendered: noiseRendered ?? state.noiseRendered,
-        noiseWidth: noiseWidth ?? state.noiseWidth,
-        noiseHeight: noiseHeight ?? state.noiseHeight,
-        noiseSize: noiseSize ?? state.noiseSize,
+        noiseAmount: noiseAmount ?? state.noiseAmount,
         outputWidth: outputWidth ?? state.outputWidth,
         outputHeight: outputHeight ?? state.outputHeight,
         interpolator: interpolator ?? state.interpolator,
@@ -65,9 +59,7 @@ class CoherentNoiseState {
         noise: [],
         noiseInterpolated: [],
         noiseRendered: [],
-        noiseWidth: 0,
-        noiseHeight: 0,
-        noiseSize: 0,
+        noiseAmount: 0,
         outputWidth: outputWidth,
         outputHeight: outputHeight,
         interpolator: Interpolator2D.biInteger,
@@ -84,7 +76,7 @@ class CoherentNoiseState {
 
   final List<int> noiseRendered;
 
-  final int noiseWidth, noiseHeight, noiseSize, outputWidth, outputHeight;
+  final int noiseAmount, outputWidth, outputHeight;
 
   final Interpolator2D interpolator;
 
@@ -94,13 +86,16 @@ class CoherentNoiseState {
 
   final Point<int> target;
 
+  double get noiseWidth => outputWidth / noiseAmount;
+  double get noiseHeight => outputHeight / noiseAmount;
+
   List<num> get noiseHorizontal {
-    final actualY = (target.y / noiseSize).round();
+    final actualY = (target.y / noiseHeight).round();
     return noise[actualY];
   }
 
   List<num> get noiseVertical {
-    final actualX = (target.x / noiseSize).round();
+    final actualX = (target.x / noiseWidth).round();
     return noise.map((list) => list[actualX]).toList();
   }
 

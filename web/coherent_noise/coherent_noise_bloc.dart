@@ -14,43 +14,41 @@ class CoherentNoiseBloc
     extends BaseBloc<CoherentNoiseState, CoherentNoiseBlocEvent> {
   CoherentNoiseBloc(int outputWidth, int outputHeight)
       : super(CoherentNoiseState.initial(outputWidth, outputHeight)) {
-    on(_updateSize);
+    on(_updateAmount);
     on(_updateRandomType);
     on(_updateInterpolationType);
     on(_updateDynamicRangeCorrection);
     on(_updateTarget);
   }
 
-  void _updateSize(
-    void Function(CoherentNoiseState) change,
-    UpdateSize event,
+  void _updateAmount(
+    BlocStateChange<CoherentNoiseState> change,
+    UpdateAmount event,
   ) {
-    final noiseSize = int.tryParse(event.value);
-    if (noiseSize == null || noiseSize <= 0 || noiseSize == state.noiseSize) {
-      return;
+    final noiseAmount = int.tryParse(event.value);
+    if (noiseAmount == null ||
+        noiseAmount <= 1 ||
+        noiseAmount == state.noiseAmount) {
+      change();
+    } else {
+      final noise = _generateNoise(noiseAmount: noiseAmount);
+      final noiseInterpolated =
+          _interpolateNoise(noise: noise, noiseAmount: noiseAmount);
+      final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
+      change(
+        CoherentNoiseState.from(
+          state,
+          noise: noise,
+          noiseInterpolated: noiseInterpolated,
+          noiseRendered: noiseRendered,
+          noiseAmount: noiseAmount,
+        ),
+      );
     }
-    final noiseWidth = (state.outputWidth / noiseSize).ceil() + 1;
-    final noiseHeight = (state.outputHeight / noiseSize).ceil() + 1;
-    final noise =
-        _generateNoise(noiseWidth: noiseWidth, noiseHeight: noiseHeight);
-    final noiseInterpolated =
-        _interpolateNoise(noise: noise, noiseSize: noiseSize);
-    final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
-    change(
-      CoherentNoiseState.from(
-        state,
-        noise: noise,
-        noiseInterpolated: noiseInterpolated,
-        noiseRendered: noiseRendered,
-        noiseWidth: noiseWidth,
-        noiseHeight: noiseHeight,
-        noiseSize: noiseSize,
-      ),
-    );
   }
 
   void _updateRandomType(
-    void Function(CoherentNoiseState) change,
+    BlocStateChange<CoherentNoiseState> change,
     UpdateRandomType event,
   ) {
     final random = _getRandom(event.type);
@@ -70,26 +68,29 @@ class CoherentNoiseBloc
   }
 
   void _updateInterpolationType(
-    void Function(CoherentNoiseState) change,
+    BlocStateChange<CoherentNoiseState> change,
     UpdateInterpolationType event,
   ) {
-    if (event.type == state.interpolationType) return;
-    final interpolator = _getInterpolator(event.type);
-    final noiseInterpolated = _interpolateNoise(interpolator: interpolator);
-    final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
-    change(
-      CoherentNoiseState.from(
-        state,
-        interpolator: interpolator,
-        interpolationType: event.type,
-        noiseInterpolated: noiseInterpolated,
-        noiseRendered: noiseRendered,
-      ),
-    );
+    if (event.type == state.interpolationType) {
+      change();
+    } else {
+      final interpolator = _getInterpolator(event.type);
+      final noiseInterpolated = _interpolateNoise(interpolator: interpolator);
+      final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
+      change(
+        CoherentNoiseState.from(
+          state,
+          interpolator: interpolator,
+          interpolationType: event.type,
+          noiseInterpolated: noiseInterpolated,
+          noiseRendered: noiseRendered,
+        ),
+      );
+    }
   }
 
   void _updateDynamicRangeCorrection(
-    void Function(CoherentNoiseState) change,
+    BlocStateChange<CoherentNoiseState> change,
     UpdateDynamicRangeCorrection event,
   ) {
     final shouldCorrect =
@@ -106,46 +107,44 @@ class CoherentNoiseBloc
   }
 
   void _updateTarget(
-    void Function(CoherentNoiseState) change,
+    BlocStateChange<CoherentNoiseState> change,
     UpdateTarget event,
   ) {
-    if (event.target == state.target) return;
-    change(CoherentNoiseState.from(state, target: event.target.toInt()));
+    if (event.target != state.target) {
+      change(CoherentNoiseState.from(state, target: event.target.toInt()));
+    } else {
+      change();
+    }
   }
 
-  List<List<num>> _generateNoise({
-    Random? random,
-    int? noiseWidth,
-    int? noiseHeight,
-  }) =>
-      (random ?? state.random)
-          .nextCoherent2DValueNoise(
-            noiseWidth ?? state.noiseWidth,
-            noiseHeight ?? state.noiseHeight,
-          )
-          .map(
-            (list) => list
-                .map((item) => item * CoherentNoiseRenderHelper.baseAmplitude)
-                .toList(),
-          )
-          .toList();
+  List<List<num>> _generateNoise({Random? random, int? noiseAmount}) {
+    final actualNoiseAmount = (noiseAmount ?? state.noiseAmount) + 1;
+    return (random ?? state.random)
+        .nextCoherent2DValueNoise(actualNoiseAmount, actualNoiseAmount)
+        .map(
+          (list) => list
+              .map((item) => item * CoherentNoiseRenderHelper.baseAmplitude)
+              .toList(),
+        )
+        .toList();
+  }
 
   List<List<num>> _interpolateNoise({
     Interpolator2D? interpolator,
     List<List<num>>? noise,
-    int? outputWidth,
-    int? outputHeight,
-    int? noiseSize,
+    int? noiseAmount,
   }) {
     final actualInterpolator = interpolator ?? state.interpolator;
     final actualNoise = noise ?? state.noise;
-    final actualNoiseSize = noiseSize ?? state.noiseSize;
-    return List.generate(outputWidth ?? state.outputWidth, (x) {
-      return List.generate(outputHeight ?? state.outputHeight, (y) {
+    final actualNoiseAmount = noiseAmount ?? state.noiseAmount;
+    final actualNoiseWidth = state.outputWidth / actualNoiseAmount;
+    final actualNoiseHeight = state.outputHeight / actualNoiseAmount;
+    return List.generate(state.outputHeight, (y) {
+      return List.generate(state.outputWidth, (x) {
         return actualInterpolator.interpolate(
           actualNoise,
-          x / actualNoiseSize,
-          y / actualNoiseSize,
+          y / actualNoiseHeight,
+          x / actualNoiseWidth,
         );
       });
     });

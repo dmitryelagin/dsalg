@@ -6,7 +6,7 @@ import 'coherent_noise_bloc.dart';
 import 'coherent_noise_bloc_events.dart';
 import 'coherent_noise_render_helper.dart';
 
-final _noiseSizeInput = select<InputElement>('#noise-size-input');
+final _noiseAmountInput = select<InputElement>('#noise-amount-input');
 final _correctRangeInput = select<InputElement>('#correct-dynamic-range');
 
 final _randomTypeText = select('#random-type-value');
@@ -20,7 +20,7 @@ final _renderHelper2D = CanvasRenderHelper(select('#target-2d'));
 void main() {
   final bloc = CoherentNoiseBloc(_renderHelper2D.width, _renderHelper2D.height)
     ..onChange.listen((event) {
-      _noiseSizeInput.value = event.state.noiseSize.toString();
+      _noiseAmountInput.value = event.state.noiseAmount.toString();
       _randomTypeText.text = event.state.randomType.name;
       _interpTypeText.text = event.state.interpolationType.name;
       _speedText.text = event.processDuration.toString();
@@ -29,10 +29,10 @@ void main() {
       _renderHelperVertical.drawVerticalNoise(event.state);
       _renderHelper2D.draw2DNoise(event.state);
     })
-    ..add(UpdateSize(_noiseSizeInput.value!));
+    ..add(UpdateAmount(_noiseAmountInput.value!));
 
-  _noiseSizeInput.addEventListener('input', (_) {
-    bloc.add(UpdateSize(_noiseSizeInput.value!));
+  _noiseAmountInput.addEventListener('input', (_) {
+    bloc.add(UpdateAmount(_noiseAmountInput.value!));
   });
   _correctRangeInput.addEventListener('input', (_) {
     bloc.add(

@@ -10,7 +10,7 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
 
   void drawHorizontalNoise(CoherentNoiseState state) {
     final amplitude = baseAmplitude / (height - padding * 2);
-    final coords = state.noiseHorizontal;
+    final coords = state.noiseHorizontal, noiseWidth = state.noiseWidth;
     final noise = state.shouldCorrectDynamicRange
         ? state.noiseRenderedHorizontal
         : state.noiseInterpolatedHorizontal;
@@ -18,9 +18,7 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
     drawTopRuler();
     drawBottomRuler();
     for (var i = 0; i < coords.length; i += 1) {
-      drawControlPoint(
-        Point(i * state.noiseSize, coords[i] / amplitude + padding),
-      );
+      drawPoint(Point(i * noiseWidth, coords[i] / amplitude + padding));
     }
     drawRedSegment(
       CombinedSegment.fromPoints([
@@ -32,7 +30,7 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
 
   void drawVerticalNoise(CoherentNoiseState state) {
     final amplitude = baseAmplitude / (width - padding * 2);
-    final coords = state.noiseVertical;
+    final coords = state.noiseVertical, noiseHeight = state.noiseHeight;
     final noise = state.shouldCorrectDynamicRange
         ? state.noiseRenderedVertical
         : state.noiseInterpolatedVertical;
@@ -40,9 +38,7 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
     drawLeftRuler();
     drawRightRuler();
     for (var i = 0; i < coords.length; i += 1) {
-      drawControlPoint(
-        Point(coords[i] / amplitude + padding, i * state.noiseSize),
-      );
+      drawPoint(Point(coords[i] / amplitude + padding, i * noiseHeight));
     }
     drawRedSegment(
       CombinedSegment.fromPoints([
@@ -74,11 +70,11 @@ extension CoherentNoiseRenderHelper on CanvasRenderHelper {
   }
 
   void drawTargetCross(Point<int> target) {
-    drawRedSegment(Line(Point(target.x, 0), Point(target.x, width)));
-    drawRedSegment(Line(Point(0, target.y), Point(height, target.y)));
+    drawRedSegment(Line(Point(target.x, 0), Point(target.x, height)));
+    drawRedSegment(Line(Point(0, target.y), Point(width, target.y)));
   }
 
-  void drawControlPoint(Point point) {
+  void drawPoint(Point point) {
     drawCircle(point, 3, '#ccc');
   }
 
