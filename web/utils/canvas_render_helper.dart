@@ -4,9 +4,8 @@ import 'dart:math';
 
 import 'package:dsalg/src/geometry/segment.dart';
 
-// TODO: rename to helper, adapter or controller
-class Renderer {
-  Renderer(this._canvas) : _context = _canvas.context2D {
+class CanvasRenderHelper {
+  CanvasRenderHelper(this._canvas) : _context = _canvas.context2D {
     _canvas
       ..style.width = '${width}px'
       ..style.height = '${height}px'
@@ -24,12 +23,8 @@ class Renderer {
       });
   }
 
-  static const radiusLarge = 3;
-  static const radiusSmall = 1;
-
-  static const blackColor = '#000';
-  static const grayColor = '#ccc';
-  static const redColor = '#f00';
+  static const radiusLarge = 3, radiusSmall = 1;
+  static const blackColor = '#000', grayColor = '#ccc', redColor = '#f00';
 
   final CanvasElement _canvas;
   final CanvasRenderingContext2D _context;
@@ -41,7 +36,6 @@ class Renderer {
   int get width => _canvas.width!;
   int get height => _canvas.height!;
 
-  // TODO: close this stream
   Stream<Point<num>> get onClick => _onClick.stream;
 
   void drawCircle(
@@ -100,5 +94,9 @@ class Renderer {
 
   void reset() {
     _context.clearRect(0, 0, width, height);
+  }
+
+  void destroy() {
+    _onClick.close();
   }
 }

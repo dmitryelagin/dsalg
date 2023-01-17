@@ -1,7 +1,7 @@
 import 'dart:html';
 
+import '../utils/canvas_render_helper.dart';
 import '../utils/element_utils.dart';
-import '../utils/renderer.dart';
 import 'coherent_2d_noise_renderer.dart';
 import 'coherent_horizontal_noise_renderer.dart';
 import 'coherent_noise_bloc.dart';
@@ -15,16 +15,18 @@ final _randomTypeText = select('#random-type-value');
 final _interpTypeText = select('#interp-type-value');
 final _speedText = select('#speed-value');
 
-final _renderer2D = Renderer(select('#target-2d'));
+final _renderHelper2D = CanvasRenderHelper(select('#target-2d'));
 
-final _noiseHorizontalRenderer =
-    CoherentHorizontalNoiseRenderer(Renderer(select('#target-horizontal')));
-final _noiseVerticalRenderer =
-    CoherentVerticalNoiseRenderer(Renderer(select('#target-vertical')));
-final _noise2DRenderer = Coherent2DNoiseRenderer(_renderer2D);
+final _noiseHorizontalRenderer = CoherentHorizontalNoiseRenderer(
+  CanvasRenderHelper(select('#target-horizontal')),
+);
+final _noiseVerticalRenderer = CoherentVerticalNoiseRenderer(
+  CanvasRenderHelper(select('#target-vertical')),
+);
+final _noise2DRenderer = Coherent2DNoiseRenderer(_renderHelper2D);
 
 void main() {
-  final bloc = CoherentNoiseBloc(_renderer2D.width, _renderer2D.height)
+  final bloc = CoherentNoiseBloc(_renderHelper2D.width, _renderHelper2D.height)
     ..onChange.listen((event) {
       _noiseSizeInput.value = event.state.noiseSize.toString();
       _randomTypeText.text = event.state.randomType.name;
@@ -48,7 +50,7 @@ void main() {
     );
   });
 
-  _renderer2D.onClick.listen((target) => bloc.add(UpdateTarget(target)));
+  _renderHelper2D.onClick.listen((target) => bloc.add(UpdateTarget(target)));
 
   select('#use-standard-random').addEventListener('click', (_) {
     bloc.add(UpdateRandomType.standard);
