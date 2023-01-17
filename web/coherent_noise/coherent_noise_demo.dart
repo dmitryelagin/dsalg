@@ -43,10 +43,6 @@ void main() {
   )..onChange.listen(_draw);
   _draw(cubit.state);
 
-  _noise2DRenderer.onDrawFinish.listen((speed) {
-    _speedText.text = speed.toString();
-  });
-
   _noiseSizeInput.addEventListener('input', (_) {
     cubit.updateSize(_noiseSizeInput.value!);
   });

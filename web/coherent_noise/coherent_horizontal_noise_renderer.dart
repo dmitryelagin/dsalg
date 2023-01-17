@@ -2,31 +2,33 @@ import 'dart:math';
 
 import 'package:dsalg/dsalg.dart';
 
-import 'coherent_noise_renderer.dart';
+import '../utils/renderer.dart';
 import 'coherent_noise_state.dart';
 
-class CoherentHorizontalNoiseRenderer extends CoherentNoiseRenderer {
-  CoherentHorizontalNoiseRenderer(super.renderer);
+// TODO: refactor, it is nearly the same as vertical one
+class CoherentHorizontalNoiseRenderer {
+  CoherentHorizontalNoiseRenderer(this._renderer);
 
   static const _padding = 30;
 
-  @override
-  void updateImage(CoherentNoiseState state) {
+  final Renderer _renderer;
+
+  void draw(CoherentNoiseState state) {
     final amplitude =
-        CoherentNoiseState.baseAmplitude / (renderer.height - _padding * 2);
+        CoherentNoiseState.baseAmplitude / (_renderer.height - _padding * 2);
     final coords = state.noiseHorizontal;
     final noise = state.shouldCorrectDynamicRange
         ? state.noiseRenderedHorizontal
         : state.noiseInterpolatedHorizontal;
-    renderer.reset();
+    _renderer.reset();
     _drawTopRuler();
     _drawBottomRuler();
     for (var i = 0; i < coords.length; i += 1) {
-      _drawControlPoint(
+      _renderer.drawLargeGrayPoint(
         Point(i * state.noiseSize, coords[i] / amplitude + _padding),
       );
     }
-    _drawLine(
+    _renderer.drawRedSegment(
       CombinedSegment.fromPoints([
         for (var i = 0; i < noise.length; i += 1)
           Point(i, noise[i] / amplitude + _padding),
@@ -34,27 +36,19 @@ class CoherentHorizontalNoiseRenderer extends CoherentNoiseRenderer {
     );
   }
 
-  void _drawControlPoint(Point point) {
-    renderer.drawCircle(point, 3, '#ccc');
-  }
-
-  void _drawLine(Segment segment) {
-    renderer.drawSegment(segment, '#f00');
-  }
-
   void _drawTopRuler() {
     final topRuler = Line(
       const Point(0, _padding),
-      Point(renderer.width, _padding),
+      Point(_renderer.width, _padding),
     );
-    renderer.drawSegment(topRuler, '#ccc');
+    _renderer.drawGraySegment(topRuler);
   }
 
   void _drawBottomRuler() {
     final bottomRuler = Line(
-      Point(0, renderer.height - _padding),
-      Point(renderer.width, renderer.height - _padding),
+      Point(0, _renderer.height - _padding),
+      Point(_renderer.width, _renderer.height - _padding),
     );
-    renderer.drawSegment(bottomRuler, '#ccc');
+    _renderer.drawGraySegment(bottomRuler);
   }
 }

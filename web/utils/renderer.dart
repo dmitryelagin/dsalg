@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:dsalg/src/geometry/segment.dart';
 
+// TODO: rename to helper, adapter or controller
 class Renderer {
   Renderer(this._canvas) : _context = _canvas.context2D {
     _canvas
@@ -23,6 +24,13 @@ class Renderer {
       });
   }
 
+  static const radiusLarge = 3;
+  static const radiusSmall = 1;
+
+  static const blackColor = '#000';
+  static const grayColor = '#ccc';
+  static const redColor = '#f00';
+
   final CanvasElement _canvas;
   final CanvasRenderingContext2D _context;
 
@@ -33,9 +41,14 @@ class Renderer {
   int get width => _canvas.width!;
   int get height => _canvas.height!;
 
+  // TODO: close this stream
   Stream<Point<num>> get onClick => _onClick.stream;
 
-  void drawCircle(Point center, [num radius = 1, String style = '#000']) {
+  void drawCircle(
+    Point center, [
+    num radius = radiusSmall,
+    String style = blackColor,
+  ]) {
     _context
       ..fillStyle = style
       ..beginPath()
@@ -43,7 +56,22 @@ class Renderer {
       ..fill();
   }
 
-  void drawSegment(Segment segment, [String style = '#000']) {
+  void drawLargeGrayPoint(Point point) {
+    drawCircle(point, radiusLarge, grayColor);
+  }
+
+  void drawRedSegment(Segment segment) {
+    drawSegment(segment, redColor);
+  }
+
+  void drawGraySegment(Segment segment) {
+    drawSegment(segment, grayColor);
+  }
+
+  void drawSegment(
+    Segment segment, [
+    String style = blackColor,
+  ]) {
     final controlPoints = segment.getPointsByMagnitude(10);
     _context
       ..strokeStyle = style

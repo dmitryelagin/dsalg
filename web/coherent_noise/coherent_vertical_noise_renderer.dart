@@ -2,31 +2,33 @@ import 'dart:math';
 
 import 'package:dsalg/dsalg.dart';
 
-import 'coherent_noise_renderer.dart';
+import '../utils/renderer.dart';
 import 'coherent_noise_state.dart';
 
-class CoherentVerticalNoiseRenderer extends CoherentNoiseRenderer {
-  CoherentVerticalNoiseRenderer(super.renderer);
+// TODO: refactor, it is nearly the same as horizontal one
+class CoherentVerticalNoiseRenderer {
+  CoherentVerticalNoiseRenderer(this._renderer);
 
   static const _padding = 30;
 
-  @override
-  void updateImage(CoherentNoiseState state) {
+  final Renderer _renderer;
+
+  void draw(CoherentNoiseState state) {
     final amplitude =
-        CoherentNoiseState.baseAmplitude / (renderer.width - _padding * 2);
+        CoherentNoiseState.baseAmplitude / (_renderer.width - _padding * 2);
     final coords = state.noiseVertical;
     final noise = state.shouldCorrectDynamicRange
         ? state.noiseRenderedVertical
         : state.noiseInterpolatedVertical;
-    renderer.reset();
+    _renderer.reset();
     _drawLeftRuler();
     _drawRightRuler();
     for (var i = 0; i < coords.length; i += 1) {
-      _drawControlPoint(
+      _renderer.drawLargeGrayPoint(
         Point(coords[i] / amplitude + _padding, i * state.noiseSize),
       );
     }
-    _drawLine(
+    _renderer.drawRedSegment(
       CombinedSegment.fromPoints([
         for (var i = 0; i < noise.length; i += 1)
           Point(noise[i] / amplitude + _padding, i),
@@ -34,27 +36,19 @@ class CoherentVerticalNoiseRenderer extends CoherentNoiseRenderer {
     );
   }
 
-  void _drawControlPoint(Point point) {
-    renderer.drawCircle(point, 3, '#ccc');
-  }
-
-  void _drawLine(Segment segment) {
-    renderer.drawSegment(segment, '#f00');
-  }
-
   void _drawLeftRuler() {
     final leftRuler = Line(
       const Point(_padding, 0),
-      Point(_padding, renderer.height),
+      Point(_padding, _renderer.height),
     );
-    renderer.drawSegment(leftRuler, '#ccc');
+    _renderer.drawGraySegment(leftRuler);
   }
 
   void _drawRightRuler() {
     final rightRuler = Line(
-      Point(renderer.width - _padding, 0),
-      Point(renderer.width - _padding, renderer.height),
+      Point(_renderer.width - _padding, 0),
+      Point(_renderer.width - _padding, _renderer.height),
     );
-    renderer.drawSegment(rightRuler, '#ccc');
+    _renderer.drawGraySegment(rightRuler);
   }
 }
