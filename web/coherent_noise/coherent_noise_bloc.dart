@@ -2,23 +2,29 @@ import 'dart:math';
 
 import 'package:dsalg/dsalg.dart';
 
-import '../utils/base_cubit.dart';
+import '../utils/base_bloc.dart';
+import '../utils/limited_double_random.dart';
+import 'coherent_noise_bloc_events.dart';
 import 'coherent_noise_interpolation_type.dart';
 import 'coherent_noise_random_type.dart';
 import 'coherent_noise_state.dart';
-import 'limited_double_random.dart';
 
-class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
-  CoherentNoiseCubit({
-    required int outputWidth,
-    required int outputHeight,
-    required String noiseSize,
-  }) : super(CoherentNoiseState.initial(outputWidth, outputHeight)) {
-    updateSize(noiseSize);
+class CoherentNoiseBloc
+    extends BaseBloc<CoherentNoiseState, CoherentNoiseBlocEvent> {
+  CoherentNoiseBloc(int outputWidth, int outputHeight)
+      : super(CoherentNoiseState.initial(outputWidth, outputHeight)) {
+    on(_updateSize);
+    on(_updateRandomType);
+    on(_updateInterpolationType);
+    on(_updateDynamicRangeCorrection);
+    on(_updateTarget);
   }
 
-  void updateSize(String value) {
-    final noiseSize = int.tryParse(value);
+  void _updateSize(
+    void Function(CoherentNoiseState) change,
+    UpdateSize event,
+  ) {
+    final noiseSize = int.tryParse(event.value);
     if (noiseSize == null || noiseSize <= 0 || noiseSize == state.noiseSize) {
       return;
     }
@@ -42,8 +48,11 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     );
   }
 
-  void updateRandomType(CoherentNoiseRandomType type) {
-    final random = _getRandom(type);
+  void _updateRandomType(
+    void Function(CoherentNoiseState) change,
+    UpdateRandomType event,
+  ) {
+    final random = _getRandom(event.type);
     final noise = _generateNoise(random: random);
     final noiseInterpolated = _interpolateNoise(noise: noise);
     final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
@@ -51,7 +60,7 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
       CoherentNoiseState.from(
         state,
         random: random,
-        randomType: type,
+        randomType: event.type,
         noise: noise,
         noiseInterpolated: noiseInterpolated,
         noiseRendered: noiseRendered,
@@ -59,25 +68,31 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     );
   }
 
-  void updateInterpolationType(CoherentNoiseInterpolationType type) {
-    if (type == state.interpolationType) return;
-    final interpolator = _getInterpolator(type);
+  void _updateInterpolationType(
+    void Function(CoherentNoiseState) change,
+    UpdateInterpolationType event,
+  ) {
+    if (event.type == state.interpolationType) return;
+    final interpolator = _getInterpolator(event.type);
     final noiseInterpolated = _interpolateNoise(interpolator: interpolator);
     final noiseRendered = _renderNoise(noiseInterpolated: noiseInterpolated);
     change(
       CoherentNoiseState.from(
         state,
         interpolator: interpolator,
-        interpolationType: type,
+        interpolationType: event.type,
         noiseInterpolated: noiseInterpolated,
         noiseRendered: noiseRendered,
       ),
     );
   }
 
-  void updateDynamicRangeCorrection({bool? shouldCorrectDynamicRange}) {
+  void _updateDynamicRangeCorrection(
+    void Function(CoherentNoiseState) change,
+    UpdateDynamicRangeCorrection event,
+  ) {
     final shouldCorrect =
-        shouldCorrectDynamicRange ?? !state.shouldCorrectDynamicRange;
+        event.shouldCorrectDynamicRange ?? !state.shouldCorrectDynamicRange;
     final noiseRendered =
         _renderNoise(shouldCorrectDynamicRange: shouldCorrect);
     change(
@@ -89,9 +104,12 @@ class CoherentNoiseCubit extends BaseCubit<CoherentNoiseState> {
     );
   }
 
-  void updateTarget(Point<num> target) {
-    if (target == state.target) return;
-    change(CoherentNoiseState.from(state, target: target.toInt()));
+  void _updateTarget(
+    void Function(CoherentNoiseState) change,
+    UpdateTarget event,
+  ) {
+    if (event.target == state.target) return;
+    change(CoherentNoiseState.from(state, target: event.target.toInt()));
   }
 
   List<List<num>> _generateNoise({

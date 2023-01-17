@@ -1,12 +1,12 @@
 import 'dart:html';
 
+import '../utils/base_bloc.dart';
 import '../utils/element_utils.dart';
 import '../utils/renderer.dart';
 import 'coherent_2d_noise_renderer.dart';
 import 'coherent_horizontal_noise_renderer.dart';
-import 'coherent_noise_cubit.dart';
-import 'coherent_noise_interpolation_type.dart';
-import 'coherent_noise_random_type.dart';
+import 'coherent_noise_bloc.dart';
+import 'coherent_noise_bloc_events.dart';
 import 'coherent_noise_state.dart';
 import 'coherent_vertical_noise_renderer.dart';
 
@@ -25,57 +25,57 @@ final _noiseVerticalRenderer =
     CoherentVerticalNoiseRenderer(Renderer(select('#target-vertical')));
 final _noise2DRenderer = Coherent2DNoiseRenderer(_renderer2D);
 
-void _draw(CoherentNoiseState state) {
-  _noiseSizeInput.value = state.noiseSize.toString();
-  _randomTypeText.text = state.randomType.name;
-  _interpTypeText.text = state.interpolationType.name;
-  _correctRangeInput.checked = state.shouldCorrectDynamicRange;
-  _noiseHorizontalRenderer.draw(state);
-  _noiseVerticalRenderer.draw(state);
-  _noise2DRenderer.draw(state);
+void _draw(StateChanged<CoherentNoiseState> event) {
+  _noiseSizeInput.value = event.state.noiseSize.toString();
+  _randomTypeText.text = event.state.randomType.name;
+  _interpTypeText.text = event.state.interpolationType.name;
+  _speedText.text = event.processDuration.toString();
+  _correctRangeInput.checked = event.state.shouldCorrectDynamicRange;
+  _noiseHorizontalRenderer.draw(event.state);
+  _noiseVerticalRenderer.draw(event.state);
+  _noise2DRenderer.draw(event.state);
 }
 
 void main() {
-  final cubit = CoherentNoiseCubit(
-    outputWidth: _renderer2D.width,
-    outputHeight: _renderer2D.height,
-    noiseSize: _noiseSizeInput.value!,
-  )..onChange.listen(_draw);
-  _draw(cubit.state);
+  final bloc = CoherentNoiseBloc(_renderer2D.width, _renderer2D.height)
+    ..onChange.listen(_draw)
+    ..add(UpdateSize(_noiseSizeInput.value!));
 
   _noiseSizeInput.addEventListener('input', (_) {
-    cubit.updateSize(_noiseSizeInput.value!);
+    bloc.add(UpdateSize(_noiseSizeInput.value!));
   });
   _correctRangeInput.addEventListener('input', (_) {
-    cubit.updateDynamicRangeCorrection(
-      shouldCorrectDynamicRange: _correctRangeInput.checked,
+    bloc.add(
+      UpdateDynamicRangeCorrection(
+        shouldCorrectDynamicRange: _correctRangeInput.checked,
+      ),
     );
   });
 
-  _renderer2D.onClick.listen(cubit.updateTarget);
+  _renderer2D.onClick.listen((target) => bloc.add(UpdateTarget(target)));
 
   select('#use-standard-random').addEventListener('click', (_) {
-    cubit.updateRandomType(CoherentNoiseRandomType.standard);
+    bloc.add(UpdateRandomType.standard);
   });
   select('#use-limited-random').addEventListener('click', (_) {
-    cubit.updateRandomType(CoherentNoiseRandomType.limitedDouble);
+    bloc.add(UpdateRandomType.limitedDouble);
   });
   select('#apply-integer-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.integer);
+    bloc.add(UpdateInterpolationType.integer);
   });
   select('#apply-linear-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.linear);
+    bloc.add(UpdateInterpolationType.linear);
   });
   select('#apply-cubic-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubic);
+    bloc.add(UpdateInterpolationType.cubic);
   });
   select('#apply-cubic-s-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cubicS);
+    bloc.add(UpdateInterpolationType.cubicS);
   });
   select('#apply-cosine-s-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.cosineS);
+    bloc.add(UpdateInterpolationType.cosineS);
   });
   select('#apply-quintic-s-interp').addEventListener('click', (_) {
-    cubit.updateInterpolationType(CoherentNoiseInterpolationType.quinticS);
+    bloc.add(UpdateInterpolationType.quinticS);
   });
 }
