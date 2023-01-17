@@ -1,48 +1,48 @@
-import 'dart:collection';
-
-import '../../utils/iterable_utils.dart';
+import '../../utils/list_utils.dart';
 import 'interpolate.dart';
 
 abstract class Interpolator {
+  factory Interpolator.cubic() => ExtendedInterpolator(interpCubic);
+
   factory Interpolator.cubicCached() => ExtendedCachedInterpolator(interpCubic);
 
   static const integer = IntegerInterpolator();
   static const linear = BaseInterpolator(interpLinear);
-  static const cubic = ExtendedInterpolator(interpCubic);
   static const cubicS = BaseInterpolator(interpCubicS);
   static const cosineS = BaseInterpolator(interpCosineS);
   static const quinticS = BaseInterpolator(interpQuinticS);
 
-  num interpolate(Iterable<num> data, double t);
+  num interpolate(List<num> data, double t);
 }
 
 abstract class Interpolator2D {
+  factory Interpolator2D.biCubic() => ExtendedInterpolator2D(interpBiCubic);
+
   factory Interpolator2D.biCubicCached() =>
       ExtendedCachedInterpolator2D(interpBiCubic);
 
   static const biInteger = IntegerInterpolator2D();
   static const biLinear = BaseInterpolator2D(interpBiLinear);
-  static const biCubic = ExtendedInterpolator2D(interpBiCubic);
   static const biCubicS = BaseInterpolator2D(interpBiCubicS);
   static const biCosineS = BaseInterpolator2D(interpBiCosineS);
   static const biQuinticS = BaseInterpolator2D(interpBiQuinticS);
 
-  num interpolate(Iterable<Iterable<num>> data, double tx, double ty);
+  num interpolate(List<List<num>> data, double tx, double ty);
 }
 
 class IntegerInterpolator implements Interpolator {
   const IntegerInterpolator();
 
   @override
-  num interpolate(Iterable<num> data, double t) => data.elementAt(t.round());
+  num interpolate(List<num> data, double t) => data[t.round()];
 }
 
 class IntegerInterpolator2D implements Interpolator2D {
   const IntegerInterpolator2D();
 
   @override
-  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) =>
-      data.elementAt(tx.round()).elementAt(ty.round());
+  num interpolate(List<List<num>> data, double tx, double ty) =>
+      data[tx.round()][ty.round()];
 }
 
 class BaseInterpolator implements Interpolator {
@@ -51,9 +51,9 @@ class BaseInterpolator implements Interpolator {
   final num Function(num, num, double) _interp;
 
   @override
-  num interpolate(Iterable<num> data, double t) {
+  num interpolate(List<num> data, double t) {
     final i = t.toInt();
-    return _interp(data.elementAt(i), data.elementAt(i + 1), t - i);
+    return _interp(data[i], data[i + 1], t - i);
   }
 }
 
@@ -63,13 +63,13 @@ class BaseInterpolator2D implements Interpolator2D {
   final num Function(num, num, num, num, double, double) _interp;
 
   @override
-  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(List<List<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
     return _interp(
-      data.elementAt(x).elementAt(y),
-      data.elementAt(x + 1).elementAt(y),
-      data.elementAt(x).elementAt(y + 1),
-      data.elementAt(x + 1).elementAt(y + 1),
+      data[x][y],
+      data[x + 1][y],
+      data[x][y + 1],
+      data[x + 1][y + 1],
       tx - x,
       ty - y,
     );
@@ -77,63 +77,57 @@ class BaseInterpolator2D implements Interpolator2D {
 }
 
 class ExtendedInterpolator implements Interpolator {
-  const ExtendedInterpolator(this._interp);
+  ExtendedInterpolator(this._interp);
 
   final num Function(List<num>, double) _interp;
 
+  final _values = List<num>.filled(4, 0);
+
   @override
-  num interpolate(Iterable<num> data, double t) {
+  num interpolate(List<num> data, double t) {
     final i = t.toInt();
-    final values = [
-      for (var j = 0; j < 4; j += 1) data.elementAtSafe(i + j - 1),
-    ];
-    return _interp(values, t - i);
+    for (var j = 0; j < 4; j += 1) {
+      _values[j] = data.getSafe(i + j - 1);
+    }
+    return _interp(_values, t - i);
   }
 }
 
 class ExtendedInterpolator2D implements Interpolator2D {
-  const ExtendedInterpolator2D(this._interp);
+  ExtendedInterpolator2D(this._interp);
 
   final num Function(List<List<num>>, double, double) _interp;
 
+  final _values = List.generate(4, (_) => List<num>.filled(4, 0));
+
   @override
-  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(List<List<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
-    final values = [
-      for (var i = 0; i < 4; i += 1)
-        [
-          for (var j = 0; j < 4; j += 1)
-            data.elementAtSafe(x + i - 1).elementAtSafe(y + j - 1),
-        ],
-    ];
-    return _interp(values, tx - x, ty - y);
+    for (var i = 0; i < 4; i += 1) {
+      for (var j = 0; j < 4; j += 1) {
+        _values[i][j] = data.getSafe(x + i - 1).getSafe(y + j - 1);
+      }
+    }
+    return _interp(_values, tx - x, ty - y);
   }
 }
 
 class ExtendedCachedInterpolator extends ExtendedInterpolator {
-  ExtendedCachedInterpolator(super.interp) {
-    _cacheView = UnmodifiableListView(_cache);
-  }
+  ExtendedCachedInterpolator(super.interp);
 
-  final _cache = List<num>.filled(4, 0);
-
-  late UnmodifiableListView<num> _cacheView;
-
-  Iterable<num>? _prevData;
+  List<num>? _prevData;
 
   var _prevI = 0;
 
   @override
-  num interpolate(Iterable<num> data, double t) {
+  num interpolate(List<num> data, double t) {
     final i = t.toInt();
     if (!identical(data, _prevData) || i != _prevI) {
       _prevData = data;
       _prevI = i;
-      for (var j = 0; j < 4; j += 1) {
-        _cache[j] = data.elementAtSafe(i + j - 1);
-      }
+      return super.interpolate(data, t);
     }
-    return _interp(_cacheView, t - i);
+    return _interp(_values, t - i);
   }
 
   void invalidate() {
@@ -142,33 +136,22 @@ class ExtendedCachedInterpolator extends ExtendedInterpolator {
 }
 
 class ExtendedCachedInterpolator2D extends ExtendedInterpolator2D {
-  ExtendedCachedInterpolator2D(super.interp) {
-    final innerCacheViews = _cache.map(UnmodifiableListView.new).toList();
-    _cacheView = UnmodifiableListView(innerCacheViews);
-  }
+  ExtendedCachedInterpolator2D(super.interp);
 
-  final _cache = List.generate(4, (_) => List<num>.filled(4, 0));
-
-  late UnmodifiableListView<List<num>> _cacheView;
-
-  Iterable<Iterable<num>>? _prevData;
+  List<List<num>>? _prevData;
 
   var _prevX = 0, _prevY = 0;
 
   @override
-  num interpolate(Iterable<Iterable<num>> data, double tx, double ty) {
+  num interpolate(List<List<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
     if (!identical(data, _prevData) || x != _prevX || y != _prevY) {
       _prevData = data;
       _prevX = x;
       _prevY = y;
-      for (var i = 0; i < 4; i += 1) {
-        for (var j = 0; j < 4; j += 1) {
-          _cache[i][j] = data.elementAtSafe(x + i - 1).elementAtSafe(y + j - 1);
-        }
-      }
+      return super.interpolate(data, tx, ty);
     }
-    return _interp(_cacheView, tx - x, ty - y);
+    return _interp(_values, tx - x, ty - y);
   }
 
   void invalidate() {

@@ -114,19 +114,6 @@ void main() {
         });
       }
     });
-
-    group('as ExtendedCachedInterpolator', () {
-      test('should provide unmodifiable list as argument', () {
-        final interpolator = ExtendedCachedInterpolator((data, _) {
-          data.add(0);
-          return 0;
-        });
-        expect(
-          () => interpolator.interpolate(values, 0),
-          throwsUnsupportedError,
-        );
-      });
-    });
   });
 
   group('Interpolator2D', () {
@@ -261,19 +248,6 @@ void main() {
           );
         });
       }
-    });
-
-    group('as ExtendedCachedInterpolator2D', () {
-      test('should provide unmodifiable list as argument', () {
-        final interpolator = ExtendedCachedInterpolator2D((data, _, __) {
-          data.add(const [0]);
-          return 0;
-        });
-        expect(
-          () => interpolator.interpolate(values, 0, 0),
-          throwsUnsupportedError,
-        );
-      });
     });
   });
 }

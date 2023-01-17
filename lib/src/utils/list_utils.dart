@@ -12,4 +12,10 @@ extension ListUtils<T> on List<T> {
   void sortDesc(Comparable<Object> Function(T) getItem) {
     sort((a, b) => getItem(b).compareTo(getItem(a)));
   }
+
+  T getSafe(int index) {
+    if (index.isNegative) return first;
+    if (index >= length) return last;
+    return this[index];
+  }
 }
