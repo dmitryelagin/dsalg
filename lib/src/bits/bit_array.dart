@@ -1,8 +1,9 @@
+import 'dart:collection';
 import 'dart:typed_data';
 
 import 'bit_mask.dart';
 
-class BitArray {
+class BitArray extends ListBase<bool> {
   BitArray([this._minLength = 0]) : _length = _minLength {
     reset();
   }
@@ -42,14 +43,13 @@ class BitArray {
 
   int _length;
 
+  @override
   int get length => _length;
 
+  @override
   set length(int value) {
     _tryGrowFor(value - 1);
   }
-
-  bool get isEmpty => _length == 0;
-  bool get isNotEmpty => !isEmpty;
 
   Iterable<bool> get bits sync* {
     for (var i = 0; i < length; i += 1) {
@@ -66,12 +66,19 @@ class BitArray {
   static int _getChunkIndex(int i) => i >> _chunkIndexSize;
   static int _getMaskIndex(int i) => i & _chunkIndexMask;
 
+  @override
   bool operator [](int i) =>
       length > i &&
       _chunks[_getChunkIndex(i)] & _setMasks[_getMaskIndex(i)] != 0;
 
+  @override
   void operator []=(int i, bool value) {
     (value ? setBit : unsetBit)(i);
+  }
+
+  @override
+  void add(bool element) {
+    this[length] = element;
   }
 
   bool isSetBit(int i) => this[i];

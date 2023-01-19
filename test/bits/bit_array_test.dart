@@ -120,14 +120,6 @@ void main() {
       }
     });
 
-    test('should properly check array emptiness', () {
-      expect(array.isEmpty, isFalse);
-      expect(array.isNotEmpty, isTrue);
-      array.reset();
-      expect(array.isEmpty, isTrue);
-      expect(array.isNotEmpty, isFalse);
-    });
-
     test('should return bits collection in correct order', () {
       final bits = array.bits.toList();
       final bitsReversed = array.bitsReversed.toList();
