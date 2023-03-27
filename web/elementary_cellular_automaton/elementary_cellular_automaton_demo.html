@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elementary cellular automaton demo</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./elementary_cellular_automaton_demo.css">
+  <script defer src="elementary_cellular_automaton_demo.dart.js"></script>
+</head>
+
+<body>
+  <div class="demo-eca-grid">
+    <div class="demo-eca">
+      <canvas id="target-eca" width="800" height="600"></canvas>
+    </div>
+    <div class="demo-eca-info">
+      <p>State: <b><span id="state-type-value"></span></b></p>
+      <p>
+        Computation speed:
+        <b><span id="speed-value">0</span></b> ms
+      </p>
+      <hr>
+      <label>
+        Rule #:
+        <input id="rule-input" type="number" value="110" min="0" max="255">
+      </label>
+      <hr>
+      <div class="demo-button-container">
+        <button id="use-blank-state">Use blank state</button>
+      </div>
+      <div class="demo-button-container">
+        <button id="use-central-dot-state">Use central dot state</button>
+      </div>
+      <div class="demo-button-container">
+        <button id="use-random-state">Use random state</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

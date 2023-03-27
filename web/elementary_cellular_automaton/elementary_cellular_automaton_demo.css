@@ -1,0 +1,19 @@
+.demo-eca {
+  grid-area: eca;
+  margin: 10px;
+  border: 1px solid #ccc;
+  line-height: 0;
+}
+
+.demo-eca-info {
+  grid-area: ecaInfo;
+  margin-left: 10px;
+}
+
+.demo-eca-grid {
+  display: grid;
+  grid-template-columns: fit-content(100%) 250px;
+  grid-template-rows: fit-content(100%);
+  grid-template-areas:
+    'eca ecaInfo';
+}
