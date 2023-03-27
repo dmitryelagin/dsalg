@@ -115,9 +115,13 @@ void main() {
       final items = random.nextBoolList(100);
       final itemsReversed = items.reversed.toList();
       final array = BitArray.from(items);
-      for (var i = 0; i < itemsReversed.length; i += 1) {
-        expect(array[i], itemsReversed[i]);
-      }
+      expect(array, itemsReversed);
+    });
+
+    test('should create instance from bool factory function', () {
+      final items = random.nextBoolList(100);
+      final array = BitArray.generate(items.length, (i) => items[i]);
+      expect(array, items);
     });
 
     test('should return bits collection in correct order', () {

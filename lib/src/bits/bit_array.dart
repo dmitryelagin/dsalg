@@ -8,6 +8,14 @@ class BitArray extends ListBase<bool> {
     reset();
   }
 
+  factory BitArray.generate(int length, bool Function(int) generate) {
+    final array = BitArray(length);
+    for (var i = 0; i < length; i += 1) {
+      array[i] = generate(i);
+    }
+    return array;
+  }
+
   factory BitArray.from(Iterable<bool> values, [int minLength = 0]) {
     final array = BitArray(minLength);
     var index = values.length;
