@@ -1,3 +1,4 @@
+export 'automations.dart';
 export 'bits.dart';
 export 'codecs.dart';
 export 'collections.dart';

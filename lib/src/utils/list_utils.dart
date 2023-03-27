@@ -13,7 +13,7 @@ extension ListUtils<T> on List<T> {
     sort((a, b) => getItem(b).compareTo(getItem(a)));
   }
 
-  T getSafeConstant(int index, T value) {
+  T getSafeConst(int index, T value) {
     if (index.isNegative) return value;
     if (index >= length) return value;
     return this[index];
