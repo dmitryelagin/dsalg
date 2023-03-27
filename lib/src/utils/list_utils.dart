@@ -18,4 +18,11 @@ extension ListUtils<T> on List<T> {
     if (index >= length) return last;
     return this[index];
   }
+
+  T getSafeCyclic(int index) {
+    if (index == -1) return last;
+    if (index == length) return first;
+    if (index >= 0 && index < length) return this[index];
+    return this[index % length];
+  }
 }
