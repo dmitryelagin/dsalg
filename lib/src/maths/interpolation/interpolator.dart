@@ -87,7 +87,7 @@ class ExtendedInterpolator implements Interpolator {
   num interpolate(List<num> data, double t) {
     final i = t.toInt();
     for (var j = 0; j < 4; j += 1) {
-      _values[j] = data.getSafe(i + j - 1);
+      _values[j] = data.getSafeTerminal(i + j - 1);
     }
     return _interp(_values, t - i);
   }
@@ -105,7 +105,8 @@ class ExtendedInterpolator2D implements Interpolator2D {
     final x = tx.toInt(), y = ty.toInt();
     for (var i = 0; i < 4; i += 1) {
       for (var j = 0; j < 4; j += 1) {
-        _values[i][j] = data.getSafe(x + i - 1).getSafe(y + j - 1);
+        _values[i][j] =
+            data.getSafeTerminal(x + i - 1).getSafeTerminal(y + j - 1);
       }
     }
     return _interp(_values, tx - x, ty - y);
