@@ -7,7 +7,7 @@ analyzer:
     strict-raw-types: true
 
 linter:
-  rules: # Dart 2.18.0, lints 2.0.0
+  rules: # Dart 2.19.0, lints 2.0.0
     - always_declare_return_types
     # - always_put_control_body_on_new_line custom_change
     - always_put_required_named_parameters_first
@@ -62,11 +62,14 @@ linter:
     - cascade_invocations
     - cast_nullable_to_non_nullable
     - close_sinks
+    - collection_methods_unrelated_type
+    - combinators_ordering
     - comment_references
     - conditional_uri_does_not_exist
     # - constant_identifier_names lints/recommended
     # - control_flow_in_finally lints/recommended
     # - curly_braces_in_flow_control_structures lints/core
+    - dangling_library_doc_comments
     # - depend_on_referenced_packages lints/core
     - deprecated_consistency
     - diagnostic_describe_all_properties
@@ -76,15 +79,18 @@ linter:
     # - empty_catches lints/core
     # - empty_constructor_bodies lints/recommended
     # - empty_statements lints/recommended
+    - enable_null_safety
     - eol_at_end_of_file
     # - exhaustive_cases lints/recommended
     # - file_names lints/core
     - flutter_style_todos
     # - hash_and_equals lints/core
     # - implementation_imports lints/recommended
+    - implicit_call_tearoffs
     # - iterable_contains_unrelated_type lints/core
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
+    - library_annotations
     # - library_names lints/recommended
     # - library_prefixes lints/recommended
     # - library_private_types_in_public_api lints/recommended
@@ -177,6 +183,7 @@ linter:
     # - unnecessary_getters_setters lints/recommended
     - unnecessary_lambdas
     # - unnecessary_late lints/recommended
+    - unnecessary_library_directive
     # - unnecessary_new lints/recommended
     # - unnecessary_null_aware_assignments lints/recommended
     - unnecessary_null_aware_operator_on_extension_on_nullable
@@ -191,6 +198,7 @@ linter:
     # - unnecessary_string_escapes lints/recommended
     # - unnecessary_string_interpolations lints/recommended
     # - unnecessary_this lints/recommended
+    # - unreachable_from_main custom_change
     # - unrelated_type_equality_checks lints/core
     - unsafe_html
     - use_build_context_synchronously
@@ -208,19 +216,9 @@ linter:
     # - use_rethrow_when_possible lints/recommended
     - use_setters_to_change_properties
     - use_string_buffers
+    - use_string_in_part_of_directives
     - use_super_parameters
     - use_test_throws_matchers
     - use_to_and_as_if_applicable
     # - valid_regexps lints/core
     # - void_checks lints/core
-
-    # # 2.19.0-444.2.beta
-    # - collection_methods_unrelated_type
-    # - combinators_ordering
-    # - dangling_library_doc_comments
-    # - enable_null_safety
-    # - implicit_call_tearoffs
-    # - library_annotations
-    # - unnecessary_library_directive
-    # # - unreachable_from_main custom_change
-    # - use_string_in_part_of_directives
