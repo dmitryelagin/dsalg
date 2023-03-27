@@ -27,6 +27,8 @@ extension BitMask on int {
   bool isSetBit(int i) => this[i];
   bool isUnsetBit(int i) => !this[i];
 
+  int assignBit(int i, {required bool value}) => (value ? setBit : unsetBit)(i);
+
   int setBit(int i) => this | 1 << i;
   int unsetBit(int i) => this & ~(1 << i);
   int invertBit(int i) => this ^ 1 << i;

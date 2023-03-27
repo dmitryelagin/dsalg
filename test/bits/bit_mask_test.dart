@@ -29,6 +29,15 @@ void main() {
       }
     });
 
+    test('should return integer with assigned bits', () {
+      var actual = value;
+      for (final i in bitsToChange) {
+        valueBitsOrdered[i] = i.isOdd;
+        actual = actual.assignBit(i, value: i.isOdd);
+      }
+      expect(actual.bits.toList(), valueBitsOrdered);
+    });
+
     test('should return integer with set bits', () {
       for (final i in bitsToChange) {
         valueBitsOrdered[i] = true;
