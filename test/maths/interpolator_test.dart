@@ -88,8 +88,8 @@ void main() {
       }
 
       for (final entry in {
-        'ExtendedInterpolator': CubicInterpolator(interp),
-        'ExtendedCachedInterpolator': CubicCachedInterpolator(interp),
+        'CubicInterpolator': CubicInterpolator(interp),
+        'CubicCachedInterpolator': CubicCachedInterpolator(interp),
       }.entries) {
         final name = entry.key, interpolator = entry.value;
 
@@ -220,8 +220,8 @@ void main() {
       }
 
       for (final entry in {
-        'ExtendedInterpolator2D': CubicInterpolator2D(interp),
-        'ExtendedCachedInterpolator2D': CubicCachedInterpolator2D(interp),
+        'CubicInterpolator2D': CubicInterpolator2D(interp),
+        'CubicCachedInterpolator2D': CubicCachedInterpolator2D(interp),
       }.entries) {
         final name = entry.key, interpolator = entry.value;
 
