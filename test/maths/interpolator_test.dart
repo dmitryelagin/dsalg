@@ -133,11 +133,11 @@ void main() {
 
     group('as IntegerInterpolator2D', () {
       test('should return correct value from rounded target', () {
-        for (final target in targets.entries) {
+        for (final MapEntry(:key, :value) in targets.entries) {
           expect(
             const IntegerInterpolator2D()
-                .interpolate(values, target.key, target.value),
-            getValue(target.key.round(), target.value.round()),
+                .interpolate(values, key, value),
+            getValue(key.round(), value.round()),
           );
         }
       });
@@ -174,15 +174,15 @@ void main() {
           sty = ty;
           return 0;
         });
-        for (final target in targets.entries) {
-          interpolator.interpolate(values, target.key, target.value);
-          final x = target.key.toInt(), y = target.value.toInt();
+        for (final MapEntry(:key, :value) in targets.entries) {
+          interpolator.interpolate(values, key, value);
+          final x = key.toInt(), y = value.toInt();
           expect(sa, getValue(x, y));
           expect(sb, getValue(x + 1, y));
           expect(sc, getValue(x, y + 1));
           expect(sd, getValue(x + 1, y + 1));
-          expect(stx, target.key - x);
-          expect(sty, target.value - y);
+          expect(stx, key - x);
+          expect(sty, value - y);
         }
       });
 
@@ -226,9 +226,9 @@ void main() {
         final name = entry.key, interpolator = entry.value;
 
         test('$name should pass correct arguments to callback', () {
-          for (final target in targets.entries) {
-            interpolator.interpolate(values, target.key, target.value);
-            final x = target.key.toInt(), y = target.value.toInt();
+          for (final MapEntry(:key, :value) in targets.entries) {
+            interpolator.interpolate(values, key, value);
+            final x = key.toInt(), y = value.toInt();
             expect(sdata.$1.$1, getValueSafe(x - 1, y - 1));
             expect(sdata.$1.$2, getValueSafe(x - 1, y));
             expect(sdata.$1.$3, getValueSafe(x - 1, y + 1));
@@ -245,8 +245,8 @@ void main() {
             expect(sdata.$4.$2, getValueSafe(x + 2, y));
             expect(sdata.$4.$3, getValueSafe(x + 2, y + 1));
             expect(sdata.$4.$4, getValueSafe(x + 2, y + 2));
-            expect(stx, target.key - x);
-            expect(sty, target.value - y);
+            expect(stx, key - x);
+            expect(sty, value - y);
           }
         });
 

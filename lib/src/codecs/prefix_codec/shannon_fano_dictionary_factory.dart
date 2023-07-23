@@ -49,7 +49,7 @@ class ShannonFanoDictionaryFactory {
     PrefixUnitNode<Iterable<bool>> node,
   ) sync* {
     if (node.hasNoChildren) {
-      yield MapEntry(node.key, node.value);
+      yield node.toMapEntry();
     } else {
       yield* _createDictionaryEntries(node.left!);
       yield* _createDictionaryEntries(node.right!);

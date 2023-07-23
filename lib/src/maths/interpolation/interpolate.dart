@@ -5,9 +5,14 @@ import '../../collections/queue.dart';
 typedef CubicEntry<T> = (T, T, T, T);
 
 num interpLinear(num a, num b, double t) {
-  if (t == 0) return a;
-  if (t == 1) return b;
-  return a * (1 - t) + b * t;
+  switch (t) {
+    case 0:
+      return a;
+    case 1:
+      return b;
+    default:
+      return a * (1 - t) + b * t;
+  }
 }
 
 num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
@@ -19,10 +24,15 @@ num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
 
 num interpCubic(CubicEntry<num> values, double t) {
   final (a, b, c, d) = values;
-  if (t == 0) return b;
-  if (t == 1) return c;
-  final m = 2 * a - 5 * b + 4 * c - d + t * (3 * (b - c) + d - a);
-  return b + t * (c - a + t * m) / 2;
+  switch (t) {
+    case 0:
+      return b;
+    case 1:
+      return c;
+    default:
+      final m = 2 * a - 5 * b + 4 * c - d + t * (3 * (b - c) + d - a);
+      return b + t * (c - a + t * m) / 2;
+  }
 }
 
 num interpBiCubic(CubicEntry<CubicEntry<num>> values, double tx, double ty) {
@@ -60,19 +70,24 @@ T interpRecursive<T>(
   Iterable<T> items,
   double t,
 ) {
-  if (t == 0) return items.first;
-  if (t == 1) return items.last;
-  final queue = Queue(items);
-  while (queue.length > 1) {
-    final length = queue.length - 1;
-    var previous = queue.extract();
-    for (var i = 0; i < length; i += 1) {
-      final current = queue.extract();
-      queue.insert(interp(previous, current, t));
-      previous = current;
-    }
+  switch (t) {
+    case 0:
+      return items.first;
+    case 1:
+      return items.last;
+    default:
+      final queue = Queue(items);
+      while (queue.length > 1) {
+        final length = queue.length - 1;
+        var previous = queue.extract();
+        for (var i = 0; i < length; i += 1) {
+          final current = queue.extract();
+          queue.insert(interp(previous, current, t));
+          previous = current;
+        }
+      }
+      return queue.extract();
   }
-  return queue.extract();
 }
 
 double _cosineSCurve(double t) => (1 - cos(t * pi)) / 2;
