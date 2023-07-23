@@ -75,20 +75,16 @@ class ElementaryCellularAutomationBloc extends BaseBloc<
 
   Iterable<bool> _getInitialState([
     ElementaryCellularAutomationStateType? type,
-  ]) {
-    switch (type ?? state.initialStateType) {
-      case ElementaryCellularAutomationStateType.blank:
-        return [];
-      case ElementaryCellularAutomationStateType.centralDot:
-        return Iterable.generate(
-          state.ruleSize,
-          (i) => i == state.ruleSize ~/ 2,
-        );
-      case ElementaryCellularAutomationStateType.random:
-        return Iterable.generate(
-          state.ruleSize,
-          (_) => Random().nextBool(),
-        );
-    }
-  }
+  ]) =>
+      switch (type ?? state.initialStateType) {
+        ElementaryCellularAutomationStateType.blank => [],
+        ElementaryCellularAutomationStateType.centralDot => Iterable.generate(
+            state.ruleSize,
+            (i) => i == state.ruleSize ~/ 2,
+          ),
+        ElementaryCellularAutomationStateType.random => Iterable.generate(
+            state.ruleSize,
+            (_) => Random().nextBool(),
+          ),
+      };
 }

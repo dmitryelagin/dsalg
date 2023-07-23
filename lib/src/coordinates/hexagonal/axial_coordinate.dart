@@ -41,28 +41,27 @@ class AxialCoordinate
   AxialCoordinate shift(HexagonalDirection direction) => move(direction, 1);
 
   @override
-  AxialCoordinate move(HexagonalDirection direction, int distance) {
-    switch (direction) {
-      case HexagonalDirection.flatToppedTop:
-      case HexagonalDirection.pointyToppedTopLeft:
-        return AxialCoordinate(q, r - distance);
-      case HexagonalDirection.flatToppedTopRight:
-      case HexagonalDirection.pointyToppedTopRight:
-        return AxialCoordinate(q + distance, r - distance);
-      case HexagonalDirection.flatToppedBottomRight:
-      case HexagonalDirection.pointyToppedRight:
-        return AxialCoordinate(q + distance, r);
-      case HexagonalDirection.flatToppedBottom:
-      case HexagonalDirection.pointyToppedBottomRight:
-        return AxialCoordinate(q, r + distance);
-      case HexagonalDirection.flatToppedBottomLeft:
-      case HexagonalDirection.pointyToppedBottomLeft:
-        return AxialCoordinate(q - distance, r + distance);
-      case HexagonalDirection.flatToppedTopLeft:
-      case HexagonalDirection.pointyToppedLeft:
-        return AxialCoordinate(q - distance, r);
-    }
-  }
+  AxialCoordinate move(HexagonalDirection direction, int distance) =>
+      switch (direction) {
+        HexagonalDirection.flatToppedTop ||
+        HexagonalDirection.pointyToppedTopLeft =>
+          AxialCoordinate(q, r - distance),
+        HexagonalDirection.flatToppedTopRight ||
+        HexagonalDirection.pointyToppedTopRight =>
+          AxialCoordinate(q + distance, r - distance),
+        HexagonalDirection.flatToppedBottomRight ||
+        HexagonalDirection.pointyToppedRight =>
+          AxialCoordinate(q + distance, r),
+        HexagonalDirection.flatToppedBottom ||
+        HexagonalDirection.pointyToppedBottomRight =>
+          AxialCoordinate(q, r + distance),
+        HexagonalDirection.flatToppedBottomLeft ||
+        HexagonalDirection.pointyToppedBottomLeft =>
+          AxialCoordinate(q - distance, r + distance),
+        HexagonalDirection.flatToppedTopLeft ||
+        HexagonalDirection.pointyToppedLeft =>
+          AxialCoordinate(q - distance, r),
+      };
 
   @override
   Iterable<AxialCoordinate> getLineTo(AxialCoordinate other) sync* {

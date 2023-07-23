@@ -15,8 +15,8 @@ class TrieNode<T> {
 
   bool get isEmpty {
     if (_isSet) return false;
-    for (final key in children.keys) {
-      if (!children[key]!.isEmpty) return false;
+    for (final child in children.values) {
+      if (!child.isEmpty) return false;
     }
     return true;
   }

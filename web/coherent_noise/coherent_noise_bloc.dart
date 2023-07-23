@@ -159,29 +159,19 @@ class CoherentNoiseBloc
               .mapDynamicRangeToUint8List()
           : (noiseInterpolated ?? state.noiseInterpolated).toUint8ClampedList();
 
-  Random _getRandom([CoherentNoiseRandomType? type]) {
-    switch (type ?? state.randomType) {
-      case CoherentNoiseRandomType.standard:
-        return Random();
-      case CoherentNoiseRandomType.limitedDouble:
-        return const LimitedDoubleRandom(4);
-    }
-  }
+  Random _getRandom([CoherentNoiseRandomType? type]) =>
+      switch (type ?? state.randomType) {
+        CoherentNoiseRandomType.standard => Random(),
+        CoherentNoiseRandomType.limitedDouble => const LimitedDoubleRandom(4),
+      };
 
-  Interpolator2D _getInterpolator([CoherentNoiseInterpolationType? type]) {
-    switch (type ?? state.interpolationType) {
-      case CoherentNoiseInterpolationType.integer:
-        return Interpolator2D.biInteger;
-      case CoherentNoiseInterpolationType.linear:
-        return Interpolator2D.biLinear;
-      case CoherentNoiseInterpolationType.cubic:
-        return Interpolator2D.biCubicCached();
-      case CoherentNoiseInterpolationType.cubicS:
-        return Interpolator2D.biCubicS;
-      case CoherentNoiseInterpolationType.cosineS:
-        return Interpolator2D.biCosineS;
-      case CoherentNoiseInterpolationType.quinticS:
-        return Interpolator2D.biQuinticS;
-    }
-  }
+  Interpolator2D _getInterpolator([CoherentNoiseInterpolationType? type]) =>
+      switch (type ?? state.interpolationType) {
+        CoherentNoiseInterpolationType.integer => Interpolator2D.biInteger,
+        CoherentNoiseInterpolationType.linear => Interpolator2D.biLinear,
+        CoherentNoiseInterpolationType.cubic => Interpolator2D.biCubicCached(),
+        CoherentNoiseInterpolationType.cubicS => Interpolator2D.biCubicS,
+        CoherentNoiseInterpolationType.cosineS => Interpolator2D.biCosineS,
+        CoherentNoiseInterpolationType.quinticS => Interpolator2D.biQuinticS,
+      };
 }

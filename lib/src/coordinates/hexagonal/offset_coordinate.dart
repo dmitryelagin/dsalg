@@ -38,22 +38,19 @@ class OddQOffsetCoordinate extends OffsetCoordinate<
   static const zero = OddQOffsetCoordinate(0, 0);
 
   @override
-  OddQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) {
-    switch (direction) {
-      case FlatToppedHexagonalDirection.top:
-        return OddQOffsetCoordinate(q, r - 1);
-      case FlatToppedHexagonalDirection.topRight:
-        return OddQOffsetCoordinate(q + 1, r - (q.isEven ? 1 : 0));
-      case FlatToppedHexagonalDirection.bottomRight:
-        return OddQOffsetCoordinate(q + 1, r + (q.isEven ? 0 : 1));
-      case FlatToppedHexagonalDirection.bottom:
-        return OddQOffsetCoordinate(q, r + 1);
-      case FlatToppedHexagonalDirection.bottomLeft:
-        return OddQOffsetCoordinate(q - 1, r + (q.isEven ? 0 : 1));
-      case FlatToppedHexagonalDirection.topLeft:
-        return OddQOffsetCoordinate(q - 1, r - (q.isEven ? 1 : 0));
-    }
-  }
+  OddQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) =>
+      switch (direction) {
+        FlatToppedHexagonalDirection.top => OddQOffsetCoordinate(q, r - 1),
+        FlatToppedHexagonalDirection.topRight =>
+          OddQOffsetCoordinate(q + 1, r - (q.isEven ? 1 : 0)),
+        FlatToppedHexagonalDirection.bottomRight =>
+          OddQOffsetCoordinate(q + 1, r + (q.isEven ? 0 : 1)),
+        FlatToppedHexagonalDirection.bottom => OddQOffsetCoordinate(q, r + 1),
+        FlatToppedHexagonalDirection.bottomLeft =>
+          OddQOffsetCoordinate(q - 1, r + (q.isEven ? 0 : 1)),
+        FlatToppedHexagonalDirection.topLeft =>
+          OddQOffsetCoordinate(q - 1, r - (q.isEven ? 1 : 0)),
+      };
 
   @override
   CubeCoordinate toCube() =>
@@ -70,22 +67,19 @@ class EvenQOffsetCoordinate extends OffsetCoordinate<
   static const zero = EvenQOffsetCoordinate(0, 0);
 
   @override
-  EvenQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) {
-    switch (direction) {
-      case FlatToppedHexagonalDirection.top:
-        return EvenQOffsetCoordinate(q, r - 1);
-      case FlatToppedHexagonalDirection.topRight:
-        return EvenQOffsetCoordinate(q + 1, r - (q.isOdd ? 1 : 0));
-      case FlatToppedHexagonalDirection.bottomRight:
-        return EvenQOffsetCoordinate(q + 1, r + (q.isOdd ? 0 : 1));
-      case FlatToppedHexagonalDirection.bottom:
-        return EvenQOffsetCoordinate(q, r + 1);
-      case FlatToppedHexagonalDirection.bottomLeft:
-        return EvenQOffsetCoordinate(q - 1, r + (q.isOdd ? 0 : 1));
-      case FlatToppedHexagonalDirection.topLeft:
-        return EvenQOffsetCoordinate(q - 1, r - (q.isOdd ? 1 : 0));
-    }
-  }
+  EvenQOffsetCoordinate shift(FlatToppedHexagonalDirection direction) =>
+      switch (direction) {
+        FlatToppedHexagonalDirection.top => EvenQOffsetCoordinate(q, r - 1),
+        FlatToppedHexagonalDirection.topRight =>
+          EvenQOffsetCoordinate(q + 1, r - (q.isOdd ? 1 : 0)),
+        FlatToppedHexagonalDirection.bottomRight =>
+          EvenQOffsetCoordinate(q + 1, r + (q.isOdd ? 0 : 1)),
+        FlatToppedHexagonalDirection.bottom => EvenQOffsetCoordinate(q, r + 1),
+        FlatToppedHexagonalDirection.bottomLeft =>
+          EvenQOffsetCoordinate(q - 1, r + (q.isOdd ? 0 : 1)),
+        FlatToppedHexagonalDirection.topLeft =>
+          EvenQOffsetCoordinate(q - 1, r - (q.isOdd ? 1 : 0)),
+      };
 
   @override
   CubeCoordinate toCube() =>
@@ -102,22 +96,19 @@ class OddROffsetCoordinate extends OffsetCoordinate<
   static const zero = OddROffsetCoordinate(0, 0);
 
   @override
-  OddROffsetCoordinate shift(PointyToppedHexagonalDirection direction) {
-    switch (direction) {
-      case PointyToppedHexagonalDirection.topLeft:
-        return OddROffsetCoordinate(q - (r.isEven ? 1 : 0), r - 1);
-      case PointyToppedHexagonalDirection.topRight:
-        return OddROffsetCoordinate(q + (r.isEven ? 0 : 1), r - 1);
-      case PointyToppedHexagonalDirection.right:
-        return OddROffsetCoordinate(q + 1, r);
-      case PointyToppedHexagonalDirection.bottomRight:
-        return OddROffsetCoordinate(q + (r.isEven ? 0 : 1), r + 1);
-      case PointyToppedHexagonalDirection.bottomLeft:
-        return OddROffsetCoordinate(q - (r.isEven ? 1 : 0), r + 1);
-      case PointyToppedHexagonalDirection.left:
-        return OddROffsetCoordinate(q - 1, r);
-    }
-  }
+  OddROffsetCoordinate shift(PointyToppedHexagonalDirection direction) =>
+      switch (direction) {
+        PointyToppedHexagonalDirection.topLeft =>
+          OddROffsetCoordinate(q - (r.isEven ? 1 : 0), r - 1),
+        PointyToppedHexagonalDirection.topRight =>
+          OddROffsetCoordinate(q + (r.isEven ? 0 : 1), r - 1),
+        PointyToppedHexagonalDirection.right => OddROffsetCoordinate(q + 1, r),
+        PointyToppedHexagonalDirection.bottomRight =>
+          OddROffsetCoordinate(q + (r.isEven ? 0 : 1), r + 1),
+        PointyToppedHexagonalDirection.bottomLeft =>
+          OddROffsetCoordinate(q - (r.isEven ? 1 : 0), r + 1),
+        PointyToppedHexagonalDirection.left => OddROffsetCoordinate(q - 1, r),
+      };
 
   @override
   CubeCoordinate toCube() =>
@@ -134,22 +125,19 @@ class EvenROffsetCoordinate extends OffsetCoordinate<
   static const zero = EvenROffsetCoordinate(0, 0);
 
   @override
-  EvenROffsetCoordinate shift(PointyToppedHexagonalDirection direction) {
-    switch (direction) {
-      case PointyToppedHexagonalDirection.topLeft:
-        return EvenROffsetCoordinate(q - (r.isOdd ? 1 : 0), r - 1);
-      case PointyToppedHexagonalDirection.topRight:
-        return EvenROffsetCoordinate(q + (r.isOdd ? 0 : 1), r - 1);
-      case PointyToppedHexagonalDirection.right:
-        return EvenROffsetCoordinate(q + 1, r);
-      case PointyToppedHexagonalDirection.bottomRight:
-        return EvenROffsetCoordinate(q + (r.isOdd ? 0 : 1), r + 1);
-      case PointyToppedHexagonalDirection.bottomLeft:
-        return EvenROffsetCoordinate(q - (r.isOdd ? 1 : 0), r + 1);
-      case PointyToppedHexagonalDirection.left:
-        return EvenROffsetCoordinate(q - 1, r);
-    }
-  }
+  EvenROffsetCoordinate shift(PointyToppedHexagonalDirection direction) =>
+      switch (direction) {
+        PointyToppedHexagonalDirection.topLeft =>
+          EvenROffsetCoordinate(q - (r.isOdd ? 1 : 0), r - 1),
+        PointyToppedHexagonalDirection.topRight =>
+          EvenROffsetCoordinate(q + (r.isOdd ? 0 : 1), r - 1),
+        PointyToppedHexagonalDirection.right => EvenROffsetCoordinate(q + 1, r),
+        PointyToppedHexagonalDirection.bottomRight =>
+          EvenROffsetCoordinate(q + (r.isOdd ? 0 : 1), r + 1),
+        PointyToppedHexagonalDirection.bottomLeft =>
+          EvenROffsetCoordinate(q - (r.isOdd ? 1 : 0), r + 1),
+        PointyToppedHexagonalDirection.left => EvenROffsetCoordinate(q - 1, r),
+      };
 
   @override
   CubeCoordinate toCube() =>

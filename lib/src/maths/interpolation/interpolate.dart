@@ -11,7 +11,11 @@ num interpLinear(num a, num b, double t) {
 }
 
 num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
-    interpLinear(interpLinear(a, b, tx), interpLinear(c, d, tx), ty);
+    interpLinear(
+      interpLinear(a, b, tx),
+      interpLinear(c, d, tx),
+      ty,
+    );
 
 num interpCubic(CubicEntry<num> values, double t) {
   final (a, b, c, d) = values;
@@ -23,9 +27,15 @@ num interpCubic(CubicEntry<num> values, double t) {
 
 num interpBiCubic(CubicEntry<CubicEntry<num>> values, double tx, double ty) {
   final (a, b, c, d) = values;
-  final ia = interpCubic(a, ty), ib = interpCubic(b, ty);
-  final ic = interpCubic(c, ty), id = interpCubic(d, ty);
-  return interpCubic((ia, ib, ic, id), tx);
+  return interpCubic(
+    (
+      interpCubic(a, ty),
+      interpCubic(b, ty),
+      interpCubic(c, ty),
+      interpCubic(d, ty),
+    ),
+    tx,
+  );
 }
 
 num interpCosineS(num a, num b, double t) =>

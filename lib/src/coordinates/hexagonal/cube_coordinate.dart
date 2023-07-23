@@ -47,38 +47,39 @@ class CubeCoordinate
   CubeCoordinate shift(HexagonalDirection direction) => move(direction, 1);
 
   @override
-  CubeCoordinate move(HexagonalDirection direction, int distance) {
-    switch (direction) {
-      case HexagonalDirection.flatToppedTop:
-      case HexagonalDirection.pointyToppedTopLeft:
-        return CubeCoordinate(x, y + distance, z - distance);
-      case HexagonalDirection.flatToppedTopRight:
-      case HexagonalDirection.pointyToppedTopRight:
-        return CubeCoordinate(x + distance, y, z - distance);
-      case HexagonalDirection.flatToppedBottomRight:
-      case HexagonalDirection.pointyToppedRight:
-        return CubeCoordinate(x + distance, y - distance, z);
-      case HexagonalDirection.flatToppedBottom:
-      case HexagonalDirection.pointyToppedBottomRight:
-        return CubeCoordinate(x, y - distance, z + distance);
-      case HexagonalDirection.flatToppedBottomLeft:
-      case HexagonalDirection.pointyToppedBottomLeft:
-        return CubeCoordinate(x - distance, y, z + distance);
-      case HexagonalDirection.flatToppedTopLeft:
-      case HexagonalDirection.pointyToppedLeft:
-        return CubeCoordinate(x - distance, y + distance, z);
-    }
-  }
+  CubeCoordinate move(HexagonalDirection direction, int distance) =>
+      switch (direction) {
+        HexagonalDirection.flatToppedTop ||
+        HexagonalDirection.pointyToppedTopLeft =>
+          CubeCoordinate(x, y + distance, z - distance),
+        HexagonalDirection.flatToppedTopRight ||
+        HexagonalDirection.pointyToppedTopRight =>
+          CubeCoordinate(x + distance, y, z - distance),
+        HexagonalDirection.flatToppedBottomRight ||
+        HexagonalDirection.pointyToppedRight =>
+          CubeCoordinate(x + distance, y - distance, z),
+        HexagonalDirection.flatToppedBottom ||
+        HexagonalDirection.pointyToppedBottomRight =>
+          CubeCoordinate(x, y - distance, z + distance),
+        HexagonalDirection.flatToppedBottomLeft ||
+        HexagonalDirection.pointyToppedBottomLeft =>
+          CubeCoordinate(x - distance, y, z + distance),
+        HexagonalDirection.flatToppedTopLeft ||
+        HexagonalDirection.pointyToppedLeft =>
+          CubeCoordinate(x - distance, y + distance, z),
+      };
 
   @override
   CubeCoordinate rotate(int steps) {
     final step = steps % FlatToppedHexagonalDirection.values.length;
-    if (step == 1) return CubeCoordinate(-z, -x, -y);
-    if (step == 2) return CubeCoordinate(y, z, x);
-    if (step == 3) return CubeCoordinate(-x, -y, -z);
-    if (step == 4) return CubeCoordinate(z, x, y);
-    if (step == 5) return CubeCoordinate(-y, -z, -x);
-    return this;
+    return switch (step) {
+      1 => CubeCoordinate(-z, -x, -y),
+      2 => CubeCoordinate(y, z, x),
+      3 => CubeCoordinate(-x, -y, -z),
+      4 => CubeCoordinate(z, x, y),
+      5 => CubeCoordinate(-y, -z, -x),
+      _ => this,
+    };
   }
 
   @override
