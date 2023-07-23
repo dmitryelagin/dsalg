@@ -135,8 +135,7 @@ void main() {
       test('should return correct value from rounded target', () {
         for (final MapEntry(:key, :value) in targets.entries) {
           expect(
-            const IntegerInterpolator2D()
-                .interpolate(values, key, value),
+            const IntegerInterpolator2D().interpolate(values, key, value),
             getValue(key.round(), value.round()),
           );
         }
