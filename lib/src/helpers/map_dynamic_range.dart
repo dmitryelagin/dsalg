@@ -19,8 +19,8 @@ extension MapDynamicRange<T extends num> on Iterable<T> {
     num flatten([Object? _]) => min;
     if (min == max) return map(flatten);
     assert(min < max);
-    final actualMinMax = minMaxValue;
-    final actualMin = actualMinMax.first, actualMax = actualMinMax.second;
+    final (actualMinMax) = minMaxValue;
+    final actualMin = actualMinMax.min, actualMax = actualMinMax.max;
     if (actualMin == actualMax) return map(flatten);
     final divider = actualMax - actualMin;
     return map((item) => interpLinear(min, max, (item - actualMin) / divider));
@@ -37,7 +37,7 @@ extension Map2DDynamicRange<T extends num> on Iterable<Iterable<T>> {
     if (min == max) return map(flatten);
     assert(min < max);
     final actualMinMax = minMaxValue;
-    final actualMin = actualMinMax.first, actualMax = actualMinMax.second;
+    final actualMin = actualMinMax.min, actualMax = actualMinMax.max;
     if (actualMin == actualMax) return map(flatten);
     final divider = actualMax - actualMin;
     num interp(T item) => interpLinear(min, max, (item - actualMin) / divider);

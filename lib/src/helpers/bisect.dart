@@ -1,8 +1,7 @@
 import '../utils/functions.dart';
-import 'tuple.dart';
 
 extension Bisect<T> on List<T> {
-  MonoPair<Iterable<T>> bisectByMass(num Function(T) getItemMass) {
+  (Iterable<T>, Iterable<T>) bisectByMass(num Function(T) getItemMass) {
     assert(length > 1);
     num getMass(int index) {
       final mass = getItemMass(this[index]);
@@ -23,11 +22,11 @@ extension Bisect<T> on List<T> {
         rightIndex -= 1;
       }
     }
-    return Pair(getRange(0, rightIndex), getRange(rightIndex, length));
+    return (getRange(0, rightIndex), getRange(rightIndex, length));
   }
 }
 
 extension BisectNum<T extends num> on List<T> {
-  MonoPair<Iterable<T>> bisectByMass([num Function(T)? getItemMass]) =>
+  (Iterable<T>, Iterable<T>) bisectByMass([num Function(T)? getItemMass]) =>
       Bisect(this).bisectByMass(getItemMass ?? identity);
 }

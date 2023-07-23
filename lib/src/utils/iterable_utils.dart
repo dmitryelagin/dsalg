@@ -1,5 +1,3 @@
-import '../helpers/tuple.dart';
-
 extension IterableUtils<T> on Iterable<T> {
   bool isDeepEqualTo(Iterable<T> other) {
     if (identical(other, this)) return true;
@@ -66,16 +64,16 @@ extension IterableNullUtils<T> on Iterable<T?> {
 }
 
 extension IterableNumUtils<T extends num> on Iterable<T> {
-  T get minValue => minMaxValue.first;
-  T get maxValue => minMaxValue.second;
+  T get minValue => minMaxValue.min;
+  T get maxValue => minMaxValue.max;
 
-  MonoPair<T> get minMaxValue {
+  ({T min, T max}) get minMaxValue {
     num actualMin = double.infinity, actualMax = -double.infinity;
     for (final item in this) {
       if (item < actualMin) actualMin = item;
       if (item > actualMax) actualMax = item;
     }
-    return Pair(actualMin as T, actualMax as T);
+    return (min: actualMin as T, max: actualMax as T);
   }
 
   num get sum => fold(0, _foldNums);
@@ -92,10 +90,10 @@ extension IterableNumUtils<T extends num> on Iterable<T> {
 }
 
 extension Iterable2DNumUtils<T extends num> on Iterable<Iterable<num>> {
-  T get minValue => minMaxValue.first;
-  T get maxValue => minMaxValue.second;
+  T get minValue => minMaxValue.min;
+  T get maxValue => minMaxValue.max;
 
-  MonoPair<T> get minMaxValue {
+  ({T min, T max}) get minMaxValue {
     num actualMin = double.infinity, actualMax = -double.infinity;
     for (final list in this) {
       for (final item in list) {
@@ -103,6 +101,6 @@ extension Iterable2DNumUtils<T extends num> on Iterable<Iterable<num>> {
         if (item > actualMax) actualMax = item;
       }
     }
-    return Pair(actualMin as T, actualMax as T);
+    return (min: actualMin as T, max: actualMax as T);
   }
 }

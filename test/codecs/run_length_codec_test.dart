@@ -12,12 +12,12 @@ void main() {
     test('should encode and decode standard message', () {
       const message = 'aaaabbccaddddb';
       final encodedMessage = [
-        Pair('a'.runes.first, 4),
-        Pair('b'.runes.first, 2),
-        Pair('c'.runes.first, 2),
-        Pair('a'.runes.first, 1),
-        Pair('d'.runes.first, 4),
-        Pair('b'.runes.first, 1),
+        ('a'.runes.first, 4),
+        ('b'.runes.first, 2),
+        ('c'.runes.first, 2),
+        ('a'.runes.first, 1),
+        ('d'.runes.first, 4),
+        ('b'.runes.first, 1),
       ];
       expect(runLengthCodec.encode(message), encodedMessage);
       expect(runLengthCodec.decode(encodedMessage), message);

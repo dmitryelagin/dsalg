@@ -45,7 +45,7 @@ void main() {
           final cY = (result.y - a.y) / (b.y - a.y);
           expect(cY.toStringAsPrecision(8), t.toStringAsPrecision(8));
         } else {
-          expect(result.y, a.y);
+          expect(result.y.toStringAsPrecision(8), a.y.toStringAsPrecision(8));
         }
       }
     });

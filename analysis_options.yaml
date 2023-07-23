@@ -7,11 +7,10 @@ analyzer:
     strict-raw-types: true
 
 linter:
-  rules: # Dart 2.19.0, lints 2.0.0
+  rules: # Dart 3.0.0, lints 2.1.0
     - always_declare_return_types
     # - always_put_control_body_on_new_line custom_change
     - always_put_required_named_parameters_first
-    # - always_require_non_null_named_parameters lints/recommended
     # - always_specify_types custom_change
     # - always_use_package_imports custom_change
     # - annotate_overrides lints/recommended
@@ -72,6 +71,7 @@ linter:
     - dangling_library_doc_comments
     # - depend_on_referenced_packages lints/core
     - deprecated_consistency
+    - deprecated_member_use_from_same_package
     - diagnostic_describe_all_properties
     - directives_ordering
     # - discarded_futures custom_change
@@ -79,7 +79,6 @@ linter:
     # - empty_catches lints/core
     # - empty_constructor_bodies lints/recommended
     # - empty_statements lints/recommended
-    - enable_null_safety
     - eol_at_end_of_file
     # - exhaustive_cases lints/recommended
     # - file_names lints/core
@@ -87,6 +86,8 @@ linter:
     # - hash_and_equals lints/core
     # - implementation_imports lints/recommended
     - implicit_call_tearoffs
+    - implicit_reopen
+    - invalid_case_patterns
     # - iterable_contains_unrelated_type lints/core
     - join_return_with_assignment
     - leading_newlines_in_multiline_strings
@@ -129,7 +130,6 @@ linter:
     - prefer_constructors_over_static_methods
     # - prefer_contains lints/recommended
     # - prefer_double_quotes custom_change
-    # - prefer_equal_for_default_values lints/recommended
     # - prefer_expression_function_bodies custom_change
     # - prefer_final_fields lints/recommended
     - prefer_final_in_for_each
@@ -174,9 +174,11 @@ linter:
     - tighten_type_of_initializing_formals
     - type_annotate_public_apis
     # - type_init_formals lints/recommended
+    - type_literal_in_constant_pattern
     - unawaited_futures
     - unnecessary_await_in_return
     # - unnecessary_brace_in_string_interps lints/recommended
+    - unnecessary_breaks
     # - unnecessary_const lints/recommended
     # - unnecessary_constructor_name lints/recommended
     # - unnecessary_final custom_change

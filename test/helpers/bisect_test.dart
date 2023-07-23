@@ -28,9 +28,9 @@ void main() {
             sumDelta = currentSumDelta;
           }
         }
-        final actual = items.bisectByMass();
-        expect(actual.first, expectedFirst);
-        expect(actual.second, expectedSecond);
+        final (left, right) = items.bisectByMass();
+        expect(left, expectedFirst);
+        expect(right, expectedSecond);
       });
     });
 
@@ -52,9 +52,9 @@ void main() {
           }
         }
         final items = Map.fromIterables(keys, values);
-        final actual = keys.bisectByMass((key) => items[key]!);
-        expect(actual.first, expectedFirst);
-        expect(actual.second, expectedSecond);
+        final (left, right) = keys.bisectByMass((key) => items[key]!);
+        expect(left, expectedFirst);
+        expect(right, expectedSecond);
       });
     });
 

@@ -26,8 +26,8 @@ void main() {
     test('should properly parse NdS notation', () {
       repeat(times: 10, () {
         final n = random.nextInt(100) + 1, s = random.nextInt(100) + 1;
-        expect(Die.tryParseNds('${n}d$s'), Pair(n, Die(s)));
-        expect(Die.parseNds('${n}d$s'), Pair(n, Die(s)));
+        expect(Die.tryParseNds('${n}d$s'), (n, Die(s)));
+        expect(Die.parseNds('${n}d$s'), (n, Die(s)));
       });
     });
 
