@@ -4,6 +4,10 @@ A library with data structures and algorythms.
 
 Run `webdev serve` to start demo.
 
+### Automations
+
+- Elementary Cellular Automaton
+
 ### Bits
 
 - Bit array
