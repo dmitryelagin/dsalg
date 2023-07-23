@@ -15,7 +15,7 @@ class HuffmanDictionaryFactory {
   PrefixUnitNode<int> _createUnitTree(String input) {
     final unitNodes = BinaryHeap<PrefixUnitNode<int>>(
       (a, b) => b.value.compareTo(a.value),
-      input.codeUnitFrequencies.entries.map(PrefixUnitNode.fromEntry),
+      input.codeUnitFrequencies.entries.map(PrefixUnitNode.fromMapEntry),
     );
     while (unitNodes.length > 1) {
       final first = unitNodes.extract(), second = unitNodes.extract();

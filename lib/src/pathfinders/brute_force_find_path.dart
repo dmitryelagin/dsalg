@@ -1,10 +1,10 @@
-import '../helpers/permutations.dart';
+part of 'travelling_salesperson_problem.dart';
 
-class TravellingSalespersonProblemBruteForce<T> {
-  const TravellingSalespersonProblemBruteForce(this._getDistance);
+class TravellingSalespersonProblemBruteForce<T>
+    extends TravellingSalespersonProblem<T> {
+  const TravellingSalespersonProblemBruteForce(super._getDistance);
 
-  final num Function(T a, T b) _getDistance;
-
+  @override
   Iterable<T> findPath(Iterable<T> sites) {
     if (sites.isEmpty) return const [];
     final targets = sites.skip(1);

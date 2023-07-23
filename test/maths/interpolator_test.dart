@@ -47,10 +47,10 @@ void main() {
       });
     });
 
-    group('as BaseInterpolator', () {
+    group('as StandardInterpolator', () {
       test('should pass correct arguments to callback', () {
         num sa = 0, sb = 0, st = 0;
-        final interpolator = BaseInterpolator((a, b, t) {
+        final interpolator = StandardInterpolator((a, b, t) {
           sa = a;
           sb = b;
           st = t;
@@ -66,7 +66,7 @@ void main() {
       });
 
       test('should throw when target is out of data range', () {
-        final interpolator = BaseInterpolator((_, __, ___) => 0);
+        final interpolator = StandardInterpolator((_, __, ___) => 0);
         expect(
           () => interpolator.interpolate(values, 200.5),
           throwsRangeError,
@@ -161,10 +161,10 @@ void main() {
       });
     });
 
-    group('as BaseInterpolator2D', () {
+    group('as StandardInterpolator2D', () {
       test('should pass correct arguments to callback', () {
         num sa = 0, sb = 0, sc = 0, sd = 0, stx = 0, sty = 0;
-        final interpolator = BaseInterpolator2D((a, b, c, d, tx, ty) {
+        final interpolator = StandardInterpolator2D((a, b, c, d, tx, ty) {
           sa = a;
           sb = b;
           sc = c;
@@ -187,7 +187,7 @@ void main() {
 
       test('should throw when target is out of data range', () {
         final interpolator =
-            BaseInterpolator2D((_, __, ___, ____, _____, ______) => 0);
+            StandardInterpolator2D((_, __, ___, ____, _____, ______) => 0);
         expect(
           () => interpolator.interpolate(values, 200.5, 45),
           throwsRangeError,

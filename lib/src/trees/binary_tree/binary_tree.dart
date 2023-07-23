@@ -15,7 +15,7 @@ part 'base_binary_search_tree.dart';
 part 'splay_tree.dart';
 part 'treap.dart';
 
-abstract class BaseBinaryTree<K, V> {
+abstract interface class BaseBinaryTree<K, V> {
   bool get isEmpty;
   bool get isNotEmpty;
   Iterable<K> get keys;
@@ -37,7 +37,8 @@ abstract class BaseBinaryTree<K, V> {
   void clear();
 }
 
-abstract class BaseBinarySearchTree<K, V> extends BaseBinaryTree<K, V> {
+abstract interface class BaseBinarySearchTree<K, V>
+    extends BaseBinaryTree<K, V> {
   MapEntry<K, V> get min;
   MapEntry<K, V> get max;
   V operator [](K key);

@@ -1,31 +1,29 @@
 import '../../utils/list_utils.dart';
 import 'interpolate.dart';
 
-abstract class Interpolator {
-  factory Interpolator.cubic() => CubicInterpolator(interpCubic);
-
+abstract interface class Interpolator {
   factory Interpolator.cubicCached() => CubicCachedInterpolator(interpCubic);
 
   static const integer = IntegerInterpolator();
-  static const linear = BaseInterpolator(interpLinear);
-  static const cubicS = BaseInterpolator(interpCubicS);
-  static const cosineS = BaseInterpolator(interpCosineS);
-  static const quinticS = BaseInterpolator(interpQuinticS);
+  static const linear = StandardInterpolator(interpLinear);
+  static const cubicS = StandardInterpolator(interpCubicS);
+  static const cosineS = StandardInterpolator(interpCosineS);
+  static const quinticS = StandardInterpolator(interpQuinticS);
+  static const cubic = CubicInterpolator(interpCubic);
 
   num interpolate(List<num> data, double t);
 }
 
-abstract class Interpolator2D {
-  factory Interpolator2D.biCubic() => CubicInterpolator2D(interpBiCubic);
-
+abstract interface class Interpolator2D {
   factory Interpolator2D.biCubicCached() =>
       CubicCachedInterpolator2D(interpBiCubic);
 
   static const biInteger = IntegerInterpolator2D();
-  static const biLinear = BaseInterpolator2D(interpBiLinear);
-  static const biCubicS = BaseInterpolator2D(interpBiCubicS);
-  static const biCosineS = BaseInterpolator2D(interpBiCosineS);
-  static const biQuinticS = BaseInterpolator2D(interpBiQuinticS);
+  static const biLinear = StandardInterpolator2D(interpBiLinear);
+  static const biCubicS = StandardInterpolator2D(interpBiCubicS);
+  static const biCosineS = StandardInterpolator2D(interpBiCosineS);
+  static const biQuinticS = StandardInterpolator2D(interpBiQuinticS);
+  static const biCubic = CubicInterpolator2D(interpBiCubic);
 
   num interpolate(List<List<num>> data, double tx, double ty);
 }
@@ -45,8 +43,8 @@ class IntegerInterpolator2D implements Interpolator2D {
       data[tx.round()][ty.round()];
 }
 
-class BaseInterpolator implements Interpolator {
-  const BaseInterpolator(this._interp);
+class StandardInterpolator implements Interpolator {
+  const StandardInterpolator(this._interp);
 
   final num Function(num, num, double) _interp;
 
@@ -57,8 +55,8 @@ class BaseInterpolator implements Interpolator {
   }
 }
 
-class BaseInterpolator2D implements Interpolator2D {
-  const BaseInterpolator2D(this._interp);
+class StandardInterpolator2D implements Interpolator2D {
+  const StandardInterpolator2D(this._interp);
 
   final num Function(num, num, num, num, double, double) _interp;
 
@@ -77,7 +75,7 @@ class BaseInterpolator2D implements Interpolator2D {
 }
 
 class CubicInterpolator implements Interpolator {
-  CubicInterpolator(this._interp);
+  const CubicInterpolator(this._interp);
 
   final num Function(CubicEntry<num>, double) _interp;
 
@@ -89,7 +87,7 @@ class CubicInterpolator implements Interpolator {
 }
 
 class CubicInterpolator2D implements Interpolator2D {
-  CubicInterpolator2D(this._interp);
+  const CubicInterpolator2D(this._interp);
 
   final num Function(CubicEntry<CubicEntry<num>>, double, double) _interp;
 

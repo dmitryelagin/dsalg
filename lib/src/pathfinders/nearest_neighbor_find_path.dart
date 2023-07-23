@@ -1,8 +1,10 @@
-class TravellingSalespersonProblemNearestNeighbor<T> {
-  const TravellingSalespersonProblemNearestNeighbor(this._getDistance);
+part of 'travelling_salesperson_problem.dart';
 
-  final num Function(T a, T b) _getDistance;
+class TravellingSalespersonProblemNearestNeighbor<T>
+    extends TravellingSalespersonProblem<T> {
+  const TravellingSalespersonProblemNearestNeighbor(super._getDistance);
 
+  @override
   Iterable<T> findPath(Iterable<T> sites) sync* {
     if (sites.isEmpty) return;
     final availableSites = sites.skip(1).toList();
