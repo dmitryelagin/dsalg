@@ -5,7 +5,6 @@ import 'package:test/test.dart';
 
 import '../utils/compare_utils.dart';
 import '../utils/data_utils.dart';
-import '../utils/matchers.dart';
 import '../utils/test_utils.dart';
 
 void main() {
@@ -62,34 +61,29 @@ void main() {
 
   group('interpCubic', () {
     test('should return interpolated value between numbers', () {
-      const firstData = [-3, 4, 8, 0];
+      const firstData = (-3, 4, 8, 0);
       expect(interpCubic(firstData, 0.2).roundTo(5), 5.184);
       expect(interpCubic(firstData, 0.8).roundTo(5), 8.016);
-      const secondData = [1, 32, 9.75, -24];
+      const secondData = (1, 32, 9.75, -24);
       expect(interpCubic(secondData, 0.2).roundTo(5), 31.142);
       expect(interpCubic(secondData, 0.8).roundTo(5), 15.788);
     });
 
     test('should return accurate numbers when case is edge case', () {
-      final data = [a, b, c, d];
+      final data = (a, b, c, d);
       expect(interpCubic(data, 0).roundTo(10), b.roundTo(10));
       expect(interpCubic(data, 1).roundTo(10), c.roundTo(10));
-    });
-
-    test('should throw when there was not enough data provided', () {
-      expect(() => interpCubic([1, 2, 3], 0), throwsAssertionError);
-      expect(() => interpCubic([], 0), throwsAssertionError);
     });
   });
 
   group('interpBiCubic', () {
     test('should return interpolated value between numbers', () {
-      const data = [
-        [-3, 4, 8, 0],
-        [12, 5.25, 7, 8],
-        [4.5, -4.5, 0, -6],
-        [1, 32, 9.75, -24],
-      ];
+      const data = (
+        (-3, 4, 8, 0),
+        (12, 5.25, 7, 8),
+        (4.5, -4.5, 0, -6),
+        (1, 32, 9.75, -24),
+      );
       expect(interpBiCubic(data, 0.2, 0.2).roundTo(5), 3.07024);
       expect(interpBiCubic(data, 0.8, 0.2).roundTo(5), -5.14256);
       expect(interpBiCubic(data, 0.2, 0.8).roundTo(5), 5.14432);
@@ -97,27 +91,16 @@ void main() {
     });
 
     test('should return accurate numbers when case is edge case', () {
-      final data = [
-        [nextValue(), nextValue(), nextValue(), nextValue()],
-        [nextValue(), a, c, nextValue()],
-        [nextValue(), b, d, nextValue()],
-        [nextValue(), nextValue(), nextValue(), nextValue()],
-      ];
+      final data = (
+        (nextValue(), nextValue(), nextValue(), nextValue()),
+        (nextValue(), a, c, nextValue()),
+        (nextValue(), b, d, nextValue()),
+        (nextValue(), nextValue(), nextValue(), nextValue()),
+      );
       expect(interpBiCubic(data, 0, 0).roundTo(10), a.roundTo(10));
       expect(interpBiCubic(data, 1, 0).roundTo(10), b.roundTo(10));
       expect(interpBiCubic(data, 0, 1).roundTo(10), c.roundTo(10));
       expect(interpBiCubic(data, 1, 1).roundTo(10), d.roundTo(10));
-    });
-
-    test('should throw when there was not enough data provided', () {
-      const invalidData = [
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3, 4],
-        [1, 2, 3]
-      ];
-      expect(() => interpBiCubic(invalidData, 0, 1), throwsAssertionError);
-      expect(() => interpBiCubic([], 0, 1), throwsAssertionError);
     });
   });
 

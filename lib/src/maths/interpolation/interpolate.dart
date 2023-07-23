@@ -2,6 +2,8 @@ import 'dart:math';
 
 import '../../collections/queue.dart';
 
+typedef CubicEntry<T> = (T, T, T, T);
+
 num interpLinear(num a, num b, double t) {
   if (t == 0) return a;
   if (t == 1) return b;
@@ -11,20 +13,19 @@ num interpLinear(num a, num b, double t) {
 num interpBiLinear(num a, num b, num c, num d, double tx, double ty) =>
     interpLinear(interpLinear(a, b, tx), interpLinear(c, d, tx), ty);
 
-num interpCubic(List<num> values, double t) {
-  assert(values.length >= 4);
-  if (t == 0) return values[1];
-  if (t == 1) return values[2];
-  final a = values[0], b = values[1], c = values[2], d = values[3];
+num interpCubic(CubicEntry<num> values, double t) {
+  final (a, b, c, d) = values;
+  if (t == 0) return b;
+  if (t == 1) return c;
   final m = 2 * a - 5 * b + 4 * c - d + t * (3 * (b - c) + d - a);
   return b + t * (c - a + t * m) / 2;
 }
 
-num interpBiCubic(List<List<num>> values, double tx, double ty) {
-  assert(values.length >= 4);
-  final a = interpCubic(values[0], ty), b = interpCubic(values[1], ty);
-  final c = interpCubic(values[2], ty), d = interpCubic(values[3], ty);
-  return interpCubic([a, b, c, d], tx);
+num interpBiCubic(CubicEntry<CubicEntry<num>> values, double tx, double ty) {
+  final (a, b, c, d) = values;
+  final ia = interpCubic(a, ty), ib = interpCubic(b, ty);
+  final ic = interpCubic(c, ty), id = interpCubic(d, ty);
+  return interpCubic((ia, ib, ic, id), tx);
 }
 
 num interpCosineS(num a, num b, double t) =>

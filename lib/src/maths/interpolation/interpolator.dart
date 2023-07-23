@@ -2,9 +2,9 @@ import '../../utils/list_utils.dart';
 import 'interpolate.dart';
 
 abstract class Interpolator {
-  factory Interpolator.cubic() => ExtendedInterpolator(interpCubic);
+  factory Interpolator.cubic() => CubicInterpolator(interpCubic);
 
-  factory Interpolator.cubicCached() => ExtendedCachedInterpolator(interpCubic);
+  factory Interpolator.cubicCached() => CubicCachedInterpolator(interpCubic);
 
   static const integer = IntegerInterpolator();
   static const linear = BaseInterpolator(interpLinear);
@@ -16,10 +16,10 @@ abstract class Interpolator {
 }
 
 abstract class Interpolator2D {
-  factory Interpolator2D.biCubic() => ExtendedInterpolator2D(interpBiCubic);
+  factory Interpolator2D.biCubic() => CubicInterpolator2D(interpBiCubic);
 
   factory Interpolator2D.biCubicCached() =>
-      ExtendedCachedInterpolator2D(interpBiCubic);
+      CubicCachedInterpolator2D(interpBiCubic);
 
   static const biInteger = IntegerInterpolator2D();
   static const biLinear = BaseInterpolator2D(interpBiLinear);
@@ -76,49 +76,38 @@ class BaseInterpolator2D implements Interpolator2D {
   }
 }
 
-class ExtendedInterpolator implements Interpolator {
-  ExtendedInterpolator(this._interp);
+class CubicInterpolator implements Interpolator {
+  CubicInterpolator(this._interp);
 
-  final num Function(List<num>, double) _interp;
-
-  final _values = List<num>.filled(4, 0);
+  final num Function(CubicEntry<num>, double) _interp;
 
   @override
   num interpolate(List<num> data, double t) {
     final i = t.toInt();
-    for (var j = 0; j < 4; j += 1) {
-      _values[j] = data.getSafeTerminal(i + j - 1);
-    }
-    return _interp(_values, t - i);
+    return _interp(data.getCubicValues(i), t - i);
   }
 }
 
-class ExtendedInterpolator2D implements Interpolator2D {
-  ExtendedInterpolator2D(this._interp);
+class CubicInterpolator2D implements Interpolator2D {
+  CubicInterpolator2D(this._interp);
 
-  final num Function(List<List<num>>, double, double) _interp;
-
-  final _values = List.generate(4, (_) => List<num>.filled(4, 0));
+  final num Function(CubicEntry<CubicEntry<num>>, double, double) _interp;
 
   @override
   num interpolate(List<List<num>> data, double tx, double ty) {
     final x = tx.toInt(), y = ty.toInt();
-    for (var i = 0; i < 4; i += 1) {
-      for (var j = 0; j < 4; j += 1) {
-        _values[i][j] =
-            data.getSafeTerminal(x + i - 1).getSafeTerminal(y + j - 1);
-      }
-    }
-    return _interp(_values, tx - x, ty - y);
+    return _interp(data.getCubicValues(x, y), tx - x, ty - y);
   }
 }
 
-class ExtendedCachedInterpolator extends ExtendedInterpolator {
-  ExtendedCachedInterpolator(super.interp);
+class CubicCachedInterpolator extends CubicInterpolator {
+  CubicCachedInterpolator(super.interp);
 
   List<num>? _prevData;
 
   var _prevI = 0;
+
+  CubicEntry<num> _values = (0, 0, 0, 0);
 
   @override
   num interpolate(List<num> data, double t) {
@@ -126,7 +115,7 @@ class ExtendedCachedInterpolator extends ExtendedInterpolator {
     if (!identical(data, _prevData) || i != _prevI) {
       _prevData = data;
       _prevI = i;
-      return super.interpolate(data, t);
+      _values = data.getCubicValues(i);
     }
     return _interp(_values, t - i);
   }
@@ -136,12 +125,15 @@ class ExtendedCachedInterpolator extends ExtendedInterpolator {
   }
 }
 
-class ExtendedCachedInterpolator2D extends ExtendedInterpolator2D {
-  ExtendedCachedInterpolator2D(super.interp);
+class CubicCachedInterpolator2D extends CubicInterpolator2D {
+  CubicCachedInterpolator2D(super.interp);
 
   List<List<num>>? _prevData;
 
   var _prevX = 0, _prevY = 0;
+
+  CubicEntry<CubicEntry<num>> _values =
+      ((0, 0, 0, 0), (0, 0, 0, 0), (0, 0, 0, 0), (0, 0, 0, 0));
 
   @override
   num interpolate(List<List<num>> data, double tx, double ty) {
@@ -150,7 +142,7 @@ class ExtendedCachedInterpolator2D extends ExtendedInterpolator2D {
       _prevData = data;
       _prevX = x;
       _prevY = y;
-      return super.interpolate(data, tx, ty);
+      _values = data.getCubicValues(x, y);
     }
     return _interp(_values, tx - x, ty - y);
   }
@@ -158,4 +150,22 @@ class ExtendedCachedInterpolator2D extends ExtendedInterpolator2D {
   void invalidate() {
     _prevData = null;
   }
+}
+
+extension _CubicListUtils on List<num> {
+  CubicEntry<num> getCubicValues(int i) => (
+        getSafeTerminal(i - 1),
+        getSafeTerminal(i),
+        getSafeTerminal(i + 1),
+        getSafeTerminal(i + 2),
+      );
+}
+
+extension _CubicList2DUtils on List<List<num>> {
+  CubicEntry<CubicEntry<num>> getCubicValues(int x, int y) => (
+        getSafeTerminal(x - 1).getCubicValues(y),
+        getSafeTerminal(x).getCubicValues(y),
+        getSafeTerminal(x + 1).getCubicValues(y),
+        getSafeTerminal(x + 2).getCubicValues(y),
+      );
 }
